@@ -1,6 +1,8 @@
 import React, { Component } from "react";
 import { connect } from 'react-redux';
 import Student from '../Student/Student';
+import Teacher from '../Teacher/Teacher';
+import Admin from '../Admin/Admin'
 import UserService from '../../service/user.service';
 
 class Home extends Component {
@@ -60,12 +62,18 @@ class Home extends Component {
       else if (this.props.role === 'teacher') {
         return (
           <>
+            <Teacher/>
+            <p>
+            <button id="logout" onClick={this.handleLogout}>Logout</button></p>
           </>
         )
       }
       else if (this.props.role === 'admin') {
         return (
           <>
+            <Admin/>
+            <p>
+            <button id="logout" onClick={this.handleLogout}>Logout</button></p>
           </>
         )
       }
