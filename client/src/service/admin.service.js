@@ -12,13 +12,8 @@ class AdminService {
     remove(name) {
         return axios.delete(this.URI + '/' + name)
     }
-    // login(username) {
-    //     return axios.post(this.URI, {'username': username})
-    // }
 
-    // logout() {
-    //     return axios.delete(this.URI)
-    // }
+
 }
 
 export default AdminService;
