@@ -4,7 +4,9 @@ import styles from '../../App.css';
 import AdminService from '../../service/admin.service';
 import StudentService from '../../service/student.service';
 import TeacherService from '../../service/teacher.service';
+import UserService from '../../service/user.service';
 import { connect } from 'react-redux';
+//import Form from "../../components/Form";
 
 
 
@@ -21,9 +23,55 @@ class Admin extends Component {
   adminService = new AdminService();
   studentService = new StudentService();
   teacherService = new TeacherService();
+  userService = new UserService();
+
+
   
 
   componentDidMount() {
+  }
+
+  style = {
+    display: "none"
+  }
+  form = {
+    display: "none"
+  }
+  studentForm = {
+    display: 'none'
+  }
+
+
+
+  showButtons() {
+    document.getElementById("adminButton").style.display = "block";
+    document.getElementById("studentButton").style.display = "block";
+    document.getElementById("teacherButton").style.display = "block";
+
+  }
+
+  showAdmin() {
+    document.getElementById("form").style.display = "block";
+    document.getElementById("newAdmin").style.display = "block";
+    document.getElementById("studentForm").style.display = "none";
+    document.getElementById("newStudent").style.display = "none";
+    document.getElementById("newTeacher").style.display = "none";
+  }
+
+  showStudent() {
+    document.getElementById("form").style.display = "block";
+    document.getElementById("studentForm").style.display = "block";
+    document.getElementById("newStudent").style.display = "block";
+    document.getElementById("newAdmin").style.display = "none";
+    document.getElementById("newTeacher").style.display = "none";
+  }
+
+  showTeacher() {
+    document.getElementById("form").style.display = "block";
+    document.getElementById("newTeacher").style.display = "block";
+    document.getElementById("studentForm").style.display = "none";
+    document.getElementById("newAdmin").style.display = "none";
+    document.getElementById("newStudent").style.display = "none";
   }
 
   user = (event) => {
@@ -54,6 +102,73 @@ class Admin extends Component {
       this.props.dispatch({type: 'getTeachers', teacher_array: res.data})
     })
   }
+
+  newAdmin = () => {
+    console.log(document.getElementById("usernameValue").value)
+    var username = document.getElementById("usernameValue").value
+    var letters = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z'];
+    var one = letters[Math.floor(Math.random() * letters.length)];
+    var two = letters[Math.floor(Math.random() * letters.length)];
+    var three = letters[Math.floor(Math.random() * letters.length)];
+    var four = letters[Math.floor(Math.random() * letters.length)];
+    var five = letters[Math.floor(Math.random() * letters.length)];
+    var six = letters[Math.floor(Math.random() * letters.length)];
+    var seven = letters[Math.floor(Math.random() * letters.length)];
+    var eight = letters[Math.floor(Math.random() * letters.length)];
+    var password = one + two + three + four + five + six + seven + eight;
+    var fullname = document.getElementById("fullnameValue").value
+    var address = document.getElementById("addressValue").value
+    this.userService.newAdmin(username, password, fullname, address).then(res => {
+      console.log(res.data)
+      this.props.dispatch({type: 'newAdmin'})
+    })
+
+  };
+
+  newStudent = () => {
+    var username = document.getElementById("usernameValue").value;
+    var letters = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z'];
+    var one = letters[Math.floor(Math.random() * letters.length)];
+    var two = letters[Math.floor(Math.random() * letters.length)];
+    var three = letters[Math.floor(Math.random() * letters.length)];
+    var four = letters[Math.floor(Math.random() * letters.length)];
+    var five = letters[Math.floor(Math.random() * letters.length)];
+    var six = letters[Math.floor(Math.random() * letters.length)];
+    var seven = letters[Math.floor(Math.random() * letters.length)];
+    var eight = letters[Math.floor(Math.random() * letters.length)];
+    var password = one + two + three + four + five + six + seven + eight;
+    var fullname = document.getElementById("fullnameValue").value
+    var address = document.getElementById("addressValue").value
+    var age = document.getElementById("ageValue").value
+    var grade = document.getElementById("gradeValue").value
+    this.userService.newStudent(username, password, fullname, address, age, grade).then(res => {
+      console.log(res.data)
+      this.props.dispatch({type: 'newStudent'})
+    })
+
+  };
+
+  newTeacher = () => {
+    console.log(document.getElementById("usernameValue").value)
+    var username = document.getElementById("usernameValue").value
+    var letters = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z'];
+    var one = letters[Math.floor(Math.random() * letters.length)];
+    var two = letters[Math.floor(Math.random() * letters.length)];
+    var three = letters[Math.floor(Math.random() * letters.length)];
+    var four = letters[Math.floor(Math.random() * letters.length)];
+    var five = letters[Math.floor(Math.random() * letters.length)];
+    var six = letters[Math.floor(Math.random() * letters.length)];
+    var seven = letters[Math.floor(Math.random() * letters.length)];
+    var eight = letters[Math.floor(Math.random() * letters.length)];
+    var password = one + two + three + four + five + six + seven + eight;
+    var fullname = document.getElementById("fullnameValue").value
+    var address = document.getElementById("addressValue").value
+    this.userService.newTeacher(username, password, fullname, address).then(res => {
+      console.log(res.data)
+      this.props.dispatch({type: 'newTeacher'})
+    })
+
+  };
 
   assign = (event) => {
     var teacherName = event.target.previousSibling.wholeText
@@ -86,12 +201,12 @@ class Admin extends Component {
 
              <h1>Admin</h1>
              <h1> {this.props.user.fullname} </h1>
-             <button id="adduserbtn" onClick={this.to_add_user}>Add User </button>
+             <button id="adduserbtn" onClick={this.showButtons}>Add User </button>
              <button id="deleteuser" onClick={this.getUsers}>Get Users </button>
              <button onClick={this.getStudents}>Assign Student To Teacher</button>
            </div>
           <div id="users">
-              <p  style={this.props.bold}>Users</p>
+              <p style={this.props.bold}>Users</p>
                 { this.props.user_array.map(user =>
                 <>{user.fullname}<button onClick={this.remove}>Delete</button><br/></>)}
               <p id="user" style={this.props.bold}></p>
@@ -103,11 +218,44 @@ class Admin extends Component {
               <p id="student" style={this.props.bold}></p>
           </div>
           <div id="teachers">
-              <p  style={this.props.bold}>Teachers</p>
+              <p style={this.props.bold}>Teachers</p>
                 { this.props.teacher_array.map(user =>
                 <>{user.username}<button onClick={this.assign}>Assign</button></>)}
               <p id="teacher" style={this.props.bold}></p>
           </div>
+          <div id="buttonRow">
+          <button id="adminButton" onClick={this.showAdmin} style={this.style}>Admin</button>
+          <button id="studentButton" onClick={this.showStudent} style={this.style}>Student</button>
+          <button id="teacherButton" onClick={this.showTeacher} style={this.style}>Teacher</button>
+          </div>
+          <div id="form" style={this.form}>
+            <p>Username</p>
+            <input id="usernameValue"></input>
+            <p>Full Name</p>
+            <input id="fullnameValue"></input>
+            <p>Address</p>
+            <input id="addressValue"></input>
+          </div>
+          <div id="studentForm" style={this.studentForm}>
+            <p>Age</p>
+            <input id="ageValue"></input>
+            <p>Grade</p>
+            <input id="gradeValue"></input>
+          </div>
+          <button id="newAdmin" onClick={this.newAdmin} style={this.style}>Create Admin</button>
+          <button id="newStudent" onClick={this.newStudent} style={this.style}>Create Student</button>
+          <button id="newTeacher" onClick={this.newTeacher} style={this.style}>Create Teacher</button>
+          {/*<div id="adminForm" style={this.adminForm}>
+            <p>Username</p>
+            <input id="usernameValue"></input>
+            <p>Password</p>
+            <input id="passwordValue"></input>
+            <p>Full Name</p>
+            <input id="fullnameValue"></input>
+            <p>Address</p>
+            <input id="addressValue"></input>
+            <button onClick={this.newAdmin}>Create Admin</button>
+                </div>*/}
           
           {/* <div id="students" style={this.state.studentStyle}>
            <p  style={this.state.bold}>Students</p>
