@@ -37,14 +37,14 @@ class Home extends Component {
     });
   };
 
-  
+
   handleLogout = () => {
     console.log(this.props)
     this.userService.logout().then(res =>
       {
         this.props.dispatch({ type: 'logout', username: '', user: null})
       })
-  } 
+  }
 
 
   render() {
@@ -59,7 +59,7 @@ class Home extends Component {
           </>
         )
       }
-      else if (this.props.role === 'teacher') {
+      else if (this.props.user.role === 'teacher') {
         return (
           <>
             <Teacher/>
@@ -68,7 +68,7 @@ class Home extends Component {
           </>
         )
       }
-      else if (this.props.role === 'admin') {
+      else if (this.props.user.role === 'admin') {
         return (
           <>
             <Admin/>
@@ -90,7 +90,7 @@ class Home extends Component {
         <>
           <div id="content">
             <p>Username</p>
-            <input type="text" value={this.props.username} 
+            <input type="text" value={this.props.username}
             onChange={ this.handleInput } onKeyDown={ (e) => this.handleKeyDown(e) }></input>
             <p>Password</p>
             <input type="password" name="password"/><br></br>

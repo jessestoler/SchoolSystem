@@ -2,8 +2,9 @@ from flask import Flask, request, make_response, jsonify, render_template
 from flask_cors import CORS
 
 from SchoolSystem.data.logger import get_logger
-from SchoolSystem.users.model import User
+from SchoolSystem.users.model import User, UserEncoder
 import SchoolSystem.data.mongo as db
+import json
 
 _log = get_logger(__name__)
 
@@ -40,3 +41,16 @@ def login():
     else:
         empty = make_response({})
         return empty, 204
+
+@app.route('/admin', methods={'GET', 'POST', 'PUT', 'DELETE'})
+def getUsers():
+    if request.method == 'GET':
+        users = db.get_users()
+        value = bytes(json.dumps(users, cls=UserEncoder), 'utf-8')
+        return value, 200
+
+@app.route('/admin/<fullname>', methods=['DELETE'])
+def user_remove(fullname):
+    _log.info(request.json)
+    user = db.remove_user(fullname)
+    return {}, 200
