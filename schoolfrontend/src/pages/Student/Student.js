@@ -22,14 +22,16 @@ class Student extends Component {
       //A Student is logged in and their grades are being displayed
       return (
         <>
-          <h1> {this.props.user.fullname} </h1>
+          <h1> {this.props.user.fullname} </h1><br/>
+          <h2>Grades</h2>
           <div>
               {this.props.grades.map(grade => 
                 <p key={grade.class}>{grade.class} : {grade.grade}</p>
               )}
           </div>
-          <p><button id="grades" onClick={this.showGrades}>Grades</button>
-              <button onClick={this.removeGrades}>Remove</button></p>
+          <p><button id="show" onClick={this.showGrades}>Grades</button>
+              <button id="hide" onClick={this.removeGrades}>Remove</button></p>
+          <h2>Other Options</h2>
         </>
       );
     }
