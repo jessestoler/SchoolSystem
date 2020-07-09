@@ -4,6 +4,7 @@ import styles from '../../App.css';
 import AdminService from '../../service/admin.service';
 import StudentService from '../../service/student.service';
 import TeacherService from '../../service/teacher.service';
+import UserService from '../../service/user.service';
 import { connect } from 'react-redux';
 
 
@@ -21,9 +22,32 @@ class Admin extends Component {
   adminService = new AdminService();
   studentService = new StudentService();
   teacherService = new TeacherService();
+  userService = new UserService();
+
+
   
 
   componentDidMount() {
+  }
+
+  style = {
+    display: "none"
+  }
+  adminForm = {
+    display: "none"
+  }
+
+
+
+  showButtons() {
+    document.getElementById("adminButton").style.display = "block";
+    document.getElementById("studentButton").style.display = "block";
+    document.getElementById("teacherButton").style.display = "block";
+
+  }
+
+  showAdmin() {
+    document.getElementById("adminForm").style.display = "block";
   }
 
   user = (event) => {
@@ -54,6 +78,22 @@ class Admin extends Component {
       this.props.dispatch({type: 'getTeachers', teacher_array: res.data})
     })
   }
+
+  newAdmin = () => {
+    console.log(document.getElementById("usernameValue").value)
+    var username = document.getElementById("usernameValue").value
+    var password = document.getElementById("passwordValue").value
+    var fullname = document.getElementById("fullnameValue").value
+    var address = document.getElementById("addressValue").value
+    this.userService.newAdmin(username, password, fullname, address).then(res => {
+      console.log(res.data)
+      this.props.dispatch({type: 'newAdmin'})
+    })
+    /*var person = {
+
+    }
+    this.userService.newAdmin()*/
+  };
 
   assign = (event) => {
     var teacherName = event.target.previousSibling.wholeText
@@ -86,12 +126,12 @@ class Admin extends Component {
 
              <h1>Admin</h1>
              <h1> {this.props.user.fullname} </h1>
-             <button id="adduserbtn" onClick={this.to_add_user}>Add User </button>
+             <button id="adduserbtn" onClick={this.showButtons}>Add User </button>
              <button id="deleteuser" onClick={this.getUsers}>Get Users </button>
              <button onClick={this.getStudents}>Assign Student To Teacher</button>
            </div>
           <div id="users">
-              <p  style={this.props.bold}>Users</p>
+              <p style={this.props.bold}>Users</p>
                 { this.props.user_array.map(user =>
                 <>{user.fullname}<button onClick={this.remove}>Delete</button><br/></>)}
               <p id="user" style={this.props.bold}></p>
@@ -103,10 +143,26 @@ class Admin extends Component {
               <p id="student" style={this.props.bold}></p>
           </div>
           <div id="teachers">
-              <p  style={this.props.bold}>Teachers</p>
+              <p style={this.props.bold}>Teachers</p>
                 { this.props.teacher_array.map(user =>
                 <>{user.username}<button onClick={this.assign}>Assign</button></>)}
               <p id="teacher" style={this.props.bold}></p>
+          </div>
+          <div id="buttonRow">
+          <button id="adminButton" onClick={this.showAdmin} style={this.style}>Admin</button>
+          <button id="studentButton" style={this.style}>Student</button>
+          <button id="teacherButton" style={this.style}>Teacher</button>
+          </div>
+          <div id="adminForm" style={this.adminForm}>
+            <p>Username</p>
+            <input id="usernameValue"></input>
+            <p>Password</p>
+            <input id="passwordValue"></input>
+            <p>Full Name</p>
+            <input id="fullnameValue"></input>
+            <p>Address</p>
+            <input id="addressValue"></input>
+            <button onClick={this.newAdmin}>Create Admin</button>
           </div>
           
           {/* <div id="students" style={this.state.studentStyle}>

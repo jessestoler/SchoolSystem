@@ -30,7 +30,7 @@ def student_update(username):
     user = db.update_student(username, request.json)
     return {}
 
-@app.route('/users', methods={'GET', 'POST', 'DELETE'})
+@app.route('/users', methods={'GET', 'POST', 'DELETE', 'PUT'})
 def login():
     if request.method == 'POST':
         _log.debug("In POST")
@@ -48,6 +48,9 @@ def login():
             # response.set_cookie('authorization', auth_token.decode())
             return user.to_dict(), 200
         return {}, 401
+    elif request.method == 'PUT':
+        user = db.add_user(request.json)
+        return {}
     # elif request.method == 'GET':
     #     # auth_token = request.cookies.get('authorization')
     #     if auth_token:
