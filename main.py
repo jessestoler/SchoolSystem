@@ -12,6 +12,24 @@ app = Flask("__main__")
 CORS(app, resources={r"/*": {"origins": "*"}}, supports_credentials=True)
 # app.json_encoder = UserEncoder
 
+@app.route('/teachers', methods=['GET'])
+def teachers():
+    users = db.get_teachers()
+    value = bytes(json.dumps(users, cls=UserEncoder), 'utf-8')
+    return value, 200
+
+@app.route('/students', methods=['GET'])
+def students():
+    users = db.get_students()
+    value = bytes(json.dumps(users, cls=UserEncoder), 'utf-8')
+    return value, 200
+
+@app.route('/students/<username>', methods=['PUT'])
+def student_update(username):
+    _log.info(username)
+    user = db.update_student(username, request.json)
+    return {}
+
 @app.route('/users', methods={'GET', 'POST', 'DELETE'})
 def login():
     if request.method == 'POST':

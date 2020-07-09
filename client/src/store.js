@@ -3,7 +3,9 @@ import { createStore } from 'redux';
 const initialState = {
     user: null,
     username: '',
-    user_array: []
+    user_array: [],
+    student_array: [],
+    teacher_array: []
 };
 
 function schoolReducer(state = initialState, action) {
@@ -19,6 +21,10 @@ function schoolReducer(state = initialState, action) {
             return Object.assign({}, state)
         case 'getUsers':
             return Object.assign({}, state, {user_array: action.user_array})
+        case 'getStudents':
+            return Object.assign({}, state, {student_array: action.student_array})
+        case 'getTeachers':
+            return Object.assign({}, state, {teacher_array: action.teacher_array})
         default:
             return state;
     }

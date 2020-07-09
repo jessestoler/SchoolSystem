@@ -58,6 +58,7 @@ def get_teachers():
 
 def update_student(username, newData):
     myquery = {"username": username}
+    _log.info(newData)
     result = _scl.users.update_one(myquery, {'$set': newData})
 
 def add_user(user):

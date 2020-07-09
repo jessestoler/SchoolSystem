@@ -2,6 +2,8 @@ import React, { Component } from "react";
 import axios from 'axios'
 import styles from '../../App.css';
 import AdminService from '../../service/admin.service';
+import StudentService from '../../service/student.service';
+import TeacherService from '../../service/teacher.service';
 import { connect } from 'react-redux';
 
 
@@ -12,8 +14,14 @@ class Admin extends Component {
     this.URI = 'http://localhost:5000';
     this.user_ref = React.createRef();
     this.getUsers = this.getUsers.bind(this);
+    this.getStudents = this.getStudents.bind(this);
+    this.getTeachers = this.getTeachers.bind(this);
+    this.person = '';
   };
   adminService = new AdminService();
+  studentService = new StudentService();
+  teacherService = new TeacherService();
+  
 
   componentDidMount() {
   }
@@ -29,6 +37,33 @@ class Admin extends Component {
       this.props.dispatch({type: 'getUsers', user_array: res.data})
     })
   }
+
+  getStudents() {
+    console.log(this.studentService)
+    this.studentService.getStudents().then(res => {
+      console.log(res.data)
+      this.props.dispatch({type: 'getStudents', student_array: res.data})
+    })
+  }
+
+  getTeachers = (event) => {
+    this.person = event.target.previousSibling.wholeText
+    console.log(this.teacherService)
+    this.teacherService.getTeachers().then(res => {
+      console.log(res.data)
+      this.props.dispatch({type: 'getTeachers', teacher_array: res.data})
+    })
+  }
+
+  assign = (event) => {
+    var teacherName = event.target.previousSibling.wholeText
+    console.log(this.person)
+    console.log(teacherName)
+    this.studentService.assign(this.person, teacherName).then(res => {
+      console.log(res.data)
+      this.props.dispatch({type: 'assign'})
+    })
+  };
 
   remove = (event) => {
     var name = event.target.previousSibling.wholeText
@@ -53,7 +88,7 @@ class Admin extends Component {
              <h1> {this.props.user.fullname} </h1>
              <button id="adduserbtn" onClick={this.to_add_user}>Add User </button>
              <button id="deleteuser" onClick={this.getUsers}>Get Users </button>
-             <button onClick={this.listStudents}>Assign Student To Teacher</button>
+             <button onClick={this.getStudents}>Assign Student To Teacher</button>
            </div>
           <div id="users">
               <p  style={this.props.bold}>Users</p>
@@ -61,6 +96,19 @@ class Admin extends Component {
                 <>{user.fullname}<button onClick={this.remove}>Delete</button><br/></>)}
               <p id="user" style={this.props.bold}></p>
           </div>
+          <div id="students">
+              <p  style={this.props.bold}>Students</p>
+                { this.props.student_array.map(user =>
+                <>{user.username}<button onClick={this.getTeachers}>Get Teacher</button><br/></>)}
+              <p id="student" style={this.props.bold}></p>
+          </div>
+          <div id="teachers">
+              <p  style={this.props.bold}>Teachers</p>
+                { this.props.teacher_array.map(user =>
+                <>{user.username}<button onClick={this.assign}>Assign</button></>)}
+              <p id="teacher" style={this.props.bold}></p>
+          </div>
+          
           {/* <div id="students" style={this.state.studentStyle}>
            <p  style={this.state.bold}>Students</p>
            { this.state.students.map( student => <p onClick={this.student}>{student.username}</p>) }
@@ -296,8 +344,8 @@ class Admin extends Component {
 //  }
 
 function mapStateToProps(state) {
-  const {user, user_array} = state;
-  return {user: user, user_array: user_array}
+  const {user, user_array, student_array, teacher_array} = state;
+  return {user: user, user_array: user_array, student_array: student_array, teacher_array: teacher_array}
 }
 
 export default connect(mapStateToProps)(Admin);
