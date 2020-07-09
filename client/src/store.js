@@ -2,6 +2,7 @@ import { createStore } from 'redux';
 
 const initialState = {
     user: null,
+    grades: [],
     username: '',
     user_array: [],
     student_array: [],
@@ -15,6 +16,8 @@ function schoolReducer(state = initialState, action) {
             return Object.assign({}, state, {username: ''}, {user: action.user})
         case 'logout':
             return Object.assign({}, state, {username: ''}, {user: action.user})
+        case 'showGrades':
+            return Object.assign({}, state, {grades: action.grades})
         case 'handleUsername':
             return Object.assign({}, state, {username: action.username})
         case 'remove':

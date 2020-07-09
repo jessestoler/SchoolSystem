@@ -8,7 +8,8 @@ import json
 
 _log = get_logger(__name__)
 
-app = Flask("__main__")
+app = Flask(__name__)
+_log.debug(app)
 CORS(app, resources={r"/*": {"origins": "*"}}, supports_credentials=True)
 # app.json_encoder = UserEncoder
 
