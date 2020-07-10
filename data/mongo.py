@@ -8,6 +8,8 @@ import getpass
 import pymongo
 
 from SchoolSystem.users.model import User, Admin, Teacher, Student
+from SchoolSystem.assignments.model import Assignment
+from SchoolSystem.submissions.model import Submission
 from SchoolSystem.data.logger import get_logger
 
 _log = get_logger(__name__)
@@ -49,6 +51,10 @@ def _get_id():
                                             {'$inc': {'count': 1}},
                                             return_document=pymongo.ReturnDocument.AFTER)['count']
 
+def get_assignments():
+    dict_list = _scl.assignments.find()
+    return [Assignment.from_dict(assignment) for assignment in dict_list]
+
 def get_students():
     dict_list = _scl.users.find({'role': 'student'})
     return [User.from_dict(user) for user in dict_list]
@@ -62,6 +68,10 @@ def update_student(username, newData):
     myquery = {"username": username}
     _log.info(newData)
     result = _scl.users.update_one(myquery, {'$set': newData})
+
+def add_submission(submission):
+    _scl.submissions.insert_one(submission)
+    return submission
 
 def add_user(user):
     _log.debug('querying db')
