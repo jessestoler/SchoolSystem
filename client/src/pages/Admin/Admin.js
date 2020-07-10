@@ -6,9 +6,6 @@ import StudentService from '../../service/student.service';
 import TeacherService from '../../service/teacher.service';
 import UserService from '../../service/user.service';
 import { connect } from 'react-redux';
-//import Form from "../../components/Form";
-
-
 
 class Admin extends Component {
   constructor(props){
@@ -25,9 +22,6 @@ class Admin extends Component {
   teacherService = new TeacherService();
   userService = new UserService();
 
-
-  
-
   componentDidMount() {
   }
 
@@ -43,14 +37,31 @@ class Admin extends Component {
   studentForm = {
     display: 'none'
   }
-
-
+  
+  hideAll(){
+    document.getElementById('users').style.display = 'none';
+    document.getElementById('students').style.display = 'none';
+    document.getElementById('teachers').style.display = 'none';
+    document.getElementById("buttonRow").style.display = "none";
+    document.getElementById("adminForm").style.display = "none";
+    document.getElementById("form").style.display = "none";
+    document.getElementById("studentForm").style.display = "none";
+    document.getElementById("newAdmin").style.display = "none";
+    document.getElementById("newStudent").style.display = "none";
+    document.getElementById("newTeacher").style.display = "none";
+  }
 
   showButtons() {
-    document.getElementById("adminButton").style.display = "block";
-    document.getElementById("studentButton").style.display = "block";
-    document.getElementById("teacherButton").style.display = "block";
-
+    document.getElementById('users').style.display = 'none';
+    document.getElementById('students').style.display = 'none';
+    document.getElementById('teachers').style.display = 'none';
+    document.getElementById("adminForm").style.display = "none";
+    document.getElementById("form").style.display = "none";
+    document.getElementById("studentForm").style.display = "none";
+    document.getElementById("newAdmin").style.display = "none";
+    document.getElementById("newStudent").style.display = "none";
+    document.getElementById("newTeacher").style.display = "none";
+    document.getElementById("buttonRow").style.display = "block";
   }
 
   showAdmin() {
@@ -84,6 +95,10 @@ class Admin extends Component {
 
   getUsers() {
     console.log(this.adminService)
+    this.hideAll()
+    document.getElementById('users').style.display = 'block';
+
+    
     this.adminService.getUsers().then(res => {
       console.log(res.data)
       this.props.dispatch({type: 'getUsers', user_array: res.data})
@@ -91,6 +106,8 @@ class Admin extends Component {
   }
 
   getStudents() {
+    this.hideAll()
+    document.getElementById('students').style.display = 'block';
     console.log(this.studentService)
     this.studentService.getStudents().then(res => {
       console.log(res.data)
@@ -99,6 +116,8 @@ class Admin extends Component {
   }
 
   getTeachers = (event) => {
+    this.hideAll()
+    document.getElementById('teachers').style.display = 'block';
     this.person = event.target.previousSibling.wholeText
     console.log(this.teacherService)
     this.teacherService.getTeachers().then(res => {
@@ -126,8 +145,6 @@ class Admin extends Component {
       console.log(res.data)
       this.props.dispatch({type: 'newAdmin'})
     })
-
-
   };
 
   newStudent = () => {
@@ -150,7 +167,6 @@ class Admin extends Component {
       console.log(res.data)
       this.props.dispatch({type: 'newStudent'})
     })
-
   };
 
   newTeacher = () => {
@@ -203,84 +219,63 @@ class Admin extends Component {
         <center>
            <div id="title"><h1>School System - Admin</h1></div>
            <div id="content">
-
-             <h1>Admin</h1>
-             <h1> {this.props.user.fullname} </h1>
-             <button id="adduserbtn" onClick={this.showButtons}>Add User </button>
-             <button id="deleteuser" onClick={this.getUsers}>Get Users </button>
-             <button onClick={this.getStudents}>Assign Student To Teacher</button>
-           </div>
-          <div id="users">
-              <p style={this.props.bold}>Users</p>
-                { this.props.user_array.map(user =>
-                <>{user.fullname}<button onClick={this.remove}>Delete</button><br/></>)}
-              <p id="user" style={this.props.bold}></p>
+            <div id="container">
+              <h1>Admin</h1>
+              Welcome back, {this.props.user.fullname} <br/>
+              <button id="adduserbtn" onClick={this.showButtons}>Add User </button>
+              <button id="deleteuser" onClick={this.getUsers}>Get Users </button>
+              <button onClick={this.getStudents}>Assign Student To Teacher</button>
+              
+              <div id="users" style={{display: 'none'}}>
+                  <p style={this.props.bold}>Users</p>
+                    { this.props.user_array.map(user =>
+                    <>{user.fullname}<button onClick={this.remove}>Delete</button><br/></>)}
+                  <p id="user" style={this.props.bold}></p>
+              </div>
+              <div id="students" style={{display: 'none'}}>
+                  <p  style={this.props.bold}>Students</p>
+                    { this.props.student_array.map(user =>
+                    <>{user.username}<button onClick={this.getTeachers}>Get Teacher</button><br/></>)}
+                  <p id="student" style={this.props.bold}></p>
+              </div>
+              <div id="teachers" style={{display: 'none'}}>
+                  <p style={this.props.bold}>Teachers</p>
+                    { this.props.teacher_array.map(user =>
+                    <>{user.username}<button onClick={this.assign}>Assign</button></>)}
+                  <p id="teacher" style={this.props.bold}></p>
+              </div>
+              <div id="buttonRow" style={this.style}><br/>
+                  What sort of user? <br/><br/>
+                  <button id="adminButton" onClick={this.showAdmin}>Admin</button>
+                  <button id="studentButton" onClick={this.showStudent}>Student</button>
+                  <button id="teacherButton" onClick={this.showTeacher}>Teacher</button>
+              </div>
+              <div id="adminForm" style={this.adminForm}>
+                <button id="studentButton" onClick={this.showStudent} style={this.style}>Student</button>
+                <button id="teacherButton" onClick={this.showTeacher} style={this.style}>Teacher</button>
+              </div>
+              <div id="form" style={this.form}>
+                Username<br/>
+                <input id="usernameValue"></input><br/>
+                Full Name<br/>
+                <input id="fullnameValue"></input><br/>
+                Address<br/>
+                <input id="addressValue"></input><br/>
+              </div>
+              <div id="studentForm" style={this.studentForm}>
+                Age<br/>
+                <input id="ageValue"></input><br/>
+                Grade<br/>
+                <input id="gradeValue"></input><br/>
+              </div>
+              <center><br/>
+                <button id="newAdmin" onClick={this.newAdmin}  style={{display: 'none'}}>Create Admin</button>
+                <button id="newStudent" onClick={this.newStudent} style={{display: 'none'}}> Create Student</button>
+                <button id="newTeacher" onClick={this.newTeacher} style={{display:'none'}}>Create Teacher</button>
+              </center>
+              </div>
           </div>
-          <div id="students">
-              <p  style={this.props.bold}>Students</p>
-                { this.props.student_array.map(user =>
-                <>{user.username}<button onClick={this.getTeachers}>Get Teacher</button><br/></>)}
-              <p id="student" style={this.props.bold}></p>
-          </div>
-          <div id="teachers">
-              <p style={this.props.bold}>Teachers</p>
-                { this.props.teacher_array.map(user =>
-                <>{user.username}<button onClick={this.assign}>Assign</button></>)}
-              <p id="teacher" style={this.props.bold}></p>
-          </div>
-          <div id="buttonRow">
-          <button id="adminButton" onClick={this.showAdmin} style={this.style}>Admin</button>
-          <button id="studentButton" onClick={this.showStudent} style={this.style}>Student</button>
-          <button id="teacherButton" onClick={this.showTeacher} style={this.style}>Teacher</button>
-          </div>
-          <div id="adminForm" style={this.adminForm}>
-          <button id="studentButton" onClick={this.showStudent} style={this.style}>Student</button>
-          <button id="teacherButton" onClick={this.showTeacher} style={this.style}>Teacher</button>
-          </div>
-          <div id="form" style={this.form}>
-            <p>Username</p>
-            <input id="usernameValue"></input>
-            <p>Full Name</p>
-            <input id="fullnameValue"></input>
-            <p>Address</p>
-            <input id="addressValue"></input>
-          </div>
-          <div id="studentForm" style={this.studentForm}>
-            <p>Age</p>
-            <input id="ageValue"></input>
-            <p>Grade</p>
-            <input id="gradeValue"></input>
-          </div>
-          <button id="newAdmin" onClick={this.newAdmin} style={this.style}>Create Admin</button>
-          <button id="newStudent" onClick={this.newStudent} style={this.style}>Create Student</button>
-          <button id="newTeacher" onClick={this.newTeacher} style={this.style}>Create Teacher</button>
-          {/*<div id="adminForm" style={this.adminForm}>
-            <p>Username</p>
-            <input id="usernameValue"></input>
-            <p>Password</p>
-            <input id="passwordValue"></input>
-            <p>Full Name</p>
-            <input id="fullnameValue"></input>
-            <p>Address</p>
-            <input id="addressValue"></input>
-            <button onClick={this.newAdmin}>Create Admin</button>
-          </div>
-
-                </div>*/}
-          
-          {/* <div id="students" style={this.state.studentStyle}>
-           <p  style={this.state.bold}>Students</p>
-           { this.state.students.map( student => <p onClick={this.student}>{student.username}</p>) }
-           <p id="student" style={this.state.bold}></p>
-         </div>
-         <div id="teachers" style={this.state.teacherStyle}>
-         <p  style={this.state.bold}>Teachers</p>
-           { this.state.teachers.map( teacher => <p onClick={this.teacher}>{teacher.username}</p>) }
-           <p id="teacher" style={this.state.bold}></p>  */}
-
-
         </center>
-          //  <button onClick={this.assign} style={this.state.assign}>Assign</button>
 
       );
     } else {
@@ -289,218 +284,8 @@ class Admin extends Component {
         <h1>You are not an Admin</h1>
       )
     }
+  }
 }
-}
-  //   this.state = {area: null};
-  //   this.state = {username: 'test'};
-  //   this.state = {password: ''};
-  //   this.state = {fullname: ''};
-  //   this.state = {address: ''};
-  //   this.state = {role: ''};
-  //   this.state = {adduser: ''};
-  //   this.state = {
-  //     students: [],
-  //     teachers: [],
-  //     teacherStyle: {
-  //       display: "none",
-  //       marginBottom: "100px",
-  //       marginTop: "100px"
-  //     },
-  //     bold: {
-  //       fontWeight: '700'
-  //     },
-  //     studentStyle: {
-  //       display: "none"
-  //     },
-  //     assign: {
-  //       display: 'none'
-  //     }
-  //   };
-  // }
-
-
-
-  // componentDidMount() {
-  //   this.getStudents();
-  //   this.getTeachers();
-  // }
-
-  // handleChange = (e) => {
-  //   this.setState({
-  //       [e.target.name]: e.target.value
-  //   })
-  // }
-
-  // toAdminMain = () => {
-  //   this.setState({ area: null});
-  // }
-
-  // to_add_user = () => {
-  //   console.log('in add user')
-  //   this.setState({ area: 'adduser'});
-  // }
-
-  // to_main = () => {
-  //   window.location = "/"
-  // }
-
-  // getStudents = () => {
-  //   axios.get(this.URI + "/students")
-  //   .then(res => this.setState({ students: res.data}))
-  //   .catch(err => console.log(err));
-  //   console.log(this.state.students);
-  // };
-
-  // getTeachers = () => {
-  //   axios.get(this.URI + "/teachers")
-  //   .then(res => this.setState({ teachers: res.data}))
-  //   .catch(err => console.log(err));
-  // };
-
-  // listStudents = () => {
-  //   this.setState({
-  //     studentStyle: {
-  //     display: "block"
-  //   }
-  // })
-  // };
-
-  // assign = () => {
-  //   axios.put(this.URI + "/students/" + document.getElementById("student").innerHTML, {
-  //     teacher: document.getElementById("teacher").innerHTML
-  //   })
-  //   .then(res => console.log(res.data))
-  //   .catch(err => console.log(err));
-  // };
-
-  // student = (event) => {
-  //   document.getElementById("student").innerHTML = event.target.innerText;
-  //   this.setState({
-  //     teacherStyle: {
-  //     display: "block"
-  //   }
-  // })
-
-  // }
-
-  // teacher = (event) => {
-  //   document.getElementById("teacher").innerHTML = event.target.innerText;
-  //   this.setState({
-  //     assign: {
-  //     display: "block"
-  //   }
-  // })
-  // }
-
-  // add_user = () => {
-  //   const user = {
-  //     "username": this.state.username,
-  //     "password": this.state.password,
-  //     "fullname": this.state.fullname,
-  //     "address": this.state.address,
-  //     "role": this.state.role
-  //   }
-
-  //   axios.put(this.URI + '/users', user)
-  //   .then(res => {
-  //         console.log(res.data.role);
-  //         this.setState({ user: res.data.username});
-  //         if (res.data){
-  //           this.setState({ adduser: "Added User successfully!"});
-  //         }
-  //         else{
-  //           this.setState({ adduser: "Something went wrong."});
-  //         }
-  //     });
-  // }
-
-
-//   render() {
-//     if (this.state.area === 'adduser'){
-//       return(
-//         <center>
-//           <div id="title"><h1>School System - Admin</h1></div>
-//           <div id="content">
-//             <table align="center">
-//               <tr>
-//                 <td>Username:</td>
-//                 <td><input type='text' name="username" value={this.state.username} onChange={e => this.handleChange(e)}/></td>
-//               </tr>
-//               <tr>
-//                 <td>Fullname:</td>
-//                 <td><input type='text' name="fullname" value={this.state.fullname} onChange={e => this.handleChange(e)}/></td>
-//               </tr>
-//               <tr>
-//                 <td>Password:</td>
-//                 <td> <input type='password' name="password" value={this.state.password} onChange={e => this.handleChange(e)}/></td>
-//               </tr>
-//               <tr>
-//                 <td>Address:</td>
-//                 <td><input type='text' name="address"value={this.state.address} onChange={e => this.handleChange(e)}/></td>
-//               </tr>
-//               <tr>
-//                 <td>Role:</td>
-//                 <td>
-//                   <select name="role"  onChange={e => this.handleChange(e)} value={this.state.role}>
-//                     <option value="student">Student</option>
-//                     <option value="teacher">Teacher</option>
-//                     <option value="admin">Admin</option>
-//                   </select>
-//                 </td>
-//               </tr>
-//             </table>
-//             <button onClick={this.add_user}>Add the user</button>
-//             <button onClick={this.toAdminMain}>Back</button>
-//             <button onClick={this.listStudents}>Assign Student To Teacher</button>
-//             <br></br><br></br>
-//             {this.state.adduser}
-//           </div>
-//           <div id="students" style={this.state.studentStyle}>
-//           <p  style={this.state.bold}>Students</p>
-//           { this.state.students.map( student => <p onClick={this.student}>{student.username}</p>) }
-//           <p id="student" style={this.state.bold}></p>
-//         </div>
-//         <div id="teachers" style={this.state.teacherStyle}>
-//         <p  style={this.state.bold}>Teachers</p>
-//           { this.state.teachers.map( teacher => <p onClick={this.teacher}>{teacher.username}</p>) }
-//           <p id="teacher" style={this.state.bold}></p>
-
-
-//           </div>
-//           <button onClick={this.assign} style={this.state.assign}>Assign</button>
-//         </center>
-//       )
-//     }
-//     else{
-//       return (
-//         <center>
-//           <div id="title"><h1>School System - Admin</h1></div>
-//           <div id="content">
-//             <h1>Admin</h1>
-
-//             <button id="adduserbtn" onClick={this.to_add_user}>Add User </button>
-//             <button id="to_main" onClick={this.to_main}>Log out </button>
-//             <button onClick={this.listStudents}>Assign Student To Teacher</button>
-//           </div>
-//           <div id="students" style={this.state.studentStyle}>
-//           <p  style={this.state.bold}>Students</p>
-//           { this.state.students.map( student => <p onClick={this.student}>{student.username}</p>) }
-//           <p id="student" style={this.state.bold}></p>
-//         </div>
-//         <div id="teachers" style={this.state.teacherStyle}>
-//         <p  style={this.state.bold}>Teachers</p>
-//           { this.state.teachers.map( teacher => <p onClick={this.teacher}>{teacher.username}</p>) }
-//           <p id="teacher" style={this.state.bold}></p>
-
-
-//           </div>
-//           <button onClick={this.assign} style={this.state.assign}>Assign</button>
-//         </center>
-//       );
-//     }
-
-//   }
-//  }
 
 function mapStateToProps(state) {
   const {user, user_array, student_array, teacher_array} = state;
