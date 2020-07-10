@@ -60,6 +60,7 @@ class Teacher extends Component {
     let updateProfileForm = {'username': newUsername, 'password': newPassword, 'address': newAddress}
     this.teacherService.updateTeacherProfile(this.props.user.username, updateProfileForm).then(res=> {
       console.log(res.data);
+      window.alert('Profile Updated')
     });
   }
 
@@ -82,7 +83,8 @@ class Teacher extends Component {
                 <input hidden='true' type='text' id='password'></input>
                 <p hidden='true' id='addressTitle'>Address</p>
                 <input hidden='true' type='text' id='address'></input>
-                <p><button hidden='true' id='submit' onClick={this.updateTeacher}>Submit</button></p>
+                <p><button hidden='true' id='submit' onClick={() => {this.updateTeacher();
+                                                                    this.hideProfileForm();}} >Submit</button></p>
 
                 <p><button id="show" onClick={this.editProfile}>Show</button>
                   <button hidden='true' id="hide" onClick={this.hideProfileForm}>Hide</button>
