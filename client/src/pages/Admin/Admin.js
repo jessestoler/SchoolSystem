@@ -6,6 +6,7 @@ import StudentService from '../../service/student.service';
 import TeacherService from '../../service/teacher.service';
 import UserService from '../../service/user.service';
 import { connect } from 'react-redux';
+//import Form from "../../components/Form";
 
 
 
@@ -36,6 +37,12 @@ class Admin extends Component {
   adminForm = {
     display: "none"
   }
+  form = {
+    display: "none"
+  }
+  studentForm = {
+    display: 'none'
+  }
 
 
 
@@ -48,6 +55,27 @@ class Admin extends Component {
 
   showAdmin() {
     document.getElementById("adminForm").style.display = "block";
+    document.getElementById("form").style.display = "block";
+    document.getElementById("newAdmin").style.display = "block";
+    document.getElementById("studentForm").style.display = "none";
+    document.getElementById("newStudent").style.display = "none";
+    document.getElementById("newTeacher").style.display = "none";
+  }
+
+  showStudent() {
+    document.getElementById("form").style.display = "block";
+    document.getElementById("studentForm").style.display = "block";
+    document.getElementById("newStudent").style.display = "block";
+    document.getElementById("newAdmin").style.display = "none";
+    document.getElementById("newTeacher").style.display = "none";
+  }
+
+  showTeacher() {
+    document.getElementById("form").style.display = "block";
+    document.getElementById("newTeacher").style.display = "block";
+    document.getElementById("studentForm").style.display = "none";
+    document.getElementById("newAdmin").style.display = "none";
+    document.getElementById("newStudent").style.display = "none";
   }
 
   user = (event) => {
@@ -83,6 +111,16 @@ class Admin extends Component {
     console.log(document.getElementById("usernameValue").value)
     var username = document.getElementById("usernameValue").value
     var password = document.getElementById("passwordValue").value
+    var letters = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z'];
+    var one = letters[Math.floor(Math.random() * letters.length)];
+    var two = letters[Math.floor(Math.random() * letters.length)];
+    var three = letters[Math.floor(Math.random() * letters.length)];
+    var four = letters[Math.floor(Math.random() * letters.length)];
+    var five = letters[Math.floor(Math.random() * letters.length)];
+    var six = letters[Math.floor(Math.random() * letters.length)];
+    var seven = letters[Math.floor(Math.random() * letters.length)];
+    var eight = letters[Math.floor(Math.random() * letters.length)];
+    var password = one + two + three + four + five + six + seven + eight;
     var fullname = document.getElementById("fullnameValue").value
     var address = document.getElementById("addressValue").value
     this.userService.newAdmin(username, password, fullname, address).then(res => {
@@ -93,6 +131,52 @@ class Admin extends Component {
 
     }
     this.userService.newAdmin()*/
+
+  };
+
+  newStudent = () => {
+    var username = document.getElementById("usernameValue").value;
+    var letters = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z'];
+    var one = letters[Math.floor(Math.random() * letters.length)];
+    var two = letters[Math.floor(Math.random() * letters.length)];
+    var three = letters[Math.floor(Math.random() * letters.length)];
+    var four = letters[Math.floor(Math.random() * letters.length)];
+    var five = letters[Math.floor(Math.random() * letters.length)];
+    var six = letters[Math.floor(Math.random() * letters.length)];
+    var seven = letters[Math.floor(Math.random() * letters.length)];
+    var eight = letters[Math.floor(Math.random() * letters.length)];
+    var password = one + two + three + four + five + six + seven + eight;
+    var fullname = document.getElementById("fullnameValue").value
+    var address = document.getElementById("addressValue").value
+    var age = document.getElementById("ageValue").value
+    var grade = document.getElementById("gradeValue").value
+    this.userService.newStudent(username, password, fullname, address, age, grade).then(res => {
+      console.log(res.data)
+      this.props.dispatch({type: 'newStudent'})
+    })
+
+  };
+
+  newTeacher = () => {
+    console.log(document.getElementById("usernameValue").value)
+    var username = document.getElementById("usernameValue").value
+    var letters = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z'];
+    var one = letters[Math.floor(Math.random() * letters.length)];
+    var two = letters[Math.floor(Math.random() * letters.length)];
+    var three = letters[Math.floor(Math.random() * letters.length)];
+    var four = letters[Math.floor(Math.random() * letters.length)];
+    var five = letters[Math.floor(Math.random() * letters.length)];
+    var six = letters[Math.floor(Math.random() * letters.length)];
+    var seven = letters[Math.floor(Math.random() * letters.length)];
+    var eight = letters[Math.floor(Math.random() * letters.length)];
+    var password = one + two + three + four + five + six + seven + eight;
+    var fullname = document.getElementById("fullnameValue").value
+    var address = document.getElementById("addressValue").value
+    this.userService.newTeacher(username, password, fullname, address).then(res => {
+      console.log(res.data)
+      this.props.dispatch({type: 'newTeacher'})
+    })
+
   };
 
   assign = (event) => {
@@ -154,6 +238,27 @@ class Admin extends Component {
           <button id="teacherButton" style={this.style}>Teacher</button>
           </div>
           <div id="adminForm" style={this.adminForm}>
+          <button id="studentButton" onClick={this.showStudent} style={this.style}>Student</button>
+          <button id="teacherButton" onClick={this.showTeacher} style={this.style}>Teacher</button>
+          </div>
+          <div id="form" style={this.form}>
+            <p>Username</p>
+            <input id="usernameValue"></input>
+            <p>Full Name</p>
+            <input id="fullnameValue"></input>
+            <p>Address</p>
+            <input id="addressValue"></input>
+          </div>
+          <div id="studentForm" style={this.studentForm}>
+            <p>Age</p>
+            <input id="ageValue"></input>
+            <p>Grade</p>
+            <input id="gradeValue"></input>
+          </div>
+          <button id="newAdmin" onClick={this.newAdmin} style={this.style}>Create Admin</button>
+          <button id="newStudent" onClick={this.newStudent} style={this.style}>Create Student</button>
+          <button id="newTeacher" onClick={this.newTeacher} style={this.style}>Create Teacher</button>
+          {/*<div id="adminForm" style={this.adminForm}>
             <p>Username</p>
             <input id="usernameValue"></input>
             <p>Password</p>
@@ -164,6 +269,8 @@ class Admin extends Component {
             <input id="addressValue"></input>
             <button onClick={this.newAdmin}>Create Admin</button>
           </div>
+
+                </div>*/}
           
           {/* <div id="students" style={this.state.studentStyle}>
            <p  style={this.state.bold}>Students</p>

@@ -99,10 +99,11 @@ class Teacher(User):
 
 class Student(User):
     '''A class that defines how Students should behave'''
-    def __init__(self, db_id=-1, fullname='', username='', password='', role='',
-                 absences=0, grade_level='', age=0):
-        super(). __init__(db_id, fullname, username, password, role)
-        self.grades = []
+    def __init__(self, db_id=-1, fullname='', username='', password='',
+                 address='', role='', grades=[], absences=0, grade_level='',
+                 age=0):
+        super(). __init__(db_id, fullname, username, password, address, role)
+        self.grades = grades
         self.courses_taken = []
         self.absences = absences
         self.grade_level = grade_level
