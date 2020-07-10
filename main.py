@@ -3,6 +3,8 @@ from flask_cors import CORS
 
 from SchoolSystem.data.logger import get_logger
 from SchoolSystem.users.model import User, UserEncoder
+from SchoolSystem.assignments.model import Assignment, AssignmentEncoder
+from SchoolSystem.submissions.model import Submission, SubmissionEncoder
 import SchoolSystem.data.mongo as db
 import json
 
@@ -12,6 +14,17 @@ app = Flask(__name__)
 _log.debug(app)
 CORS(app, resources={r"/*": {"origins": "*"}}, supports_credentials=True)
 # app.json_encoder = UserEncoder
+
+@app.route('/submissions', methods=['POST'])
+def submit():
+    submission = db.add_submission(request.json)
+    return {}
+
+@app.route('/assignments', methods=['GET'])
+def assignments():
+    users = db.get_assignments()
+    value = bytes(json.dumps(users, cls=AssignmentEncoder), 'utf-8')
+    return value, 200
 
 @app.route('/teachers', methods=['GET'])
 def teachers():
