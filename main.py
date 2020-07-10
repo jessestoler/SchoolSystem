@@ -137,6 +137,15 @@ def user_remove(fullname):
     user = db.remove_user(fullname)
     return {}, 200
 
+@app.route('/admin/<username>', methods=['PUT'])
+def edit_admin(username):
+    _log.info(username)
+    _log.info(request.json)
+    user = db.edit_admin(username, request.json)
+    return {}, 200
+
+
+
 @app.route('/admin/updates', methods={'GET'})
 def getUpdates():
     updates = db.get_updates()

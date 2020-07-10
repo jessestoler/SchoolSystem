@@ -15,6 +15,7 @@ class Admin extends Component {
     this.getUsers = this.getUsers.bind(this);
     this.getStudents = this.getStudents.bind(this);
     this.getTeachers = this.getTeachers.bind(this);
+    this.editAdmin = this.editAdmin.bind(this);
     this.person = '';
   };
   adminService = new AdminService();
@@ -36,6 +37,46 @@ class Admin extends Component {
   }
   studentForm = {
     display: 'none'
+  }
+  editForm = {
+    display: 'none'
+  }
+
+  editAdmin() {
+    var person = document.getElementById("currentUsername").innerHTML;
+    var username;
+    var password;
+    var fullname;
+    var address;
+    if (document.getElementById("adminUsername").value.length > 0) {
+        username = document.getElementById("adminUsername").value;
+    }
+    else {
+        username = document.getElementById("currentUsername").innerHTML
+    }
+    if (document.getElementById("adminPassword").value.length > 0) {
+      password = document.getElementById("adminPassword").value;
+    }
+    else {
+      password = document.getElementById("currentPassword").innerHTML
+    }
+    if (document.getElementById("adminFullName").value.length > 0) {
+      fullname = document.getElementById("adminFullName").value;
+    }
+    else {
+      fullname = document.getElementById("currentFullname").innerHTML
+    }
+    if (document.getElementById("adminAddress").value.length > 0) {
+      address = document.getElementById("adminAddress").value;
+    }
+    else {
+      address = document.getElementById("currentAddress").innerHTML
+    }
+
+      this.adminService.editAdmin(person, username, password, fullname, address).then(res => {
+      console.log(res.data)
+      this.props.dispatch({type: 'editAdmin'})
+    })
   }
   
   hideAll(){
@@ -103,6 +144,10 @@ class Admin extends Component {
       console.log(res.data)
       this.props.dispatch({type: 'getUsers', user_array: res.data})
     })
+  }
+
+  showForm() {
+    document.getElementById('editAdmin').style.display = 'block';
   }
 
   getStudents() {
@@ -260,9 +305,27 @@ class Admin extends Component {
               <h1>Admin</h1>
               Welcome back, {this.props.user.fullname} <br/>
               <button id="adduserbtn" onClick={this.showButtons}>Add User </button>
-              <button id="deleteuser" onClick={this.getUsers}>Get Users </button>
               <button onClick={this.getStudents}>Assign Student To Teacher</button>
               <button onClick={this.showUpdates}>Check Profile Updates</button>
+              <button id="deleteuser" onClick={this.getUsers}>Delete User</button>
+              <button onClick={this.showForm}>Edit Profile</button>
+
+              <div id="editAdmin" style={this.editForm}>
+                <p id="currentFullname" style={{display: 'none'}}>{this.props.user.fullname}</p>
+                <p>Full Name</p>
+                <input id="adminFullName"></input>
+                <p id="currentUsername" style={{display: 'none'}}>{this.props.user.username}</p>
+                <p>Username</p>
+                <input id="adminUsername"></input>
+                <p id="currentPassword" style={{display: 'none'}}>{this.props.user.password}</p>
+                <p>Password</p>
+                <input id="adminPassword"></input>
+                <p id="currentAddress" style={{display: 'none'}}>{this.props.user.address}</p>
+                <p>Address</p>
+                <input id="adminAddress"></input>
+                <br></br><br></br>
+                <button onClick={this.editAdmin}>Edit Profile</button>
+              </div>
               
               <div id="users" style={{display: 'none'}}>
                   <p style={this.props.bold}>Users</p>
