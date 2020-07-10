@@ -53,27 +53,24 @@ class Home extends Component {
       if (this.props.user.role === 'student') {
         return (
           <>
+            <p><button id="logout" onClick={this.handleLogout}>Logout</button></p>
             <Student/>
-            <p>
-            <button id="logout" onClick={this.handleLogout}>Logout</button></p>
           </>
         )
       }
       else if (this.props.user.role === 'teacher') {
         return (
           <>
+            <p><button id="logout" onClick={this.handleLogout}>Logout</button></p>
             <Teacher/>
-            <p>
-            <button id="logout" onClick={this.handleLogout}>Logout</button></p>
           </>
         )
       }
       else if (this.props.user.role === 'admin') {
         return (
           <>
+            <p><button id="logout" onClick={this.handleLogout}>Logout</button></p>
             <Admin/>
-            <p>
-            <button id="logout" onClick={this.handleLogout}>Logout</button></p>
           </>
         )
       }
@@ -87,7 +84,8 @@ class Home extends Component {
     }
     else {
       return (
-        <>
+        <center>
+          <div id="title" style={{marginTop:54}}><h1>School System</h1></div>
           <div id="content">
             <p>Username</p>
             <input type="text" value={this.props.username}
@@ -96,7 +94,7 @@ class Home extends Component {
             <input type="password" name="password"/><br></br>
             <button id="loginbutton" onClick={this.login}>Log In</button>
           </div>
-        </>
+        </center>
       );
     }
   }

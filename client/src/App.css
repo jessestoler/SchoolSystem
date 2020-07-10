@@ -1,61 +1,57 @@
-.App {
-  text-align: center;
-}
-
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
-}
-
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
-}
-
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
-}
-
-.App-link {
-  color: #61dafb;
-}
-
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
-}
-
 body {
-  background-color: #06A0FA;
+  background-color: #ffffff;
+  
 }
 
-#content {
+#content, #title{
   width: 800px;
   margin: 10px;
   text-align: center;
-  background-color: coral;
-  box-shadow: 0px 0px 200px 10px #04507c;
-  -moz-box-shadow: 5px 5px 10px #04507c;
-  -webkit-box-shadow: 5px 5px 10px #04507c;
-  box-shadow: 5px 5px 10px #04507c;
+  background-color: rgb(25, 102, 31);
+  box-shadow: 0px 0px 200px 10px #747776;
+  -moz-box-shadow: 5px 5px 10px #747776;
+  -webkit-box-shadow: 5px 5px 10px #747776;
+  box-shadow: 5px 5px 10px #747776;
   border-radius: 15px;
+  border: thick ridge chocolate;
+  color: #ffffff;
+  -webkit-text-stroke-width: .5px;
+  -webkit-text-stroke-color: black;
 }
 
-input, select{
+#content {
+  height: 400px;
+}
+
+input, select, textarea{
   -moz-box-shadow: inset -3px -3px 10px #eee;
   -webkit-box-shadow: inset -3px -3px 10px #eee;
   box-shadow: inset -3px -3px 10px #eee;
   border-radius: 15px;
+  width: 200px;
+  -ms-box-sizing:content-box;
+-moz-box-sizing:content-box;
+-webkit-box-sizing:content-box; 
+box-sizing:content-box;
+}
+
+button {
+  -moz-box-shadow: inset -3px -3px 10px #eee;
+  -webkit-box-shadow: inset -3px -3px 10px #eee;
+  box-shadow: inset -3px -3px 10px #eee;
+  border-radius: 15px;
+}
+
+h1 {
+  text-shadow: #000000 -1px -1px 0, -25px 5px 5px rgba(206,89,55,0);
+  color: #ffffff;
+  border-radius: 15px;
+}
+
+table{margin-top: 20px;}
+
+#container{
+  overflow: hidden scroll;
+  height: 400px;
+
 }

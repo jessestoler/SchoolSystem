@@ -31,3 +31,6 @@ pyvenv.cfg
 **/.vscode/
 **/*.log
 **/.vs/
+
+SchoolSystem/Scripts
+**/package-lock.json
