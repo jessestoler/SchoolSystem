@@ -215,11 +215,36 @@ class Admin extends Component {
     console.log('Show Updates')
     this.adminService.getUpdates().then(res => {
       console.log(res.data)
+      this.props.dispatch( { type: 'getUpdates', update_array: res.data})
     })
+    document.getElementById('updates').hidden = false
+    document.getElementById('hideUpdates').hidden = false
   }
 
   hideUpdates = () => {
     console.log('Hide Updates')
+    this.props.dispatch( { type: 'getUpdates', update_array: []})
+    document.getElementById('updates').hidden = true
+    document.getElementById('hideUpdates').hidden = true
+  }
+
+  acceptUpdate = (event) => {
+    var name = event.target.id
+    console.log('Accept Update')
+    console.log(name)
+    this.studentService.updateProfile(name).then(res => {
+      console.log(res.data)
+      this.showUpdates()
+    })
+  }
+
+  denyUpdate = (event) => {
+    var name = event.target.id
+    console.log('Deny Update')
+    this.studentService.denyProfileUpdate(name).then(res => {
+      console.log(res.data)
+      this.showUpdates()
+    })
   }
 
   render() {
@@ -257,10 +282,17 @@ class Admin extends Component {
                     <>{user.username}<button onClick={this.assign}>Assign</button></>)}
                   <p id="teacher" style={this.props.bold}></p>
               </div>
-              <div id="updates" style={{display: 'none'}}>
+              <div id="updates" hidden='true'>
                   <p style={this.props.bold}>Updates</p>
-                  {this.props.update_array.map(update => 
-                    <p key={update.username}>{update.username} : {update.update_info}</p>
+                  {this.props.update_array.map(update =>
+                  <>
+                    <h4>User: {update.username}</h4>
+                    <li>Username: {update.update_info.username}</li>
+                    <li>Password: {update.update_info.password}</li>
+                    <li>Address: {update.update_info.address}</li>
+                    <p><button id={update.username} onClick={this.acceptUpdate}>Accept</button>
+                    <button id={update.username} onClick={this.denyUpdate}>Deny</button></p>
+                  </>
                   )}
                   <p><button hidden='true' id="hideUpdates" onClick={this.hideUpdates}>Hide</button></p>
               </div>

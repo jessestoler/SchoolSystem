@@ -14,8 +14,12 @@ class StudentService {
         return axios.get(this.URI)
     }
 
-    updateProfile(name, profileUpdate) {
-        return axios.put(this.URI + '/' + name, profileUpdate)
+    updateProfile(name) {
+        return axios.put(this.URI + '/' + name)
+    }
+
+    denyProfileUpdate(name) {
+        return axios.delete(this.URI + '/' + name)
     }
 
     submitProfileUpdate(name, profileUpdate) {

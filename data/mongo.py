@@ -10,6 +10,7 @@ import pymongo
 from SchoolSystem.users.model import User, Admin, Teacher, Student
 from SchoolSystem.assignments.model import Assignment
 from SchoolSystem.submissions.model import Submission
+from SchoolSystem.updates.model import Update
 from SchoolSystem.data.logger import get_logger
 
 _log = get_logger(__name__)
@@ -64,20 +65,30 @@ def get_teachers():
     return [User.from_dict(user) for user in dict_list]
 
 def get_updates():
-    return _scl.updates.find()
+    dict_list = _scl.updates.find()
+    return [Update.from_dict(update) for update in dict_list]
 
 
-def update_student(username, newData):
-    myquery = {"username": username}
+def update_student(username):
+    myquery = {'username': str(username)}
+    newData = _scl.updates.find_one(myquery)
     _log.info(newData)
-    _log.info(newData['username'])
-    result = _scl.users.update_one(myquery, {'$set': newData})
-    new_query = {'username': str(newData['username'])}
+    _log.info(newData['update_info']['username'])
+    result = _scl.users.update_one(myquery,
+                                   {'$set': {'username': newData['update_info']['username'],
+                                   'password': newData['update_info']['password'],
+                                   'address': newData['update_info']['address']}})
+    new_query = {'username': str(newData['update_info']['username'])}
     newUser = _scl.users.find_one(new_query)
+    _scl.updates.delete_one(myquery)
     return Student.from_dict(newUser)
 
+def delete_update(username):
+    myquery = {'username': str(username)}
+    _scl.updates.delete_one(myquery)
+
 def submit_student_update(username, newData):
-    input_dict = {'username': username, 'update_info': newData}
+    input_dict = Update(_get_id(), username, newData).to_dict()
     _scl.updates.insert_one(input_dict)
 
 def add_submission(submission):
