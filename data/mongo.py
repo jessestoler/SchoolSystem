@@ -93,9 +93,11 @@ def delete_update(username):
     _scl.updates.delete_one(myquery)
 
 def submit_student_update(username, newData):
+    myquery = {'username': username}
     input_dict = Update(_get_id(), username, newData).to_dict()
     _scl.updates.insert_one(input_dict)
-    result = _scl.users.update_one(myquery, {'$set': newData})
+    result = _scl.updates.find_one(myquery)
+    _log.debug(result)
 
 def grade_homework(x, newData):
     myquery = {"_id": x}

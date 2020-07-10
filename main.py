@@ -42,6 +42,10 @@ def student_update(username):
         user = db.update_student(username)
         _log.info(user.to_dict())
         return user.to_dict(), 200
+    elif request.method == 'POST':
+        _log.info(username)
+        db.submit_student_update(username, request.json)
+        return {}, 200
     elif request.method == 'DELETE':
         _log.info(username)
         db.delete_update()
