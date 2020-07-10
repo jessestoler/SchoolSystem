@@ -34,6 +34,9 @@ class Admin extends Component {
   style = {
     display: "none"
   }
+  adminForm = {
+    display: "none"
+  }
   form = {
     display: "none"
   }
@@ -51,6 +54,7 @@ class Admin extends Component {
   }
 
   showAdmin() {
+    document.getElementById("adminForm").style.display = "block";
     document.getElementById("form").style.display = "block";
     document.getElementById("newAdmin").style.display = "block";
     document.getElementById("studentForm").style.display = "none";
@@ -106,6 +110,7 @@ class Admin extends Component {
   newAdmin = () => {
     console.log(document.getElementById("usernameValue").value)
     var username = document.getElementById("usernameValue").value
+    var password = document.getElementById("passwordValue").value
     var letters = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z'];
     var one = letters[Math.floor(Math.random() * letters.length)];
     var two = letters[Math.floor(Math.random() * letters.length)];
@@ -122,6 +127,10 @@ class Admin extends Component {
       console.log(res.data)
       this.props.dispatch({type: 'newAdmin'})
     })
+    /*var person = {
+
+    }
+    this.userService.newAdmin()*/
 
   };
 
@@ -225,6 +234,10 @@ class Admin extends Component {
           </div>
           <div id="buttonRow">
           <button id="adminButton" onClick={this.showAdmin} style={this.style}>Admin</button>
+          <button id="studentButton" style={this.style}>Student</button>
+          <button id="teacherButton" style={this.style}>Teacher</button>
+          </div>
+          <div id="adminForm" style={this.adminForm}>
           <button id="studentButton" onClick={this.showStudent} style={this.style}>Student</button>
           <button id="teacherButton" onClick={this.showTeacher} style={this.style}>Teacher</button>
           </div>
@@ -255,6 +268,8 @@ class Admin extends Component {
             <p>Address</p>
             <input id="addressValue"></input>
             <button onClick={this.newAdmin}>Create Admin</button>
+          </div>
+
                 </div>*/}
           
           {/* <div id="students" style={this.state.studentStyle}>

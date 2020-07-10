@@ -6,7 +6,10 @@ const initialState = {
     username: '',
     user_array: [],
     student_array: [],
-    teacher_array: []
+    teacher_array: [],
+    new_admin: {},
+    new_student: {},
+    new_teacher: {}
 };
 
 function schoolReducer(state = initialState, action) {
