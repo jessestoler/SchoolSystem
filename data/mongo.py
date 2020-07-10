@@ -11,6 +11,7 @@ from SchoolSystem.users.model import User, Admin, Teacher, Student
 from SchoolSystem.assignments.model import Assignment
 from SchoolSystem.submissions.model import Submission
 from SchoolSystem.updates.model import Update
+from SchoolSystem.schedules.model import Schedule
 from SchoolSystem.data.logger import get_logger
 
 _log = get_logger(__name__)
@@ -75,34 +76,59 @@ def get_updates():
 
 
 def update_student(username):
-    myquery = {'username': str(username)}
-    newData = _scl.updates.find_one(myquery)
+    my_query = {'username': str(username)}
+    newData = _scl.updates.find_one(my_query)
     _log.info(newData)
     _log.info(newData['update_info']['username'])
-    result = _scl.users.update_one(myquery,
+    result = _scl.users.update_one(my_query,
                                    {'$set': {'username': newData['update_info']['username'],
                                    'password': newData['update_info']['password'],
                                    'address': newData['update_info']['address']}})
     new_query = {'username': str(newData['update_info']['username'])}
     newUser = _scl.users.find_one(new_query)
-    _scl.updates.delete_one(myquery)
+    _scl.updates.delete_one(my_query)
     return Student.from_dict(newUser)
 
 def delete_update(username):
     _log.debug(username)
-    myquery = {'username': str(username)}
-    _scl.updates.delete_one(myquery)
+    my_query = {'username': str(username)}
+    _scl.updates.delete_one(my_query)
+
+def get_schedules():
+    dict_list = _scl.schedules.find()
+    return [Schedule.from_dict(schedule) for Schedule in dict_list]
+
+def update_schedule(username):
+    my_query = {'username': str(username)}
+    schedule_request = _scl.schedules.find_one(my_query)
+    _log.info(schedule_request)
+    result = _scl.schedules.update_one(my_query, {'$set': schedule_request['schedule_info']})
+    student = _scl.users.find_one(my_query)
+    _scl.schedules.delete_one(my_query)
+    return Student.from_dict(student)
+
+def delete_schedule_update(username):
+    _log.info(username)
+    my_query = {'username': username}
+    _scl.schedules.delete_one(my_query)
+
+def sumbit_schedule_update(username, newSchedule):
+    my_query = {'username': username}
+    input_dict = Schedule(_get_id(), username, newSchedule).to_dict()
+    _scl.schedules.insert_one(input_dict)
+    result = _scl.schedules.find_one(my_query)
+    _log.debug(result)
 
 def submit_student_update(username, newData):
-    myquery = {'username': username}
+    my_query = {'username': username}
     input_dict = Update(_get_id(), username, newData).to_dict()
     _scl.updates.insert_one(input_dict)
-    result = _scl.updates.find_one(myquery)
+    result = _scl.updates.find_one(my_query)
     _log.debug(result)
 
 def grade_homework(x, newData):
-    myquery = {"_id": x}
-    result = _scl.submissions.update_one(myquery, {'$set': newData})
+    my_query = {"_id": x}
+    result = _scl.submissions.update_one(my_query, {'$set': newData})
 
 def add_submission(submission):
     _scl.submissions.insert_one(submission)

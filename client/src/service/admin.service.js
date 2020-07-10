@@ -13,6 +13,10 @@ class AdminService {
         return axios.get(this.URI + '/updates')
     }
 
+    getSchedules() {
+        return axios.get(this.URI + '/schedules')
+    }
+
     remove(name) {
         return axios.delete(this.URI + '/' + name)
     }

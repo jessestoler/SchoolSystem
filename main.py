@@ -6,6 +6,7 @@ from SchoolSystem.users.model import User, UserEncoder
 from SchoolSystem.assignments.model import Assignment, AssignmentEncoder
 from SchoolSystem.submissions.model import Submission, SubmissionEncoder
 from SchoolSystem.updates.model import Update, UpdateEncoder
+from SchoolSystem.schedules.model import Schedule, ScheduleEncoder
 import SchoolSystem.data.mongo as db
 import json
 
@@ -49,6 +50,22 @@ def student_update(username):
     elif request.method == 'DELETE':
         _log.info(username)
         db.delete_update(username)
+        return {}, 200
+
+@app.route('/students/<username>/schedule', methods=['PUT', 'POST', 'DELETE'])
+def schedule_update(username):
+    if request.method == 'PUT':
+        _log.info(username)
+        user = db.update_schedule(username)
+        _log.info(user.to_dict())
+        return user.to_dict(), 200
+    elif request.method == 'POST':
+        _log.info(username)
+        db.sumbit_schedule_update(username, request.json)
+        return {}, 200
+    elif request.method == 'DELETE':
+        _log.info(username)
+        db.delete_schedule_update(username)
         return {}, 200
 
 @app.route('/submissions/<homework>', methods=['PUT'])
@@ -137,3 +154,8 @@ def getUpdates():
     value = bytes(json.dumps(updates, cls=UpdateEncoder), 'utf-8')
     _log.info(value)
     return value, 200
+
+@app.route('/admin/schedules', methods={'GET'})
+def getSchedules():
+    schedules = db.get_schedules()
+    value = bytes(json.dumps(schedules, cls=ScheduleEncoder), 'utf-8')
