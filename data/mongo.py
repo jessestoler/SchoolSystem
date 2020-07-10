@@ -20,6 +20,11 @@ except:
     _log.exception('Could not connect to Mongo')
     raise
 
+def get_submissions(x):
+    dict_list = _scl.submissions.find({'teacher': x})
+    return [Submission.from_dict(submission) for submission in dict_list]
+
+
 def get_users():
     '''Read all the users from the collection'''
     _log.info('Attempting to retrieve all users from database')
@@ -73,6 +78,9 @@ def update_user(username, newProfile):
     myquery = {"username": username}
     _log.info(newProfile)
     result = _scl.users.update_one(myquery, {'$set': newProfile})
+def grade_homework(x, newData):
+    myquery = {"_id": x}
+    result = _scl.submissions.update_one(myquery, {'$set': newData})
 
 def add_submission(submission):
     _scl.submissions.insert_one(submission)

@@ -210,6 +210,18 @@ class Admin extends Component {
     })
   };
 
+  showUpdates = () => {
+    this.hideAll()
+    console.log('Show Updates')
+    this.adminService.getUpdates().then(res => {
+      console.log(res.data)
+    })
+  }
+
+  hideUpdates = () => {
+    console.log('Hide Updates')
+  }
+
   render() {
     console.log(this.props)
     if (this.props.user) {
@@ -225,6 +237,7 @@ class Admin extends Component {
               <button id="adduserbtn" onClick={this.showButtons}>Add User </button>
               <button id="deleteuser" onClick={this.getUsers}>Get Users </button>
               <button onClick={this.getStudents}>Assign Student To Teacher</button>
+              <button onClick={this.showUpdates}>Check Profile Updates</button>
               
               <div id="users" style={{display: 'none'}}>
                   <p style={this.props.bold}>Users</p>
@@ -243,6 +256,13 @@ class Admin extends Component {
                     { this.props.teacher_array.map(user =>
                     <>{user.username}<button onClick={this.assign}>Assign</button></>)}
                   <p id="teacher" style={this.props.bold}></p>
+              </div>
+              <div id="updates" style={{display: 'none'}}>
+                  <p style={this.props.bold}>Updates</p>
+                  {this.props.update_array.map(update => 
+                    <p key={update.username}>{update.username} : {update.update_info}</p>
+                  )}
+                  <p><button hidden='true' id="hideUpdates" onClick={this.hideUpdates}>Hide</button></p>
               </div>
               <div id="buttonRow" style={this.style}><br/>
                   What sort of user? <br/><br/>
@@ -288,8 +308,8 @@ class Admin extends Component {
 }
 
 function mapStateToProps(state) {
-  const {user, user_array, student_array, teacher_array} = state;
-  return {user: user, user_array: user_array, student_array: student_array, teacher_array: teacher_array}
+  const {user, user_array, student_array, teacher_array, update_array} = state;
+  return {user: user, user_array: user_array, student_array: student_array, teacher_array: teacher_array, update_array: update_array}
 }
 
 export default connect(mapStateToProps)(Admin);

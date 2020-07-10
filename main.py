@@ -15,10 +15,6 @@ _log.debug(app)
 CORS(app, resources={r"/*": {"origins": "*"}}, supports_credentials=True)
 # app.json_encoder = UserEncoder
 
-@app.route('/submissions', methods=['POST'])
-def submit():
-    submission = db.add_submission(request.json)
-    return {}
 
 @app.route('/assignments', methods=['GET'])
 def assignments():
@@ -45,10 +41,44 @@ def student_update(username):
     return {}
 
 @app.route('/teachers/<username>', methods=['PUT'])
-def teachers_update(username):
+def user_update(username):
     _log.info(username)
     user = db.update_user(username, request.json)
     return {}, 200
+
+@app.route('/submissions/<homework>', methods=['PUT'])
+def grade(homework):
+    _log.info(type(homework))
+    _log.info(request.json)
+    user = db.grade_homework(int(homework), request.json)
+    return {}
+
+@app.route('/submissions', methods=['POST'])
+def submit():
+    submission = db.add_submission(request.json)
+    return {}
+
+@app.route('/submissions/<username>', methods=['GET'])
+def assignments_by_teacher(username):
+    users = db.get_submissions(username)
+    value = bytes(json.dumps(users, cls=SubmissionEncoder), 'utf-8')
+    return value, 200
+
+'''
+@app.route('/submissions', methods=['POST', 'GET'])
+def submit():
+    if request.method == 'POST':
+        submission = db.add_submission(request.json)
+        return {}
+    elif request.method == 'GET':
+        users = db.get_submissions()
+        value = bytes(json.dumps(users, cls=SubmissionEncoder), 'utf-8')
+        return value, 200
+    else:
+        empty = make_response({})
+        return empty, 204
+'''
+
 
 @app.route('/users', methods={'GET', 'POST', 'DELETE', 'PUT'})
 def login():

@@ -3,15 +3,19 @@ import { connect } from 'react-redux';
 import styles from '../../App.css';
 import TeacherService from '../../service/teacher.service';
 import UserService from '../../service/user.service';
+import SubmissionService from '../../service/submission.service';
+
 
 class Teacher extends Component {
   constructor(props){
     super(props);
     this.URI = 'http://localhost:5000';
     this.user_ref = React.createRef();
+    this.getSubmissions = this.getSubmissions.bind(this);
     };
   teacherService = new TeacherService();
   userService = new UserService();
+  submissionService = new SubmissionService();
 
   componentDidMount() {
   }
@@ -50,8 +54,18 @@ class Teacher extends Component {
     document.getElementById("submit").hidden = true;
     document.getElementById("hide").hidden = true;
     document.getElementById("show").hidden = false;
-
   }
+
+  grade = (event) => {
+    var teacherName = event.target.nextSibling.wholeText
+    console.log(teacherName)
+    console.log(document.getElementById("letterGrade").value)
+    this.submissionService.grade(teacherName, event.target.nextSibling.nextSibling.value).then(res => {
+      console.log(res.data)
+      this.props.dispatch({type: 'grade'})
+    })
+  };
+
 
   updateTeacher = () => {
     let newUsername = document.getElementById('username').value
@@ -64,6 +78,13 @@ class Teacher extends Component {
     });
   }
 
+  getSubmissions() {
+    console.log(this.props.user.username)
+    this.submissionService.getSubmissions(this.props.user.username).then(res => {
+      console.log(res.data)
+      this.props.dispatch({type: 'getSubmissions', submission_array: res.data})
+    });
+  }
 
   render() {
     console.log(this.props.user)
@@ -73,7 +94,6 @@ class Teacher extends Component {
           <div>
             <h2>Teacher</h2>
             <p>{this.props.user.fullname}</p>
-              {/* <button id="editButton" onClick={this.editProfile} style={this.style}>Edit Profile</button> */}
           </div>
 
           <div>
@@ -85,25 +105,32 @@ class Teacher extends Component {
                 <input hidden='true' type='text' id='address'></input>
                 <p><button hidden='true' id='submit' onClick={() => {this.updateTeacher();
                                                                     this.hideProfileForm();}} >Submit</button></p>
-
                 <p><button id="show" onClick={this.editProfile}>Show</button>
                   <button hidden='true' id="hide" onClick={this.hideProfileForm}>Hide</button>
                   </p>
+          </div>
+          <div>
+          <p onClick={this.getSubmissions}>Grade Homework</p>
+          { this.props.submission_array.map(user =>
+          <><button onClick={this.grade}>Grade</button>{user._id}<input id="letterGrade"></input>{user.student} {user.content} <br></br></>
+          )}
           </div>
         </center>
       );
     } else {
       return (
         <h1>Cannot find you as a teacher</h1>
+
       )
     }
   }
 
 }
 
-function mapStateToProps(state){
-  const { user } = state;
-  return { user: user }
+
+function mapStateToProps(state) {
+  const {user, submission_array} = state;
+  return {user: user, submission_array: submission_array}
 }
 
 export default connect(mapStateToProps)(Teacher);

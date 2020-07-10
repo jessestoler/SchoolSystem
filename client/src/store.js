@@ -8,6 +8,7 @@ const initialState = {
     student_array: [],
     teacher_array: [],
     assignment_array: [],
+    submission_array: [],
     new_admin: {},
     new_student: {},
     new_teacher: {}
@@ -34,6 +35,8 @@ function schoolReducer(state = initialState, action) {
             return Object.assign({}, state, {teacher_array: action.teacher_array})
         case 'getAssignments':
             return Object.assign({}, state, {assignment_array: action.assignment_array})
+        case 'getSubmissions':
+            return Object.assign({}, state, {submission_array: action.submission_array})
         default:
             return state;
     }

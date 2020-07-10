@@ -8,6 +8,14 @@ class SubmissionService {
         return axios.post(this.URI, {'student': student, 'assignment': assignment, 'teacher': "this teacher", 'grade': '', 'content': content})
 
     }
+    getSubmissions(username) {
+        return axios.get(this.URI + '/' + username)
+    }
+
+    grade(id, letter) {
+        return axios.put(this.URI + '/' + id, {'grade': letter})
+
+    }
 
 
     
