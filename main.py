@@ -5,6 +5,7 @@ from SchoolSystem.data.logger import get_logger
 from SchoolSystem.users.model import User, UserEncoder
 from SchoolSystem.assignments.model import Assignment, AssignmentEncoder
 from SchoolSystem.submissions.model import Submission, SubmissionEncoder
+from SchoolSystem.updates.model import Update, UpdateEncoder
 import SchoolSystem.data.mongo as db
 import json
 
@@ -34,11 +35,21 @@ def students():
     value = bytes(json.dumps(users, cls=UserEncoder), 'utf-8')
     return value, 200
 
-@app.route('/students/<username>', methods=['PUT'])
+@app.route('/students/<username>', methods=['PUT', 'POST', 'DELETE'])
 def student_update(username):
-    _log.info(username)
-    user = db.update_student(username, request.json)
-    return {}
+    if request.method == 'PUT':
+        _log.info(username)
+        user = db.update_student(username)
+        _log.info(user.to_dict())
+        return user.to_dict(), 200
+    elif request.method == 'POST':
+        _log.info(username)
+        db.submit_student_update(username, request.json)
+        return {}, 200
+    elif request.method == 'DELETE':
+        _log.info(username)
+        db.delete_update(username)
+        return {}, 200
 
 @app.route('/submissions/<homework>', methods=['PUT'])
 def grade(homework):
@@ -119,3 +130,10 @@ def user_remove(fullname):
     _log.info(request.json)
     user = db.remove_user(fullname)
     return {}, 200
+
+@app.route('/admin/updates', methods={'GET'})
+def getUpdates():
+    updates = db.get_updates()
+    value = bytes(json.dumps(updates, cls=UpdateEncoder), 'utf-8')
+    _log.info(value)
+    return value, 200
