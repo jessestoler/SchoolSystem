@@ -52,6 +52,7 @@ def student_update(username):
         db.delete_update(username)
         return {}, 200
 
+<<<<<<< HEAD
 @app.route('/students/<username>/schedule', methods=['PUT', 'POST', 'DELETE'])
 def schedule_update(username):
     if request.method == 'PUT':
@@ -67,6 +68,13 @@ def schedule_update(username):
         _log.info(username)
         db.delete_schedule_update(username)
         return {}, 200
+=======
+@app.route('/teachers/<username>', methods=['PUT'])
+def user_update(username):
+    _log.info(username)
+    user = db.update_user(username, request.json)
+    return {}, 200
+>>>>>>> 1d121fb1071b7cb287b695603a439f1d2fe3e80a
 
 @app.route('/submissions/<homework>', methods=['PUT'])
 def grade(homework):
