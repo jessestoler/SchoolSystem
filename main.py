@@ -29,7 +29,8 @@ def students():
 def student_update(username):
     _log.info(username)
     user = db.update_student(username, request.json)
-    return {}
+    _log.info(user)
+    return user
 
 @app.route('/users', methods={'GET', 'POST', 'DELETE', 'PUT'})
 def login():

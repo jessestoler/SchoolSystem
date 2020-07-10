@@ -14,7 +14,9 @@ class StudentService {
         return axios.get(this.URI)
     }
 
-
+    updateProfile(name, profileUpdate) {
+        return axios.put(this.URI + '/' + name, profileUpdate)
+    }
 
 }
 
