@@ -100,6 +100,10 @@ def submit_student_update(username, newData):
     result = _scl.updates.find_one(myquery)
     _log.debug(result)
 
+def update_user(username, newProfile):
+    myquery = {"username": username}
+    _log.info(newProfile)
+    result = _scl.users.update_one(myquery, {'$set': newProfile})
 def grade_homework(x, newData):
     myquery = {"_id": x}
     result = _scl.submissions.update_one(myquery, {'$set': newData})

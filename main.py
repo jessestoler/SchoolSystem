@@ -51,6 +51,12 @@ def student_update(username):
         db.delete_update(username)
         return {}, 200
 
+@app.route('/teachers/<username>', methods=['PUT'])
+def user_update(username):
+    _log.info(username)
+    user = db.update_user(username, request.json)
+    return {}, 200
+
 @app.route('/submissions/<homework>', methods=['PUT'])
 def grade(homework):
     _log.info(type(homework))
