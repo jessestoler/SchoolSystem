@@ -9,7 +9,15 @@ class Student extends Component {
 
   showGrades = () => {
     console.log('Show Grades')
-    this.props.dispatch({ type: 'showGrades', grades: this.props.user.grades})
+    console.log(this.props.user.grades)
+    //If the student does not have any grades, display a message
+    if (!this.props.user.grades || this.props.user.grades === []) {
+      this.props.dispatch( { type: 'showGrades', grades: [{'class': 'There are no grades', 'grade': ''}]})
+    }
+    //Else show their grades
+    else {
+      this.props.dispatch({ type: 'showGrades', grades: this.props.user.grades})
+    }
   };
 
   removeGrades = () => {
