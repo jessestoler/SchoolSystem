@@ -21,6 +21,11 @@ except:
     _log.exception('Could not connect to Mongo')
     raise
 
+def get_submissions(x):
+    dict_list = _scl.submissions.find({'teacher': x})
+    return [Submission.from_dict(submission) for submission in dict_list]
+
+
 def get_users():
     '''Read all the users from the collection'''
     _log.info('Attempting to retrieve all users from database')
@@ -90,6 +95,11 @@ def delete_update(username):
 def submit_student_update(username, newData):
     input_dict = Update(_get_id(), username, newData).to_dict()
     _scl.updates.insert_one(input_dict)
+    result = _scl.users.update_one(myquery, {'$set': newData})
+
+def grade_homework(x, newData):
+    myquery = {"_id": x}
+    result = _scl.submissions.update_one(myquery, {'$set': newData})
 
 def add_submission(submission):
     _scl.submissions.insert_one(submission)
@@ -130,6 +140,7 @@ if __name__ == '__main__':
     user_list.append(User(_get_id(), 'john', 'dd', '22', '123 main st', 'admin').to_dict())
     user_list.append(Student(_get_id(), 'mary', 'ff', '33', '123 main st', 'student', [{'class': 'Art', 'grade': 'A'}, {'class': 'Biology', 'grade': 'A+'}]).to_dict())
     user_list.append(Student(_get_id(), 'james', 'gg', '44', '123 main st', 'student', [{'class': 'PE', 'grade': 'B-'}, {'class': 'Chemistry', 'grade': 'D+'}]).to_dict())
+
 
     _scl.users.insert_many(user_list)
 
