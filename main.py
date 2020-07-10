@@ -38,11 +38,16 @@ def students():
     value = bytes(json.dumps(users, cls=UserEncoder), 'utf-8')
     return value, 200
 
-@app.route('/students/<username>', methods=['PUT'])
+@app.route('/students/<username>', methods=['PUT', 'POST'])
 def student_update(username):
-    _log.info(username)
-    user = db.update_student(username, request.json)
-    return {}
+    if request.method == 'PUT':
+        _log.info(username)
+        user = db.update_student(username, request.json)
+        _log.info(user.to_dict())
+        return user.to_dict(), 200
+    else:
+        db.submit_student_update(username, request.json)
+        return {}, 200
 
 @app.route('/users', methods={'GET', 'POST', 'DELETE', 'PUT'})
 def login():
@@ -89,3 +94,9 @@ def user_remove(fullname):
     _log.info(request.json)
     user = db.remove_user(fullname)
     return {}, 200
+
+@app.route('/admin/updates', methods={'GET'})
+def getUpdates():
+    updates = db.get_updates()
+    _log.debug(updates)
+    return updates, 200
