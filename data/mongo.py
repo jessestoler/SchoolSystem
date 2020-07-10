@@ -63,11 +63,22 @@ def get_teachers():
     dict_list = _scl.users.find({'role': 'teacher'})
     return [User.from_dict(user) for user in dict_list]
 
+def get_updates():
+    return dict_list = _scl.updates.find()
+
 
 def update_student(username, newData):
     myquery = {"username": username}
     _log.info(newData)
+    _log.info(newData['username'])
     result = _scl.users.update_one(myquery, {'$set': newData})
+    new_query = {'username': str(newData['username'])}
+    newUser = _scl.users.find_one(new_query)
+    return Student.from_dict(newUser)
+
+def submit_student_update(username, newData):
+    input_dict = {'username': username, 'update_info': newData}
+    _scl.updates.insert_one(input_dict)
 
 def add_submission(submission):
     _scl.submissions.insert_one(submission)
@@ -108,7 +119,6 @@ if __name__ == '__main__':
     user_list.append(User(_get_id(), 'john', 'dd', '22', '123 main st', 'admin').to_dict())
     user_list.append(Student(_get_id(), 'mary', 'ff', '33', '123 main st', 'student', [{'class': 'Art', 'grade': 'A'}, {'class': 'Biology', 'grade': 'A+'}]).to_dict())
     user_list.append(Student(_get_id(), 'james', 'gg', '44', '123 main st', 'student', [{'class': 'PE', 'grade': 'B-'}, {'class': 'Chemistry', 'grade': 'D+'}]).to_dict())
-
 
     _scl.users.insert_many(user_list)
 

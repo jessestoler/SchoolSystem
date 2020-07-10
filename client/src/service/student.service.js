@@ -18,6 +18,10 @@ class StudentService {
         return axios.put(this.URI + '/' + name, profileUpdate)
     }
 
+    submitProfileUpdate(name, profileUpdate) {
+        return axios.post(this.URI + '/' + name, profileUpdate)
+    }
+
 }
 
 export default StudentService;

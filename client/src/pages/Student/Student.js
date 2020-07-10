@@ -76,10 +76,10 @@ class Student extends Component {
     let newPassword = document.getElementById('password').value
     let newAddress = document.getElementById('address').value
     let updateForm = {'username': newUsername, 'password': newPassword, 'address': newAddress}
-    this.studentService.updateProfile(this.props.user.username, updateForm).then(res => {
-
-      console.log(res.data);
-      //this.props.dispatch( { type: 'login', username: res.data.username, user: res.data})
+    this.studentService.submitProfileUpdate(this.props.user.username, updateForm).then(res => {
+      
+      window.alert('Your profile update is pending approval')
+      this.hideUpdateForm()
   });
   }
 
