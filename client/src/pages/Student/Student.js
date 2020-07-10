@@ -137,7 +137,7 @@ class Student extends Component {
     this.studentService.submitScheduleUpdate(this.props.user.username, scheduleForm).then(res => {
       
       window.alert('Your profile update is pending approval')
-      this.hideUpdateForm()
+      this.hideScheduleForm()
   });
   }
 
