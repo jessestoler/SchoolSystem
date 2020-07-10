@@ -37,7 +37,7 @@ deactivate () {
 # unset irrelevant variables
 deactivate nondestructive
 
-VIRTUAL_ENV="C:\Users\gmrur\Programming\Python\ProjectTwo\SchoolSystem\SchoolSystem"
+VIRTUAL_ENV="C:\Users\alcar\Revature\SchoolSystem\SchoolSystem"
 export VIRTUAL_ENV
 
 _OLD_VIRTUAL_PATH="$PATH"
