@@ -30,6 +30,8 @@ function schoolReducer(state = initialState, action) {
             return Object.assign({}, state, {username: action.username})
         case 'remove':
             return Object.assign({}, state)
+        case 'editAdmin':
+            return Object.assign({}, state)
         case 'getUsers':
             return Object.assign({}, state, {user_array: action.user_array})
         case 'getStudents':
