@@ -64,7 +64,7 @@ def get_teachers():
     return [User.from_dict(user) for user in dict_list]
 
 def get_updates():
-    return dict_list = _scl.updates.find()
+    return _scl.updates.find()
 
 
 def update_student(username, newData):
