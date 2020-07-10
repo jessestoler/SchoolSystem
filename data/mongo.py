@@ -69,6 +69,11 @@ def update_student(username, newData):
     _log.info(newData)
     result = _scl.users.update_one(myquery, {'$set': newData})
 
+def update_user(username, newProfile):
+    myquery = {"username": username}
+    _log.info(newProfile)
+    result = _scl.users.update_one(myquery, {'$set': newProfile})
+
 def add_submission(submission):
     _scl.submissions.insert_one(submission)
     return submission

@@ -44,6 +44,12 @@ def student_update(username):
     user = db.update_student(username, request.json)
     return {}
 
+@app.route('/teachers/<username>', methods=['PUT'])
+def teachers_update(username):
+    _log.info(username)
+    user = db.update_user(username, request.json)
+    return {}, 200
+
 @app.route('/users', methods={'GET', 'POST', 'DELETE', 'PUT'})
 def login():
     if request.method == 'POST':
