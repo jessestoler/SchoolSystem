@@ -89,6 +89,7 @@ def update_student(username):
     return Student.from_dict(newUser)
 
 def delete_update(username):
+    _log.debug(username)
     myquery = {'username': str(username)}
     _scl.updates.delete_one(myquery)
 

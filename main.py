@@ -48,7 +48,7 @@ def student_update(username):
         return {}, 200
     elif request.method == 'DELETE':
         _log.info(username)
-        db.delete_update()
+        db.delete_update(username)
         return {}, 200
 
 @app.route('/submissions/<homework>', methods=['PUT'])
