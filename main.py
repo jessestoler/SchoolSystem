@@ -15,10 +15,6 @@ _log.debug(app)
 CORS(app, resources={r"/*": {"origins": "*"}}, supports_credentials=True)
 # app.json_encoder = UserEncoder
 
-@app.route('/submissions', methods=['POST'])
-def submit():
-    submission = db.add_submission(request.json)
-    return {}
 
 @app.route('/assignments', methods=['GET'])
 def assignments():
@@ -38,16 +34,45 @@ def students():
     value = bytes(json.dumps(users, cls=UserEncoder), 'utf-8')
     return value, 200
 
-@app.route('/students/<username>', methods=['PUT', 'POST'])
+@app.route('/students/<username>', methods=['PUT'])
 def student_update(username):
-    if request.method == 'PUT':
-        _log.info(username)
-        user = db.update_student(username, request.json)
-        _log.info(user.to_dict())
-        return user.to_dict(), 200
+    _log.info(username)
+    user = db.update_student(username, request.json)
+    return {}
+
+@app.route('/submissions/<homework>', methods=['PUT'])
+def grade(homework):
+    _log.info(type(homework))
+    _log.info(request.json)
+    user = db.grade_homework(int(homework), request.json)
+    return {}
+
+@app.route('/submissions', methods=['POST'])
+def submit():
+    submission = db.add_submission(request.json)
+    return {}
+
+@app.route('/submissions/<username>', methods=['GET'])
+def assignments_by_teacher(username):
+    users = db.get_submissions(username)
+    value = bytes(json.dumps(users, cls=SubmissionEncoder), 'utf-8')
+    return value, 200
+
+'''
+@app.route('/submissions', methods=['POST', 'GET'])
+def submit():
+    if request.method == 'POST':
+        submission = db.add_submission(request.json)
+        return {}
+    elif request.method == 'GET':
+        users = db.get_submissions()
+        value = bytes(json.dumps(users, cls=SubmissionEncoder), 'utf-8')
+        return value, 200
     else:
-        db.submit_student_update(username, request.json)
-        return {}, 200
+        empty = make_response({})
+        return empty, 204
+'''
+
 
 @app.route('/users', methods={'GET', 'POST', 'DELETE', 'PUT'})
 def login():
@@ -94,9 +119,3 @@ def user_remove(fullname):
     _log.info(request.json)
     user = db.remove_user(fullname)
     return {}, 200
-
-@app.route('/admin/updates', methods={'GET'})
-def getUpdates():
-    updates = db.get_updates()
-    _log.debug(updates)
-    return updates, 200
