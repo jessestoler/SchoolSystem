@@ -1,7 +1,6 @@
 import React, { Component } from "react";
 import { connect } from 'react-redux';
 import StudentService from '../../service/student.service'
-import axios from 'axios'
 import AssignmentService from '../../service/assignment.service';
 import SubmissionService from '../../service/submission.service';
 
@@ -9,7 +8,6 @@ import SubmissionService from '../../service/submission.service';
 class Student extends Component {
   constructor(props){
     super(props);
-    this.URI = 'http://localhost:5000';
     this.getAssignments = this.getAssignments.bind(this);
     this.assignment = '';
   };

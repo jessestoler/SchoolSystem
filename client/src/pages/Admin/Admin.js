@@ -1,6 +1,4 @@
 import React, { Component } from "react";
-import axios from 'axios'
-import styles from '../../App.css';
 import AdminService from '../../service/admin.service';
 import StudentService from '../../service/student.service';
 import TeacherService from '../../service/teacher.service';
@@ -10,8 +8,6 @@ import { connect } from 'react-redux';
 class Admin extends Component {
   constructor(props){
     super(props);
-    this.URI = 'http://localhost:5000';
-    this.user_ref = React.createRef();
     this.getUsers = this.getUsers.bind(this);
     this.getStudents = this.getStudents.bind(this);
     this.getTeachers = this.getTeachers.bind(this);
@@ -340,8 +336,8 @@ class Admin extends Component {
 }
 
 function mapStateToProps(state) {
-  const {user, user_array, student_array, teacher_array, update_array} = state;
-  return {user: user, user_array: user_array, student_array: student_array, teacher_array: teacher_array, update_array: update_array}
+  const {user, user_array, student_array, teacher_array, update_array, schedule_array} = state;
+  return {user: user, user_array: user_array, student_array: student_array, teacher_array: teacher_array, update_array: update_array, schedule_array: schedule_array}
 }
 
 export default connect(mapStateToProps)(Admin);
