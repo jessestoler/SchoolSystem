@@ -16,6 +16,10 @@ class AdminService {
     remove(name) {
         return axios.delete(this.URI + '/' + name)
     }
+
+    editAdmin(person, username, password, fullName, address) {
+        return axios.put(this.URI + '/' + person, {'username': username, 'password': password, 'fullname': fullName, 'address': address, 'role': 'admin'})
+    }
 }
 
 export default AdminService;

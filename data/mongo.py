@@ -104,6 +104,11 @@ def update_user(username, newProfile):
     myquery = {"username": username}
     _log.info(newProfile)
     result = _scl.users.update_one(myquery, {'$set': newProfile})
+
+def edit_admin(x, newData):
+    myquery = {"username": x}
+    result = _scl.users.update_one(myquery, {'$set': newData})
+
 def grade_homework(x, newData):
     myquery = {"_id": x}
     result = _scl.submissions.update_one(myquery, {'$set': newData})
