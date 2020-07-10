@@ -91,7 +91,11 @@ class Home extends Component {
             <input type="text" value={this.props.username}
             onChange={ this.handleInput } onKeyDown={ (e) => this.handleKeyDown(e) }></input>
             <p>Password</p>
+<<<<<<< HEAD
             <input type="password" name="password" onKeyDown={ (e) => this.handleKeyDown(e) }/><br></br>
+=======
+            <input type="password" name="password"/><br></br>
+>>>>>>> development
             <button id="loginbutton" onClick={this.login}>Log In</button>
           </div>
         </center>

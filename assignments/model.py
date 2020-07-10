@@ -15,7 +15,6 @@ class Assignment:
         self.name = name
         self.description = description
 
-
     def get_id(self):
         '''Returns the id of the user'''
         return self._id
@@ -23,8 +22,6 @@ class Assignment:
     def set_id(self, _id):
         '''Sets the id of the user'''
         self._id = _id
-
-
 
     def __str__(self):
         '''String representation of the user'''
@@ -39,8 +36,6 @@ class Assignment:
     def to_dict(self):
         '''Returns the dictionary representation of itself'''
         return self.__dict__
-
-
 
     @classmethod
     def from_dict(cls, input_user):
@@ -73,8 +68,6 @@ class Assignment:
     #         return 'Token expired. please login again.'
     #     except jwt.InvalidTokenError:
     #         return 'Token invalid. Please login.'
-
-
 
 
 class AssignmentEncoder(json.JSONEncoder):

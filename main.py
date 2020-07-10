@@ -26,6 +26,7 @@ def assignments():
     value = bytes(json.dumps(users, cls=AssignmentEncoder), 'utf-8')
     return value, 200
 
+<<<<<<< HEAD
 @app.route('/assignments', methods=['POST'])
 def insert_assignment():
     assignment = db.insert_assignment(request.json)
@@ -35,6 +36,8 @@ def insert_assignment():
         return value, 200
     return null, 401
 
+=======
+>>>>>>> development
 @app.route('/teachers', methods=['GET'])
 def teachers():
     users = db.get_teachers()
@@ -47,6 +50,7 @@ def students():
     value = bytes(json.dumps(users, cls=UserEncoder), 'utf-8')
     return value, 200
 
+<<<<<<< HEAD
 #old code, gets the students of a teacher
 @app.route('/teachers/<teacher>', methods=['GET'])
 def teacher_get_student(teacher):
@@ -56,6 +60,8 @@ def teacher_get_student(teacher):
     return value, 200
 
 
+=======
+>>>>>>> development
 @app.route('/students/<username>', methods=['PUT'])
 def student_update(username):
     _log.info(username)

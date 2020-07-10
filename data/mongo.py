@@ -68,13 +68,6 @@ def get_teachers():
     dict_list = _scl.users.find({'role': 'teacher'})
     return [User.from_dict(user) for user in dict_list]
 
-# old code for getting students of a teacher
-def teacher_get_student(teacher):
-    _log.info(teacher)
-    dict_list = _scl.users.find({'teacher': teacher})
-    return [User.from_dict(user) for user in dict_list]
-
-
 def update_student(username, newData):
     myquery = {"username": username}
     _log.info(newData)
