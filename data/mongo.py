@@ -26,6 +26,11 @@ def get_submissions(x):
     dict_list = _scl.submissions.find({'teacher': x})
     return [Submission.from_dict(submission) for submission in dict_list]
 
+def get_requirements(x):
+    _log.info('Attempting to retrieve all users from database')
+    dict_list = _scl.users.find({'username': x})
+    return [User.from_dict(user) for user in dict_list]
+
 
 def get_users():
     '''Read all the users from the collection'''
@@ -195,5 +200,3 @@ if __name__ == '__main__':
 
 
     _scl.users.insert_many(user_list)
-
-

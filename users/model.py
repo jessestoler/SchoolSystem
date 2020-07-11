@@ -100,13 +100,18 @@ class Teacher(User):
 class Student(User):
     '''A class that defines how Students should behave'''
     def __init__(self, db_id=-1, fullname='', username='', password='',
-                 address='', current_schedule={}, teacher='', role='', grades=[], grade_level='', age=0):
+                 address='', current_schedule={}, teacher='', role='', grades=[], grade_level='', age=0,
+                 english=0, math=0, science=0, social_studies=0):
         super(). __init__(db_id, fullname, username, password, address, role)
         self.grades = grades
         self.current_schedule = current_schedule
         self.grade_level = grade_level
         self.age = age
         self.teacher = teacher
+        self.english = english
+        self.math = math
+        self.science = science
+        self.social_studies = social_studies
 
 
 class UserEncoder(json.JSONEncoder):
