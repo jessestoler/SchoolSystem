@@ -5,6 +5,7 @@ const initialState = {
     grades: [],
     schedule: {},
     username: '',
+    password: '',
     user_array: [],
     student_array: [],
     teacher_array: [],
@@ -22,13 +23,15 @@ function schoolReducer(state = initialState, action) {
     console.log(state);
     switch(action.type) {
         case 'login':
-            return Object.assign({}, state, {username: ''}, {user: action.user})
+            return Object.assign({}, state, {username: ''}, {user: action.user}, {password: ''})
         case 'logout':
-            return Object.assign({}, state, {username: ''}, {user: action.user})
+            return Object.assign({}, state, {username: ''}, {user: action.user}, {password: ''})
         case 'showGrades':
             return Object.assign({}, state, {grades: action.grades})
         case 'handleUsername':
             return Object.assign({}, state, {username: action.username})
+        case 'handlePassword':
+            return Object.assign({}, state, {password: action.password})
         case 'remove':
             return Object.assign({}, state)
         case 'editAdmin':

@@ -174,20 +174,14 @@ def add_user(user):
     user_dict = _scl.users.find_one(query_dict)
     if user_dict is None:
         _log.debug('no user of that username, adding user')
-        increment = 0
-        user['_id'] = 1
+        user['_id'] = _get_id()
         _log.debug(user['_id'])
-        while True:
-            try:
-                _log.debug('Looping over id\'s')
-                _log.debug('inserting at id ' + str(increment))
-                user['_id'] = user['_id'] + increment
-                _log.debug(user['_id'])
-                increment += 1
-                _scl.users.insert_one(user)
-                return user
-            except:
-                pass
+        try:
+            _log.debug(user['_id'])
+            _scl.users.insert_one(user)
+            return user
+        except:
+            pass
 
 if __name__ == '__main__':
     _log.info('Running Mongo script: dropping collections from project2 database')
