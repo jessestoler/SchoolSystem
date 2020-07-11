@@ -164,7 +164,7 @@ def grade_homework(x, newData):
 
 def add_submission(submission):
      submission['_id']=_get_id()
-    _scl.submissions.insert_one(submission)
+     _scl.submissions.insert_one(submission)
     return submission
 
 def add_user(user):
