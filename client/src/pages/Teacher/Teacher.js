@@ -4,6 +4,7 @@ import styles from '../../App.css';
 import TeacherService from '../../service/teacher.service';
 import UserService from '../../service/user.service';
 import SubmissionService from '../../service/submission.service';
+import AddAssignment from './AddAssignment.component.js';
 
 
 class Teacher extends Component {
@@ -12,6 +13,8 @@ class Teacher extends Component {
     this.URI = 'http://localhost:5000';
     this.user_ref = React.createRef();
     this.getSubmissions = this.getSubmissions.bind(this);
+    this.to_assign = this.to_assign.bind(this);
+    this.props.dispatch({type: 'toggleAssignHW', isAssigning: false})
     };
   teacherService = new TeacherService();
   userService = new UserService();
@@ -23,6 +26,9 @@ class Teacher extends Component {
     display: 'none'
   }
 
+  to_assign = () => {
+    this.props.dispatch({type: 'toggleAssignHW', isAssigning: true})
+  }
 
   editProfile = () => {
     let userName = this.props.user.username;
@@ -114,6 +120,9 @@ class Teacher extends Component {
           { this.props.submission_array.map(user =>
           <><button onClick={this.grade}>Grade</button>{user._id}<input id="letterGrade"></input>{user.student} {user.content} <br></br></>
           )}
+          
+          <button id="to_assign" onClick={this.to_assign}>Add Assignment </button>
+          <AddAssignment/>
           </div>
         </center>
       );
@@ -129,8 +138,8 @@ class Teacher extends Component {
 
 
 function mapStateToProps(state) {
-  const {user, submission_array} = state;
-  return {user: user, submission_array: submission_array}
+  const {user, submission_array, isAssigning} = state;
+  return {user: user, submission_array: submission_array, isAssigning: isAssigning}
 }
 
 export default connect(mapStateToProps)(Teacher);

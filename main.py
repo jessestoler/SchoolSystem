@@ -24,6 +24,15 @@ def assignments():
     value = bytes(json.dumps(users, cls=AssignmentEncoder), 'utf-8')
     return value, 200
 
+@app.route('/assignments', methods=['POST'])
+def insert_assignment():
+    assignment = db.insert_assignment(request.json)
+    _log.debug(assignment)
+    value = bytes(json.dumps(assignment, cls=AssignmentEncoder), 'utf-8')
+    if assignment:
+        return value, 200
+    return null, 401
+
 @app.route('/teachers', methods=['GET'])
 def teachers():
     users = db.get_teachers()
