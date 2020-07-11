@@ -141,7 +141,10 @@ def login():
         _log.debug(temp)
         user = db.login(temp)
         _log.debug(user)
-        if user:
+        _log.debug(request.json)
+        _log.debug(user.password)
+        _log.debug(request.json['password'])
+        if user.password == request.json['password']:
             # Generate our token
             auth_token = user.encode_auth_token()
             _log.debug(dir(auth_token))
@@ -151,7 +154,8 @@ def login():
         return {}, 401
     elif request.method == 'PUT':
         user = db.add_user(request.json)
-        return {}
+        value = bytes(json.dumps(user, cls=SubmissionEncoder), 'utf-8')
+        return value, 200
     elif request.method == 'GET':
         auth_token = request.cookies.get('authorization')
         if auth_token:
