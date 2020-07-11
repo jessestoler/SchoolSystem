@@ -56,30 +56,30 @@ class User:
         user.__dict__.update(input_user)
         return user
 
-    # def encode_auth_token(self):
-    #     ''' Generate an authentication token for this user '''
-    #     try:
-    #         payload = {
-    #             'exp': datetime.datetime.utcnow() + datetime.timedelta(days=1),
-    #             'iat': datetime.datetime.utcnow(),
-    #             'sub': self._id
-    #         }
-    #         _log.debug("payload set")
-    #         return jwt.encode(payload, _secret_key, algorithm='HS256')
-    #     except Exception as e:
-    #         _log.exception('Encode failed.')
-    #         return e
+    def encode_auth_token(self):
+        ''' Generate an authentication token for this user '''
+        try:
+            payload = {
+                'exp': datetime.datetime.utcnow() + datetime.timedelta(days=1),
+                'iat': datetime.datetime.utcnow(),
+                'sub': self._id
+            }
+            _log.debug("payload set")
+            return jwt.encode(payload, _secret_key, algorithm='HS256')
+        except Exception as e:
+            _log.exception('Encode failed.')
+            return e
 
-    # @staticmethod
-    # def decode_auth_token(auth_token):
-    #     ''' Decode the auth token to receive the id of user '''
-    #     try:
-    #         payload = jwt.decode(auth_token, _secret_key)
-    #         return payload['sub']
-    #     except jwt.ExpiredSignatureError:
-    #         return 'Token expired. please login again.'
-    #     except jwt.InvalidTokenError:
-    #         return 'Token invalid. Please login.'
+    @staticmethod
+    def decode_auth_token(auth_token):
+        ''' Decode the auth token to receive the id of user '''
+        try:
+            payload = jwt.decode(auth_token, _secret_key)
+            return payload['sub']
+        except jwt.ExpiredSignatureError:
+            return 'Token expired. please login again.'
+        except jwt.InvalidTokenError:
+            return 'Token invalid. Please login.'
 
 class Admin(User):
     '''A class that defines how Admins should behave'''

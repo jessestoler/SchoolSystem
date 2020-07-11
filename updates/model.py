@@ -11,7 +11,6 @@ class Update:
         self.username = username
         self.update_info = update_info
 
-
     def get_id(self):
         '''Returns the id of the update'''
         return self._id
@@ -22,7 +21,7 @@ class Update:
 
     def __str__(self):
         '''String representation of the update'''
-        string = "_id: " + str(self._id) + " name: " + self.name
+        string = "_id: " + str(self._id) + " name: " + self.username
         string += " Instance of: " + type(self).__name__
         return string
 

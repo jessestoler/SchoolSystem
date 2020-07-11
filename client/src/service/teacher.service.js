@@ -6,11 +6,11 @@ class TeacherService {
     }
 
     getTeachers() {
-        return axios.get(this.URI)
+        return axios.get(this.URI, {withCredentials: true})
     }
 
     updateTeacherProfile(name, newProfile) {
-        return axios.put(this.URI + '/' + name, newProfile)
+        return axios.put(this.URI + '/' + name, newProfile, {withCredentials: true})
     }
 
 }

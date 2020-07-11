@@ -9,6 +9,7 @@ from SchoolSystem.updates.model import Update, UpdateEncoder
 from SchoolSystem.schedules.model import Schedule, ScheduleEncoder
 import SchoolSystem.data.mongo as db
 import json
+import werkzeug
 
 _log = get_logger(__name__)
 

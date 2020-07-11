@@ -9,7 +9,7 @@ _log = get_logger(__name__)
 _secret_key = '101010101unique'
 
 class Assignment:
-    '''A class that defines how Users should behave'''
+    '''A class that defines how Assignments should behave'''
     def __init__(self, db_id=-1, name='', description=''):
         self._id = db_id
         self.name = name
@@ -17,17 +17,15 @@ class Assignment:
 
 
     def get_id(self):
-        '''Returns the id of the user'''
+        '''Returns the id of the assignment'''
         return self._id
 
     def set_id(self, _id):
-        '''Sets the id of the user'''
+        '''Sets the id of the assignment'''
         self._id = _id
 
-
-
     def __str__(self):
-        '''String representation of the user'''
+        '''String representation of the assignment'''
         string = "_id: " + str(self._id) + " name: " + self.name
         string += " Instance of: " + type(self).__name__
         return string
@@ -40,41 +38,12 @@ class Assignment:
         '''Returns the dictionary representation of itself'''
         return self.__dict__
 
-
-
     @classmethod
-    def from_dict(cls, input_user):
+    def from_dict(cls, input_assignment):
         '''Creates an instance of the class from a dictionary'''
         assignment = Assignment()
-        assignment.__dict__.update(input_user)
+        assignment.__dict__.update(input_assignment)
         return assignment
-
-    # def encode_auth_token(self):
-    #     ''' Generate an authentication token for this user '''
-    #     try:
-    #         payload = {
-    #             'exp': datetime.datetime.utcnow() + datetime.timedelta(days=1),
-    #             'iat': datetime.datetime.utcnow(),
-    #             'sub': self._id
-    #         }
-    #         _log.debug("payload set")
-    #         return jwt.encode(payload, _secret_key, algorithm='HS256')
-    #     except Exception as e:
-    #         _log.exception('Encode failed.')
-    #         return e
-
-    # @staticmethod
-    # def decode_auth_token(auth_token):
-    #     ''' Decode the auth token to receive the id of user '''
-    #     try:
-    #         payload = jwt.decode(auth_token, _secret_key)
-    #         return payload['sub']
-    #     except jwt.ExpiredSignatureError:
-    #         return 'Token expired. please login again.'
-    #     except jwt.InvalidTokenError:
-    #         return 'Token invalid. Please login.'
-
-
 
 
 class AssignmentEncoder(json.JSONEncoder):

@@ -1,4 +1,4 @@
-'''Module to test the project2.users.model module'''
+'''Module to test the project2.SchoolSystem.users.model module'''
 import unittest
 
 from SchoolSystem.users.model import User

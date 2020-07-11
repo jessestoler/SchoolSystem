@@ -6,14 +6,14 @@ class UserService {
     }
 
     assignTeacher(username, teacher) {
-        return axios.put(this.URI + '/' + username, {'teacher': teacher})
+        return axios.put(this.URI + '/' + username, {'teacher': teacher}, {withCredentials: true})
 
     }
 
     newAdmin(username, password, fullname, address) {
         return axios.put(this.URI, {'username': username, 'password': password,
                                     'fullname': fullname, 'address': address,
-                                    'role': 'admin'})
+                                    'role': 'admin'}, {withCredentials: true})
 
     }
 
@@ -21,23 +21,23 @@ class UserService {
         return axios.put(this.URI, {'username': username, 'password': password,
                                     'fullname': fullname, 'address': address,
                                     'current_schedule': schedule,
-                                    'role': 'student', 'age': age, 'grade': grade})
+                                    'role': 'student', 'age': age, 'grade': grade}, {withCredentials: true})
 
     }
 
     newTeacher(username, password, fullname, address) {
         return axios.put(this.URI, {'username': username, 'password': password,
                                     'fullname': fullname, 'address': address,
-                                    'role': 'teacher'})
+                                    'role': 'teacher'}, {withCredentials: true})
 
     }
 
     login(username) {
-        return axios.post(this.URI, {'username': username})
+        return axios.post(this.URI, {'username': username}, {withCredentials: true})
     }
 
     logout() {
-        return axios.delete(this.URI)
+        return axios.delete(this.URI, {withCredentials: true})
     }
 }
 
