@@ -22,6 +22,10 @@ except:
     _log.exception('Could not connect to Mongo')
     raise
 
+def get_user_by_id(db_id: int):
+    '''Returns a user by their id'''
+    return User.from_dict(_scl.users.find_one({'_id': db_id}))
+
 def get_submissions(x):
     dict_list = _scl.submissions.find({'teacher': x})
     return [Submission.from_dict(submission) for submission in dict_list]

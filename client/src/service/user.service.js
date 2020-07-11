@@ -36,6 +36,10 @@ class UserService {
 
     }
 
+    checkLogin() {
+        return axios.get(this.URI, {withCredentials: true})
+    }
+
     login(username) {
         return axios.post(this.URI, {'username': username},
                           {withCredentials: true})

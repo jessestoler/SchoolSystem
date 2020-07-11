@@ -16,6 +16,14 @@ class Home extends Component {
 
   userService = new UserService()
 
+  componentDidMount() {
+    this.userService.checkLogin().then(
+        (res) => {
+            this.props.dispatch( { type: 'login', user: res.data })
+        }
+    )
+}
+
   handleKeyDown(e) {
     if (e.key === 'Enter') {
         this.login();
