@@ -163,8 +163,8 @@ def grade_homework(x, newData):
     result = _scl.submissions.update_one(my_query, {'$set': newData})
 
 def add_submission(submission):
-     submission['_id']=_get_id()
-     _scl.submissions.insert_one(submission)
+    submission['_id']=_get_id()
+    _scl.submissions.insert_one(submission)
     return submission
 
 def add_user(user):
