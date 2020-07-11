@@ -142,24 +142,24 @@ def login():
         user = db.login(temp)
         _log.debug(user)
         if user:
-        #     # Generate our token
-        #     auth_token = user.encode_auth_token()
-        #     _log.debug(dir(auth_token))
-            # response = make_response(jsonify(user))
-            # response.set_cookie('authorization', auth_token.decode())
+            # Generate our token
+            auth_token = user.encode_auth_token()
+            _log.debug(dir(auth_token))
+            response = make_response(jsonify(user))
+            response.set_cookie('authorization', auth_token.decode())
             return user.to_dict(), 200
         return {}, 401
     elif request.method == 'PUT':
         user = db.add_user(request.json)
         return {}
-    # elif request.method == 'GET':
-    #     # auth_token = request.cookies.get('authorization')
-    #     if auth_token:
-    #         _log.debug(auth_token)
-    #         _log.debug(User.decode_auth_token(auth_token))
-    #         return jsonify(db.get_user_by_id(User.decode_auth_token(auth_token))), 200
-    #     else:
-    #         return {}, 401
+    elif request.method == 'GET':
+        auth_token = request.cookies.get('authorization')
+        if auth_token:
+            _log.debug(auth_token)
+            _log.debug(User.decode_auth_token(auth_token))
+            return jsonify(db.get_user_by_id(User.decode_auth_token(auth_token))), 200
+        else:
+            return {}, 401
     else:
         empty = make_response({})
         return empty, 204
