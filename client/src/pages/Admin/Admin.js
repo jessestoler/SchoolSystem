@@ -209,7 +209,6 @@ class Admin extends Component {
       alert("User's temporary password is " + password)
       console.log(res.data)
       this.props.dispatch({type: 'newAdmin'})
-      window.alert('New Admin Created')
       this.hideAll()
     })
   };
@@ -240,7 +239,6 @@ class Admin extends Component {
       console.log(res.data)
       alert("User's temporary password is " + password)
       this.props.dispatch({type: 'newStudent'})
-      window.alert('New Student Created')
       this.hideAll()
     })
   };
@@ -264,7 +262,6 @@ class Admin extends Component {
       console.log(res.data)
       alert("User's temporary password is " + password)
       this.props.dispatch({type: 'newTeacher'})
-      window.alert('New Teacher Created')
       this.hideAll()
     })
 
