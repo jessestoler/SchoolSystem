@@ -19,6 +19,7 @@ class Student extends Component {
   studentService = new StudentService();
 
   showGrades = () => {
+    this.hideAll();
     console.log('Show Grades')
     console.log(this.props.user.grades)
     //If the student does not have any grades, display a message
@@ -40,6 +41,7 @@ class Student extends Component {
   }
 
   updateForm =  () => {
+    this.hideAll();
     let name = this.props.user.username
     let password = this.props.user.password
     let address = this.props.user.address
@@ -83,6 +85,7 @@ class Student extends Component {
   }
 
   scheduleForm =  () => {
+    this.hideAll();
     let p1 = this.props.user.current_schedule.period_1
     let p2 = this.props.user.current_schedule.period_2
     let p3 = this.props.user.current_schedule.period_3
@@ -146,6 +149,7 @@ class Student extends Component {
   }
 
   getAssignments() {
+    this.hideAll();
     this.assignmentService.getAssignments().then(res => {
       console.log(res.data)
       this.props.dispatch({type: 'getAssignments', assignment_array: res.data})
@@ -179,6 +183,7 @@ class Student extends Component {
   }
 
   getRequirements = () => {
+    this.hideAll();
     this.studentService.getRequirements(this.props.user.username).then(res => {
       console.log(res.data)
       this.props.dispatch({type: 'getRequirements', student: res.data})
@@ -194,64 +199,89 @@ class Student extends Component {
     document.getElementById('showGradReq').hidden = false
   }
 
+  hideAll = () => {
+    this.hideAssignments();
+    this.hideGrades();
+    this.hideRequirements();
+    this.hideScheduleForm();
+    this.hideUpdateForm();
+  }
+
   render() {
     console.log(this.props)
     if (this.props.user) {
       //A Student is logged in and display their grades or edit profile with buttons
       return (
         <>
-          <h1> {this.props.user.fullname} </h1>
-          <p><h2>Grades</h2></p>
-          <div>
-              {this.props.grades.map(grade => 
-                <p key={grade.class}>{grade.class} : {grade.grade}</p>
-              )}
-          </div>
-          <p><button id="showGrades" onClick={this.showGrades}>Grades</button>
-              <button hidden='true' id="hideGrades" onClick={this.hideGrades}>Hide</button></p>
-          <h2>Edit Profile</h2>
-          <div>
-                <p hidden='true' id='usernameLabel'>Username</p>
-                <input hidden='true' type='text' id='username'></input>
-                <p hidden='true' id='passwordLabel'>Password</p>
-                <input hidden='true' type='text' id='password'></input>
-                <p hidden='true' id='addressLabel'>Address</p>
-                <input hidden='true' type='text' id='address'></input>
-                <p><button hidden='true' id='submitEdit' onClick={this.updateProfile}>Submit</button></p>
-          </div>
-          <p><button id="showEdit" onClick={this.updateForm}>Edit</button>
-              <button hidden='true' id="hideEdit" onClick={this.hideUpdateForm}>Hide</button></p>
-          <h2>Edit Schedule</h2>
-          <div>
-                <p hidden='true' id='period1Label'>1</p>
-                <input hidden='true' type='text' id='period1'></input>
-                <p hidden='true' id='period2Label'>2</p>
-                <input hidden='true' type='text' id='period2'></input>
-                <p hidden='true' id='period3Label'>3</p>
-                <input hidden='true' type='text' id='period3'></input>
-                <p hidden='true' id='period4Label'>4</p>
-                <input hidden='true' type='text' id='period4'></input>
-                <p hidden='true' id='period5Label'>5</p>
-                <input hidden='true' type='text' id='period5'></input>
-                <p><button hidden='true' id='submitSchedule' onClick={this.updateSchedule}>Submit</button></p>
-          </div>
-          <p><button id="showSchedule" onClick={this.scheduleForm}>Edit</button>
-              <button hidden='true' id="hideSchedule" onClick={this.hideScheduleForm}>Hide</button></p>
-          <h2>Other Options</h2>
-          <button id='findHomework' onClick={this.getAssignments}>Submit Homework</button><br/>
-          <div id="assignments" hidden='true'>
-                { this.props.assignment_array.map(assignment =>
-                <>{assignment.name}<button onClick={this.select}>Select Assignment</button><br></br></>)}
-                <p id="thisAssignment"></p>
-                <textarea id="homework" hidden='true'></textarea>
-                <button id='submitHomework' hidden='true' onClick={this.submit}>Submit</button>
-                <button id='cancelHomework' hidden='true' onClick={this.hideAssignments}>Cancel</button>
-          </div><br/>
-          <button id='showGradReq' onClick={this.getRequirements}>Check Graduation Requirements</button>
-          { this.props.student.map(x =>
-              <>
-                <p>English: {x.english}/5</p><br></br><p>Math: {x.math}/5</p><br></br><p>Science: {x.science}/5</p><br></br><p>Social Studies: {x.social_studies}/5</p></>)}
-                <p><button id='hideGradReq' hidden='true' onClick={this.hideRequirements}>Hide</button></p>
+          <center>
+            <div id='title'><h1>Student</h1></div>
+            <div id='content'>
+              <div id='container'>
+                Welcome back, {this.props.user.fullname}!<br/>
+                
+                {/* Grades button */}
+                <button id="showGrades" onClick={this.showGrades}>Grades</button>
+                  <button hidden='true' id="hideGrades" onClick={this.hideGrades}>Hide Grades</button>
+                
+                {/* edit Profile */}
+                <button id="showEdit" onClick={this.updateForm}>Edit Profile</button>
+                  <button hidden='true' id="hideEdit" onClick={this.hideUpdateForm}>Hide Profile</button>
+                
+                {/* edit schedule */}  
+                <button id="showSchedule" onClick={this.scheduleForm}>Edit Schedule</button>
+                  <button hidden='true' id="hideSchedule" onClick={this.hideScheduleForm}>Hide Schedule</button>
+                
+                {/* submit homework */}
+                <button id='findHomework' onClick={this.getAssignments}>Submit Homework</button>
+                  <button id='cancelHomework' hidden='true' onClick={this.hideAssignments}>Hide Homework</button>
+
+                {/* check grad req */}
+                <button id='showGradReq' onClick={this.getRequirements}>Check Graduation Requirements</button>
+                  <button id='hideGradReq' hidden='true' onClick={this.hideRequirements}>Hide Graduation Requirements</button>
+
+                <div>
+                    {this.props.grades.map(grade => 
+                      <p key={grade.class}>{grade.class} : {grade.grade}</p>
+                    )}
+                </div>
+                <div>
+                      <p hidden='true' id='usernameLabel'>Username</p>
+                      <input hidden='true' type='text' id='username'></input>
+                      <p hidden='true' id='passwordLabel'>Password</p>
+                      <input hidden='true' type='text' id='password'></input>
+                      <p hidden='true' id='addressLabel'>Address</p>
+                      <input hidden='true' type='text' id='address'></input>
+                      <p><button hidden='true' id='submitEdit' onClick={this.updateProfile}>Submit</button></p>
+                </div>
+                
+                <div>
+                      <p hidden='true' id='period1Label'>1</p>
+                      <input hidden='true' type='text' id='period1'></input>
+                      <p hidden='true' id='period2Label'>2</p>
+                      <input hidden='true' type='text' id='period2'></input>
+                      <p hidden='true' id='period3Label'>3</p>
+                      <input hidden='true' type='text' id='period3'></input>
+                      <p hidden='true' id='period4Label'>4</p>
+                      <input hidden='true' type='text' id='period4'></input>
+                      <p hidden='true' id='period5Label'>5</p>
+                      <input hidden='true' type='text' id='period5'></input>
+                      <p><button hidden='true' id='submitSchedule' onClick={this.updateSchedule}>Submit</button></p>
+                </div>
+
+                <div id="assignments" hidden='true'>
+                      { this.props.assignment_array.map(assignment =>
+                      <>{assignment.name}<button onClick={this.select}>Select Assignment</button><br></br></>)}
+                      <p id="thisAssignment"></p>
+                      <textarea id="homework" hidden='true'></textarea>
+                      <button id='submitHomework' hidden='true' onClick={this.submit}>Submit</button>
+                </div><br/>
+                { this.props.student.map(x =>
+                    <>
+                      <p>English: {x.english}/5</p><br></br><p>Math: {x.math}/5</p><br></br><p>Science: {x.science}/5</p><br></br><p>Social Studies: {x.social_studies}/5</p></>)}
+              </div>
+            </div>
+          </center>
+          
               </>
       );
     }

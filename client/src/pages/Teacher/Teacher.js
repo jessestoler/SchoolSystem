@@ -27,10 +27,12 @@ class Teacher extends Component {
   }
 
   to_assign = () => {
+    this.hideAll();
     this.props.dispatch({type: 'toggleAssignHW', isAssigning: true})
   }
 
   editProfile = () => {
+    this.hideAll();
     let userName = this.props.user.username;
     let password = this.props.user.password;
     let address = this.props.user.address;
@@ -85,6 +87,8 @@ class Teacher extends Component {
   }
 
   getSubmissions() {
+    this.hideAll();
+    document.getElementById('myGrading').style.display='block';
     console.log(this.props.user.username)
     this.submissionService.getSubmissions(this.props.user.username).then(res => {
       console.log(res.data)
@@ -92,17 +96,32 @@ class Teacher extends Component {
     });
   }
 
+  hideAll(){
+    this.hideProfileForm();
+    document.getElementById('myGrading').style.display='none';
+    this.props.dispatch({type: 'toggleAssignHW', isAssigning: false})
+  }
+
   render() {
     console.log(this.props.user)
     if (this.props.user) {
       return (
         <center>
-          <div>
-            <h2>Teacher</h2>
-            <p>{this.props.user.fullname}</p>
-          </div>
+          <div id='title'><h1>Teacher</h1></div>
+          <div id='content'>
+            <div id='container'>
+            <p>Welcome back, {this.props.user.fullname}!</p>
 
-          <div>
+            {/* Edit Profile */}
+            <button id="show" onClick={this.editProfile}>Edit Profile</button>
+                <button hidden='true' id="hide" onClick={this.hideProfileForm}>Hide Profile</button>
+
+            {/* Add Assingment */}
+            <button id="to_assign" onClick={this.to_assign}>Add Assignment </button>
+
+            {/* Grade Homework */}
+            <button onClick={this.getSubmissions}>Grade Homework</button>
+
                 <p hidden='true' id='usernameTitle'>Username</p>
                 <input hidden='true' type='text' id='username'></input>
                 <p hidden='true' id='passwordTitle'>Password</p>
@@ -111,19 +130,20 @@ class Teacher extends Component {
                 <input hidden='true' type='text' id='address'></input>
                 <p><button hidden='true' id='submit' onClick={() => {this.updateTeacher();
                                                                     this.hideProfileForm();}} >Submit</button></p>
-                <p><button id="show" onClick={this.editProfile}>Show</button>
-                  <button hidden='true' id="hide" onClick={this.hideProfileForm}>Hide</button>
-                  </p>
+ 
+
+          <div id='myGrading' style={{display:'none'}}>
+            { this.props.submission_array.map(user =>
+            <><button onClick={this.grade}>Grade</button>{user._id}<input id="letterGrade"></input>{user.student} {user.content} <br></br></>
+            )}
           </div>
-          <div>
-          <p onClick={this.getSubmissions}>Grade Homework</p>
-          { this.props.submission_array.map(user =>
-          <><button onClick={this.grade}>Grade</button>{user._id}<input id="letterGrade"></input>{user.student} {user.content} <br></br></>
-          )}
+
           
-          <button id="to_assign" onClick={this.to_assign}>Add Assignment </button>
+          
           <AddAssignment/>
           </div>
+        </div>
+          
         </center>
       );
     } else {
