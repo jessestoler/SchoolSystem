@@ -21,7 +21,9 @@ class UserService {
         return axios.put(this.URI, {'username': username, 'password': password,
                                     'fullname': fullname, 'address': address,
                                     'current_schedule': schedule,
-                                    'role': 'student', 'age': age, 'grade': grade})
+                                    'role': 'student', 'age': age, 'grade': grade,
+                                    'teacher': 'none', 'english': 0, 'math': 0, 'science': 0, 
+                                    'social_studies': 0})
 
     }
 

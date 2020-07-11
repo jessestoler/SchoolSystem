@@ -14,7 +14,8 @@ const initialState = {
     schedule_array: [],
     new_admin: {},
     new_student: {},
-    new_teacher: {}
+    new_teacher: {},
+    student: []
 };
 
 function schoolReducer(state = initialState, action) {
@@ -44,6 +45,8 @@ function schoolReducer(state = initialState, action) {
             return Object.assign({}, state, {submission_array: action.submission_array})
         case 'getUpdates':
             return Object.assign({}, state, {update_array: action.update_array})
+        case 'getRequirements':
+            return Object.assign({}, state, {student: action.student})
         case 'getSchedules':
             return Object.assign({}, state, {schedule_array: action.schedule_array})
         case 'getSchedule':
