@@ -204,14 +204,13 @@ class Admin extends Component {
     var address = document.getElementById("addressValue").value
     var age = document.getElementById("ageValue").value
     var grade = document.getElementById("gradeValue").value
-    var teacher = document.getElementById("teacher").value
     var period1 = document.getElementById("period1").value
     var period2 = document.getElementById("period2").value
     var period3 = document.getElementById("period3").value
     var period4 = document.getElementById("period4").value
     var period5 = document.getElementById("period5").value
     var current_schedule = {'period_1': period1, 'period_2': period2, 'period_3': period3, 'period_4': period4, 'period_5': period5}
-    this.userService.newStudent(username, password, fullname, address, age, grade, teacher, current_schedule).then(res => {
+    this.userService.newStudent(username, password, fullname, address, age, grade, current_schedule).then(res => {
       console.log(res.data)
       this.props.dispatch({type: 'newStudent'})
     })
@@ -439,8 +438,6 @@ class Admin extends Component {
                 <input id="ageValue"></input><br/>
                 Grade<br/>
                 <input id="gradeValue"></input><br/>
-                Teacher<br/>
-                <input id="teacher"></input><br/><br/>
 
                 <h3>Current Schedule</h3>
                 Period 1<br/>
