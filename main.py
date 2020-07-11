@@ -9,13 +9,14 @@ from SchoolSystem.updates.model import Update, UpdateEncoder
 from SchoolSystem.schedules.model import Schedule, ScheduleEncoder
 import SchoolSystem.data.mongo as db
 import json
+import werkzeug
 
 _log = get_logger(__name__)
 
 app = Flask(__name__)
 _log.debug(app)
 CORS(app, resources={r"/*": {"origins": "*"}}, supports_credentials=True)
-# app.json_encoder = UserEncoder
+app.json_encoder = UserEncoder
 
 
 @app.route('/assignments', methods=['GET'])
@@ -141,26 +142,27 @@ def login():
         user = db.login(temp)
         _log.debug(user)
         if user:
-        #     # Generate our token
-        #     auth_token = user.encode_auth_token()
-        #     _log.debug(dir(auth_token))
-            # response = make_response(jsonify(user))
-            # response.set_cookie('authorization', auth_token.decode())
-            return user.to_dict(), 200
+            # Generate our token
+            auth_token = user.encode_auth_token()
+            _log.debug(dir(auth_token))
+            response = make_response(jsonify(user))
+            response.set_cookie('authorization', auth_token.decode())
+            return response, 200
         return {}, 401
     elif request.method == 'PUT':
         user = db.add_user(request.json)
         return {}
-    # elif request.method == 'GET':
-    #     # auth_token = request.cookies.get('authorization')
-    #     if auth_token:
-    #         _log.debug(auth_token)
-    #         _log.debug(User.decode_auth_token(auth_token))
-    #         return jsonify(db.get_user_by_id(User.decode_auth_token(auth_token))), 200
-    #     else:
-    #         return {}, 401
+    elif request.method == 'GET':
+        auth_token = request.cookies.get('authorization')
+        if auth_token:
+            _log.debug(auth_token)
+            _log.debug(User.decode_auth_token(auth_token))
+            return jsonify(db.get_user_by_id(User.decode_auth_token(auth_token))), 200
+        else:
+            return {}, 401
     else:
         empty = make_response({})
+        empty.set_cookie('authorization', '')
         return empty, 204
 
 @app.route('/admin', methods={'GET', 'POST', 'PUT', 'DELETE'})

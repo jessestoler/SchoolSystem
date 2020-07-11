@@ -6,12 +6,12 @@ class StudentService {
     }
 
     assign(name, teacherName) {
-        return axios.put(this.URI + '/' + name, {'teacher': teacherName})
+        return axios.put(this.URI + '/' + name, {'teacher': teacherName}, {withCredentials: true})
 
     }
 
     getStudents() {
-        return axios.get(this.URI)
+        return axios.get(this.URI, {withCredentials: true})
     }
 
     getRequirements(name) {
@@ -19,27 +19,27 @@ class StudentService {
     }
 
     updateProfile(name) {
-        return axios.put(this.URI + '/' + name)
+        return axios.put(this.URI + '/' + name, {withCredentials: true})
     }
 
     denyProfileUpdate(name) {
-        return axios.delete(this.URI + '/' + name)
+        return axios.delete(this.URI + '/' + name, {withCredentials: true})
     }
 
     submitProfileUpdate(name, profileUpdate) {
-        return axios.post(this.URI + '/' + name, profileUpdate)
+        return axios.post(this.URI + '/' + name, profileUpdate, {withCredentials: true})
     }
 
     updateSchedule(name) {
-        return axios.put(this.URI + '/' + name + '/schedule')
+        return axios.put(this.URI + '/' + name + '/schedule', {withCredentials: true})
     }
 
     denyScheduleUpdate(name) {
-        return axios.delete(this.URI + '/' + name + '/schedule')
+        return axios.delete(this.URI + '/' + name + '/schedule', {withCredentials: true})
     }
 
     submitScheduleUpdate(name, scheduleUpdate) {
-        return axios.post(this.URI + '/' + name + '/schedule', scheduleUpdate)
+        return axios.post(this.URI + '/' + name + '/schedule', scheduleUpdate, {withCredentials: true})
     }
 
 }

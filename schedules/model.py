@@ -6,7 +6,9 @@ _log = get_logger(__name__)
 
 class Schedule:
     '''A ClassScheduleSchedule that defines how schedules should behave'''
-    def __init__(self, db_id=-1, username='', schedule={'period_1': '', 'period_2': '', 'period_3': '', 'period_4': '', 'period_5': ''}):
+    def __init__(self, db_id=-1, username='', schedule={'period_1': '',
+                 'period_2': '', 'period_3': '', 'period_4': '',
+                 'period_5': ''}):
         self._id = db_id
         self.username = username
         self.schedule = schedule
@@ -21,7 +23,7 @@ class Schedule:
 
     def __str__(self):
         '''String representation of the Schedule'''
-        string = "_id: " + str(self._id) + " name: " + self.name
+        string = "_id: " + str(self._id) + " name: " + self.username
         string += " Instance of: " + type(self).__name__
         return string
 
