@@ -67,10 +67,17 @@ def schedule_update(username):
         _log.info(username)
         db.delete_schedule_update(username)
         return {}, 200
+
 @app.route('/teachers/<username>', methods=['PUT'])
 def user_update(username):
     _log.info(username)
     user = db.update_user(username, request.json)
+    return {}, 200
+
+@app.route('/users/<username>', methods=['PUT'])
+def assign_teacher(username):
+    _log.info(username)
+    user = db.assign_teacher(username, request.json)
     return {}, 200
 
 @app.route('/submissions/<homework>', methods=['PUT'])
