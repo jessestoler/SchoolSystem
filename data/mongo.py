@@ -96,13 +96,17 @@ def delete_update(username):
 
 def get_schedules():
     dict_list = _scl.schedules.find()
-    return [Schedule.from_dict(schedule) for Schedule in dict_list]
+    return [Schedule.from_dict(schedule) for schedule in dict_list]
 
 def update_schedule(username):
     my_query = {'username': str(username)}
     schedule_request = _scl.schedules.find_one(my_query)
     _log.info(schedule_request)
-    result = _scl.schedules.update_one(my_query, {'$set': schedule_request['schedule_info']})
+    result = _scl.users.update_one(my_query, {'$set': {'current_schedule.period_1': schedule_request['schedule']['period_1'],
+                                                      'current_schedule.period_2': schedule_request['schedule']['period_2'],
+                                                      'current_schedule.period_3': schedule_request['schedule']['period_3'],
+                                                      'current_schedule.period_4': schedule_request['schedule']['period_4'],
+                                                      'current_schedule.period_5': schedule_request['schedule']['period_5']}})
     student = _scl.users.find_one(my_query)
     _scl.schedules.delete_one(my_query)
     return Student.from_dict(student)

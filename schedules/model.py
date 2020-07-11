@@ -37,7 +37,7 @@ class Schedule:
     def from_dict(cls, input_schedule):
         '''Creates an instance of the Schedule from a dictionary'''
         schedule = Schedule()
-        schedule.__dict__.update(input_update)
+        schedule.__dict__.update(input_schedule)
         return schedule
 
 class ScheduleEncoder(json.JSONEncoder):

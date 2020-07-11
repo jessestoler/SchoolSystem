@@ -173,3 +173,5 @@ def getUpdates():
 def getSchedules():
     schedules = db.get_schedules()
     value = bytes(json.dumps(schedules, cls=ScheduleEncoder), 'utf-8')
+    _log.info(value)
+    return value
