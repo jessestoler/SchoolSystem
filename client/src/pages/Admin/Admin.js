@@ -72,6 +72,16 @@ class Admin extends Component {
       this.adminService.editAdmin(person, username, password, fullname, address).then(res => {
       console.log(res.data)
       this.props.dispatch({type: 'editAdmin'})
+      if (username) {
+        this.userService.login(username).then(res => {
+
+          console.log(res.data.role);
+          console.log(res.data.username)
+          this.props.dispatch( { type: 'login', username: res.data.username, user: res.data})
+          window.alert('Profile Updated')
+          this.hideAll()
+        });
+      }
     })
   }
 
@@ -86,6 +96,7 @@ class Admin extends Component {
     document.getElementById("newAdmin").style.display = "none";
     document.getElementById("newStudent").style.display = "none";
     document.getElementById("newTeacher").style.display = "none";
+    document.getElementById("editAdmin").style.display = "none";
   }
 
   showButtons() {
@@ -245,6 +256,8 @@ class Admin extends Component {
     this.userService.assignTeacher(this.person, teacherName).then(res => {
       console.log(res.data)
       this.props.dispatch({type: 'assignTeacher'})
+      window.alert('Assigned ' + this.person + ' to ' + teacherName)
+      this.hideAll()
     })
   };
 
@@ -254,6 +267,7 @@ class Admin extends Component {
     this.adminService.remove(name).then(res => {
       console.log(res.data)
       this.props.dispatch({type: 'remove'})
+      this.getUsers()
     })
   };
 
@@ -364,14 +378,15 @@ class Admin extends Component {
                 <p>Address</p>
                 <input id="adminAddress"></input>
                 <br></br><br></br>
-                <button onClick={this.editAdmin}>Edit Profile</button>
+                <button onClick={this.editAdmin}>Edit Profile</button><br/>
+                <button onClick={this.hideAll}>Hide</button>
               </div>
 
               <div id="users" style={{display: 'none'}}>
                   <p style={this.props.bold}>Users</p>
                     { this.props.user_array.map(user =>
                     <>{user.fullname}<button onClick={this.remove}>Delete</button><br/></>)}
-                  <p id="user" style={this.props.bold}></p>
+                  <p><button onClick={this.hideAll}>Hide</button></p>
               </div>
               <div id="students" style={{display: 'none'}}>
                   <p  style={this.props.bold}>Students</p>
