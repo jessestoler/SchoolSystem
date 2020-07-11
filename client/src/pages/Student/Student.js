@@ -149,7 +149,21 @@ class Student extends Component {
     this.assignmentService.getAssignments().then(res => {
       console.log(res.data)
       this.props.dispatch({type: 'getAssignments', assignment_array: res.data})
+      document.getElementById('assignments').hidden = false
+      document.getElementById('homework').hidden = false
+      document.getElementById('submitHomework').hidden = false
+      document.getElementById('cancelHomework').hidden = false
+      document.getElementById('findHomework').hidden = true
     })
+  }
+
+  hideAssignments() {
+    console.log('Hide Assignments')
+    document.getElementById('assignments').hidden = true
+    document.getElementById('homework').hidden = true
+    document.getElementById('submitHomework').hidden = true
+    document.getElementById('cancelHomework').hidden = true
+    document.getElementById('findHomework').hidden = false
   }
 
   submit = () => {
@@ -159,6 +173,8 @@ class Student extends Component {
     this.submissionService.newSubmission(username, assignment, content).then(res => {
       console.log(res.data)
       this.props.dispatch({type: 'newSubmission'})
+      window.alert('Submitted document for ' + assignment)
+      this.hideAssignments()
     })
   }
 
@@ -166,7 +182,16 @@ class Student extends Component {
     this.studentService.getRequirements(this.props.user.username).then(res => {
       console.log(res.data)
       this.props.dispatch({type: 'getRequirements', student: res.data})
+      document.getElementById('hideGradReq').hidden = false
+      document.getElementById('showGradReq').hidden = true
     })
+  }
+
+  hideRequirements = () => {
+    console.log('Hide Requirements')
+    this.props.dispatch( {type: 'getRequirements', student: []})
+    document.getElementById('hideGradReq').hidden = true
+    document.getElementById('showGradReq').hidden = false
   }
 
   render() {
@@ -213,18 +238,21 @@ class Student extends Component {
           <p><button id="showSchedule" onClick={this.scheduleForm}>Edit</button>
               <button hidden='true' id="hideSchedule" onClick={this.hideScheduleForm}>Hide</button></p>
           <h2>Other Options</h2>
-          <button onClick={this.getAssignments}>Submit Homework</button>
-          <div id="assignments">
+          <button id='findHomework' onClick={this.getAssignments}>Submit Homework</button><br/>
+          <div id="assignments" hidden='true'>
                 { this.props.assignment_array.map(assignment =>
                 <>{assignment.name}<button onClick={this.select}>Select Assignment</button><br></br></>)}
                 <p id="thisAssignment"></p>
-                <textarea id="homework"></textarea>
-                <button onClick={this.submit}>Submit</button>
-          </div>
-          <button onClick={this.getRequirements}>Check Graduation Requirements</button>
+                <textarea id="homework" hidden='true'></textarea>
+                <button id='submitHomework' hidden='true' onClick={this.submit}>Submit</button>
+                <button id='cancelHomework' hidden='true' onClick={this.hideAssignments}>Cancel</button>
+          </div><br/>
+          <button id='showGradReq' onClick={this.getRequirements}>Check Graduation Requirements</button>
           { this.props.student.map(x =>
-              <><p>English: {x.english}/5</p><br></br><p>Math: {x.math}/5</p><br></br><p>Science: {x.science}/5</p><br></br><p>Social Studies: {x.social_studies}/5</p></>)}
-        </>
+              <>
+                <p>English: {x.english}/5</p><br></br><p>Math: {x.math}/5</p><br></br><p>Science: {x.science}/5</p><br></br><p>Social Studies: {x.social_studies}/5</p></>)}
+                <p><button id='hideGradReq' hidden='true' onClick={this.hideRequirements}>Hide</button></p>
+              </>
       );
     }
     else {
