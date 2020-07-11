@@ -1,6 +1,4 @@
 import React, { Component } from "react";
-import axios from 'axios'
-import styles from '../../App.css';
 import AdminService from '../../service/admin.service';
 import StudentService from '../../service/student.service';
 import TeacherService from '../../service/teacher.service';
@@ -10,8 +8,6 @@ import { connect } from 'react-redux';
 class Admin extends Component {
   constructor(props){
     super(props);
-    this.URI = 'http://localhost:5000';
-    this.user_ref = React.createRef();
     this.getUsers = this.getUsers.bind(this);
     this.getStudents = this.getStudents.bind(this);
     this.getTeachers = this.getTeachers.bind(this);
@@ -292,6 +288,43 @@ class Admin extends Component {
     })
   }
 
+  showScheduleUpdates = () => {
+    this.hideAll()
+    console.log('Show Schedule Updates')
+    this.adminService.getSchedules().then(res => {
+      console.log(res.data)
+      this.props.dispatch( { type: 'getSchedules', schedule_array: res.data})
+    })
+    document.getElementById('schedules').hidden = false
+    document.getElementById('hideScheduleUpdates').hidden = false
+  }
+
+  hideScheduleUpdates = () => {
+    console.log('Hide Schedule Updates')
+    this.props.dispatch( { type: 'getSchedules', schedule_array: []})
+    document.getElementById('schedules').hidden = true
+    document.getElementById('hideScheduleUpdates').hidden = true
+  }
+
+  acceptScheduleUpdate = (event) => {
+    var name = event.target.id
+    console.log('Accept Schedule Update')
+    console.log(name)
+    this.studentService.updateSchedule(name).then(res => {
+      console.log(res.data)
+      this.showScheduleUpdates()
+    })
+  }
+
+  denyScheduleUpdate = (event) => {
+    var name = event.target.id
+    console.log('Deny Schedule Update')
+    this.studentService.denyScheduleUpdate(name).then(res => {
+      console.log(res.data)
+      this.showScheduleUpdates()
+    })
+  }
+
   render() {
     console.log(this.props)
     if (this.props.user) {
@@ -307,6 +340,7 @@ class Admin extends Component {
               <button id="adduserbtn" onClick={this.showButtons}>Add User </button>
               <button onClick={this.getStudents}>Assign Student To Teacher</button>
               <button onClick={this.showUpdates}>Check Profile Updates</button>
+              <button onClick={this.showScheduleUpdates}>Check Schedule Updates</button>
               <button id="deleteuser" onClick={this.getUsers}>Delete User</button>
               <button onClick={this.showForm}>Edit Profile</button>
 
@@ -359,6 +393,22 @@ class Admin extends Component {
                   )}
                   <p><button hidden='true' id="hideUpdates" onClick={this.hideUpdates}>Hide</button></p>
               </div>
+              <div id="schedules" hidden='true'>
+                  <p style={this.props.bold}>Schedules</p>
+                  {this.props.schedule_array.map(sched =>
+                  <>
+                    <h4>User: {sched.username}</h4>
+                    <li>Period 1: {sched.schedule.period_1}</li>
+                    <li>Period 2: {sched.schedule.period_2}</li>
+                    <li>Period 3: {sched.schedule.period_3}</li>
+                    <li>Period 4: {sched.schedule.period_4}</li>
+                    <li>Period 5: {sched.schedule.period_5}</li>
+                    <p><button id={sched.username} onClick={this.acceptScheduleUpdate}>Accept</button>
+                    <button id={sched.username} onClick={this.denyScheduleUpdate}>Deny</button></p>
+                  </>
+                  )}
+                  <p><button hidden='true' id="hideScheduleUpdates" onClick={this.hideScheduleUpdates}>Hide</button></p>
+              </div>
               <div id="buttonRow" style={this.style}><br/>
                   What sort of user? <br/><br/>
                   <button id="adminButton" onClick={this.showAdmin}>Admin</button>
@@ -403,8 +453,8 @@ class Admin extends Component {
 }
 
 function mapStateToProps(state) {
-  const {user, user_array, student_array, teacher_array, update_array} = state;
-  return {user: user, user_array: user_array, student_array: student_array, teacher_array: teacher_array, update_array: update_array}
+  const {user, user_array, student_array, teacher_array, update_array, schedule_array} = state;
+  return {user: user, user_array: user_array, student_array: student_array, teacher_array: teacher_array, update_array: update_array, schedule_array: schedule_array}
 }
 
 export default connect(mapStateToProps)(Admin);

@@ -1,7 +1,6 @@
 import React, { Component } from "react";
 import { connect } from 'react-redux';
 import StudentService from '../../service/student.service'
-import axios from 'axios'
 import AssignmentService from '../../service/assignment.service';
 import SubmissionService from '../../service/submission.service';
 
@@ -9,7 +8,6 @@ import SubmissionService from '../../service/submission.service';
 class Student extends Component {
   constructor(props){
     super(props);
-    this.URI = 'http://localhost:5000';
     this.getAssignments = this.getAssignments.bind(this);
     this.assignment = '';
   };
@@ -83,6 +81,64 @@ class Student extends Component {
   });
   }
 
+  scheduleForm =  () => {
+    let p1 = this.props.user.current_schedule.period_1
+    let p2 = this.props.user.current_schedule.period_2
+    let p3 = this.props.user.current_schedule.period_3
+    let p4 = this.props.user.current_schedule.period_4
+    let p5 = this.props.user.current_schedule.period_5
+
+    document.getElementById('period1Label').hidden = false
+    document.getElementById('period1').hidden = false
+    document.getElementById('period1').value = p1
+    document.getElementById('period2Label').hidden = false
+    document.getElementById('period2').hidden = false
+    document.getElementById('period2').value = p2
+    document.getElementById('period3Label').hidden = false
+    document.getElementById('period3').hidden = false
+    document.getElementById('period3').value = p3
+    document.getElementById('period4Label').hidden = false
+    document.getElementById('period4').hidden = false
+    document.getElementById('period4').value = p4
+    document.getElementById('period5Label').hidden = false
+    document.getElementById('period5').hidden = false
+    document.getElementById('period5').value = p5
+    document.getElementById('submitSchedule').hidden = false
+    document.getElementById('hideSchedule').hidden = false
+    document.getElementById('showSchedule').hidden = true
+  }
+
+  hideScheduleForm = () => {
+    document.getElementById('period1Label').hidden = true
+    document.getElementById('period1').hidden = true
+    document.getElementById('period2Label').hidden = true
+    document.getElementById('period2').hidden = true
+    document.getElementById('period3Label').hidden = true
+    document.getElementById('period3').hidden = true
+    document.getElementById('period4Label').hidden = true
+    document.getElementById('period4').hidden = true
+    document.getElementById('period5Label').hidden = true
+    document.getElementById('period5').hidden = true
+    document.getElementById('submitSchedule').hidden = true
+    document.getElementById('showSchedule').hidden = false
+    document.getElementById('hideSchedule').hidden = true
+  }
+
+  updateSchedule = () => {
+
+    let p1 = document.getElementById('period1').value
+    let p2 = document.getElementById('period2').value
+    let p3 = document.getElementById('period3').value
+    let p4 = document.getElementById('period4').value
+    let p5 = document.getElementById('period5').value
+    let scheduleForm = {'period_1': p1, 'period_2': p2, 'period_3': p3, 'period_4': p4, 'period_5': p5}
+    this.studentService.submitScheduleUpdate(this.props.user.username, scheduleForm).then(res => {
+      
+      window.alert('Your profile update is pending approval')
+      this.hideScheduleForm()
+  });
+  }
+
   select = (event) => {
     this.assignment = event.target.previousSibling.wholeText;
     document.getElementById("thisAssignment").innerHTML = this.assignment;
@@ -132,6 +188,22 @@ class Student extends Component {
           </div>
           <p><button id="showEdit" onClick={this.updateForm}>Edit</button>
               <button hidden='true' id="hideEdit" onClick={this.hideUpdateForm}>Hide</button></p>
+          <h2>Edit Schedule</h2>
+          <div>
+                <p hidden='true' id='period1Label'>1</p>
+                <input hidden='true' type='text' id='period1'></input>
+                <p hidden='true' id='period2Label'>2</p>
+                <input hidden='true' type='text' id='period2'></input>
+                <p hidden='true' id='period3Label'>3</p>
+                <input hidden='true' type='text' id='period3'></input>
+                <p hidden='true' id='period4Label'>4</p>
+                <input hidden='true' type='text' id='period4'></input>
+                <p hidden='true' id='period5Label'>5</p>
+                <input hidden='true' type='text' id='period5'></input>
+                <p><button hidden='true' id='submitSchedule' onClick={this.updateSchedule}>Submit</button></p>
+          </div>
+          <p><button id="showSchedule" onClick={this.scheduleForm}>Edit</button>
+              <button hidden='true' id="hideSchedule" onClick={this.hideScheduleForm}>Hide</button></p>
           <h2>Other Options</h2>
           <button onClick={this.getAssignments}>Submit Homework</button>
           <div id="assignments">
@@ -154,8 +226,8 @@ class Student extends Component {
 }
 
 function mapStateToProps(state) {
-  const {user, grades, assignment_array} = state;
-  return {user: user, grades: grades, assignment_array: assignment_array}
+  const {user, grades, assignment_array, schedule} = state;
+  return {user: user, grades: grades, assignment_array: assignment_array, schedule: schedule}
 }
 
 export default connect(mapStateToProps)(Student);
