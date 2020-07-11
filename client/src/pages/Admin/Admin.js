@@ -74,7 +74,7 @@ class Admin extends Component {
       this.props.dispatch({type: 'editAdmin'})
     })
   }
-  
+
   hideAll(){
     document.getElementById('users').style.display = 'none';
     document.getElementById('students').style.display = 'none';
@@ -135,7 +135,7 @@ class Admin extends Component {
     this.hideAll()
     document.getElementById('users').style.display = 'block';
 
-    
+
     this.adminService.getUsers().then(res => {
       console.log(res.data)
       this.props.dispatch({type: 'getUsers', user_array: res.data})
@@ -204,7 +204,14 @@ class Admin extends Component {
     var address = document.getElementById("addressValue").value
     var age = document.getElementById("ageValue").value
     var grade = document.getElementById("gradeValue").value
-    this.userService.newStudent(username, password, fullname, address, age, grade).then(res => {
+    var teacher = document.getElementById("teacher").value
+    var period1 = document.getElementById("period1").value
+    var period2 = document.getElementById("period2").value
+    var period3 = document.getElementById("period3").value
+    var period4 = document.getElementById("period4").value
+    var period5 = document.getElementById("period5").value
+    var current_schedule = {'period_1': period1, 'period_2': period2, 'period_3': period3, 'period_4': period4, 'period_5': period5}
+    this.userService.newStudent(username, password, fullname, address, age, grade, teacher, current_schedule).then(res => {
       console.log(res.data)
       this.props.dispatch({type: 'newStudent'})
     })
@@ -360,7 +367,7 @@ class Admin extends Component {
                 <br></br><br></br>
                 <button onClick={this.editAdmin}>Edit Profile</button>
               </div>
-              
+
               <div id="users" style={{display: 'none'}}>
                   <p style={this.props.bold}>Users</p>
                     { this.props.user_array.map(user =>
@@ -432,6 +439,21 @@ class Admin extends Component {
                 <input id="ageValue"></input><br/>
                 Grade<br/>
                 <input id="gradeValue"></input><br/>
+                Teacher<br/>
+                <input id="teacher"></input><br/><br/>
+
+                <h3>Current Schedule</h3>
+                Period 1<br/>
+                <input id="period1"></input><br/>
+                Period 2<br/>
+                <input id="period2"></input><br/>
+                Period 3<br/>
+                <input id="period3"></input><br/>
+                Period 4<br/>
+                <input id="period4"></input><br/>
+                Period 5<br/>
+                <input id="period5"></input><br/>
+
               </div>
               <center><br/>
                 <button id="newAdmin" onClick={this.newAdmin}  style={{display: 'none'}}>Create Admin</button>
