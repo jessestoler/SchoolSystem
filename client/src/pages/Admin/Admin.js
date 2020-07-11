@@ -236,9 +236,9 @@ class Admin extends Component {
     var teacherName = event.target.previousSibling.wholeText
     console.log(this.person)
     console.log(teacherName)
-    this.studentService.assign(this.person, teacherName).then(res => {
+    this.userService.assignTeacher(this.person, teacherName).then(res => {
       console.log(res.data)
-      this.props.dispatch({type: 'assign'})
+      this.props.dispatch({type: 'assignTeacher'})
     })
   };
 
