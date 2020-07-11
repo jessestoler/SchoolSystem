@@ -373,7 +373,6 @@ class Admin extends Component {
            <div id="title"><h1>School System - Admin</h1></div>
            <div id="content">
             <div id="container">
-              <h1>Admin</h1>
               Welcome back, {this.props.user.fullname} <br/>
               <button id="adduserbtn" onClick={this.showButtons}>Add User </button>
               <button onClick={this.getStudents}>Assign Student To Teacher</button>
