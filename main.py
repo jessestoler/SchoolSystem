@@ -46,7 +46,7 @@ def students():
     value = bytes(json.dumps(users, cls=UserEncoder), 'utf-8')
     return value, 200
 
-@app.route('/students/<username>', methods=['PUT', 'POST', 'DELETE'])
+@app.route('/students/<username>', methods=['PUT', 'POST', 'DELETE', 'GET'])
 def student_update(username):
     if request.method == 'PUT':
         _log.info(username)
@@ -61,6 +61,13 @@ def student_update(username):
         _log.info(username)
         db.delete_update(username)
         return {}, 200
+    elif request.method == 'GET':
+        users = db.get_requirements(username)
+        value = bytes(json.dumps(users, cls=UserEncoder), 'utf-8')
+        return value, 200
+    else:
+        empty = make_response({})
+        return empty, 204
 
 @app.route('/students/<username>/schedule', methods=['PUT', 'POST', 'DELETE'])
 def schedule_update(username):

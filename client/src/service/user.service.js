@@ -6,7 +6,8 @@ class UserService {
     }
 
     assignTeacher(username, teacher) {
-        return axios.put(this.URI + '/' + username, {'teacher': teacher}, {withCredentials: true})
+        return axios.put(this.URI + '/' + username, {'teacher': teacher},
+                                                     {withCredentials: true})
 
     }
 
@@ -21,8 +22,11 @@ class UserService {
         return axios.put(this.URI, {'username': username, 'password': password,
                                     'fullname': fullname, 'address': address,
                                     'current_schedule': schedule,
-                                    'role': 'student', 'age': age, 'grade': grade}, {withCredentials: true})
-
+                                    'role': 'student', 'age': age, 'grade':
+                                    grade, 'teacher': 'none', 'english': 0,
+                                    'math': 0, 'science': 0,
+                                    'social_studies': 0},
+                                    {withCredentials: true})
     }
 
     newTeacher(username, password, fullname, address) {
@@ -33,7 +37,8 @@ class UserService {
     }
 
     login(username) {
-        return axios.post(this.URI, {'username': username}, {withCredentials: true})
+        return axios.post(this.URI, {'username': username},
+                          {withCredentials: true})
     }
 
     logout() {

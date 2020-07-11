@@ -14,6 +14,10 @@ class StudentService {
         return axios.get(this.URI, {withCredentials: true})
     }
 
+    getRequirements(name) {
+        return axios.get(this.URI + '/' + name)
+    }
+
     updateProfile(name) {
         return axios.put(this.URI + '/' + name, {withCredentials: true})
     }

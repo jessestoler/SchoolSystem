@@ -9,6 +9,7 @@ class Student extends Component {
   constructor(props){
     super(props);
     this.getAssignments = this.getAssignments.bind(this);
+    this.getRequirements = this.getRequirements.bind(this);
     this.assignment = '';
   };
 
@@ -161,6 +162,13 @@ class Student extends Component {
     })
   }
 
+  getRequirements = () => {
+    this.studentService.getRequirements(this.props.user.username).then(res => {
+      console.log(res.data)
+      this.props.dispatch({type: 'getRequirements', student: res.data})
+    })
+  }
+
   render() {
     console.log(this.props)
     if (this.props.user) {
@@ -213,6 +221,9 @@ class Student extends Component {
                 <textarea id="homework"></textarea>
                 <button onClick={this.submit}>Submit</button>
           </div>
+          <button onClick={this.getRequirements}>Check Graduation Requirements</button>
+          { this.props.student.map(x =>
+              <><p>English: {x.english}/5</p><br></br><p>Math: {x.math}/5</p><br></br><p>Science: {x.science}/5</p><br></br><p>Social Studies: {x.social_studies}/5</p></>)}
         </>
       );
     }
@@ -226,8 +237,8 @@ class Student extends Component {
 }
 
 function mapStateToProps(state) {
-  const {user, grades, assignment_array, schedule} = state;
-  return {user: user, grades: grades, assignment_array: assignment_array, schedule: schedule}
+  const {user, grades, assignment_array, schedule, student} = state;
+  return {user: user, grades: grades, assignment_array: assignment_array, schedule: schedule, student: student}
 }
 
 export default connect(mapStateToProps)(Student);
