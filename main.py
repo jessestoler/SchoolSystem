@@ -141,7 +141,10 @@ def login():
         _log.debug(temp)
         user = db.login(temp)
         _log.debug(user)
-        if user:
+        _log.debug(request.json)
+        _log.debug(user.password)
+        _log.debug(request.json['password'])
+        if user.password == request.json['password']:
             # Generate our token
             auth_token = user.encode_auth_token()
             _log.debug(dir(auth_token))
