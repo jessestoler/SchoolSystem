@@ -154,7 +154,8 @@ def login():
         return {}, 401
     elif request.method == 'PUT':
         user = db.add_user(request.json)
-        return {}
+        value = bytes(json.dumps(user, cls=SubmissionEncoder), 'utf-8')
+        return value, 200
     elif request.method == 'GET':
         auth_token = request.cookies.get('authorization')
         if auth_token:

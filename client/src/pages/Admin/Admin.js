@@ -206,6 +206,7 @@ class Admin extends Component {
     var fullname = document.getElementById("fullnameValue").value
     var address = document.getElementById("addressValue").value
     this.userService.newAdmin(username, password, fullname, address).then(res => {
+      alert("User's temporary password is " + password)
       console.log(res.data)
       this.props.dispatch({type: 'newAdmin'})
       window.alert('New Admin Created')
@@ -237,6 +238,7 @@ class Admin extends Component {
     var current_schedule = {'period_1': period1, 'period_2': period2, 'period_3': period3, 'period_4': period4, 'period_5': period5}
     this.userService.newStudent(username, password, fullname, address, age, grade, current_schedule).then(res => {
       console.log(res.data)
+      alert("User's temporary password is " + password)
       this.props.dispatch({type: 'newStudent'})
       window.alert('New Student Created')
       this.hideAll()
@@ -260,6 +262,7 @@ class Admin extends Component {
     var address = document.getElementById("addressValue").value
     this.userService.newTeacher(username, password, fullname, address).then(res => {
       console.log(res.data)
+      alert("User's temporary password is " + password)
       this.props.dispatch({type: 'newTeacher'})
       window.alert('New Teacher Created')
       this.hideAll()
