@@ -48,6 +48,8 @@ function schoolReducer(state = initialState, action) {
             return Object.assign({}, state, {schedule_array: action.schedule_array})
         case 'getSchedule':
             return Object.assign({}, state, {schedule: action.schedule})
+        case 'toggleAssignHW':
+            return Object.assign({}, state, {isAssigning: action.isAssigning})
         default:
             return state;
     }

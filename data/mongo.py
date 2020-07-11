@@ -62,6 +62,11 @@ def get_assignments():
     dict_list = _scl.assignments.find()
     return [Assignment.from_dict(assignment) for assignment in dict_list]
 
+def insert_assignment(assignment):
+    assignment['_id']=_get_id()
+    _scl.assignments.insert_one(assignment)
+    return assignment
+
 def get_students():
     dict_list = _scl.users.find({'role': 'student'})
     return [User.from_dict(user) for user in dict_list]

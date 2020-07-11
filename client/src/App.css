@@ -3,6 +3,10 @@ body {
   
 }
 
+#toRight{
+  text-align: right;
+}
+
 #content, #title{
   width: 800px;
   margin: 10px;
