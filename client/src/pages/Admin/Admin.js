@@ -72,6 +72,16 @@ class Admin extends Component {
       this.adminService.editAdmin(person, username, password, fullname, address).then(res => {
       console.log(res.data)
       this.props.dispatch({type: 'editAdmin'})
+      if (username) {
+        this.userService.login(username).then(res => {
+
+          console.log(res.data.role);
+          console.log(res.data.username)
+          this.props.dispatch( { type: 'login', username: res.data.username, user: res.data})
+          window.alert('Profile Updated')
+          this.hideAll()
+        });
+      }
     })
   }
 
@@ -86,6 +96,10 @@ class Admin extends Component {
     document.getElementById("newAdmin").style.display = "none";
     document.getElementById("newStudent").style.display = "none";
     document.getElementById("newTeacher").style.display = "none";
+    document.getElementById("cancelNewUser").style.display = "none";
+    document.getElementById("editAdmin").style.display = "none";
+    document.getElementById("updates").hidden = true
+    document.getElementById("schedules").hidden = true
   }
 
   showButtons() {
@@ -99,6 +113,8 @@ class Admin extends Component {
     document.getElementById("newStudent").style.display = "none";
     document.getElementById("newTeacher").style.display = "none";
     document.getElementById("buttonRow").style.display = "block";
+    document.getElementById("cancelNewUser").style.display = "none";
+    document.getElementById("cancel").hidden = false
   }
 
   showAdmin() {
@@ -108,6 +124,8 @@ class Admin extends Component {
     document.getElementById("studentForm").style.display = "none";
     document.getElementById("newStudent").style.display = "none";
     document.getElementById("newTeacher").style.display = "none";
+    document.getElementById("cancelNewUser").style.display = "block";
+    document.getElementById("cancel").hidden = true
   }
 
   showStudent() {
@@ -116,6 +134,8 @@ class Admin extends Component {
     document.getElementById("newStudent").style.display = "block";
     document.getElementById("newAdmin").style.display = "none";
     document.getElementById("newTeacher").style.display = "none";
+    document.getElementById("cancelNewUser").style.display = "block";
+    document.getElementById("cancel").hidden = true
   }
 
   showTeacher() {
@@ -124,6 +144,8 @@ class Admin extends Component {
     document.getElementById("studentForm").style.display = "none";
     document.getElementById("newAdmin").style.display = "none";
     document.getElementById("newStudent").style.display = "none";
+    document.getElementById("cancelNewUser").style.display = "block";
+    document.getElementById("cancel").hidden = true
   }
 
   user = (event) => {
@@ -142,7 +164,8 @@ class Admin extends Component {
     })
   }
 
-  showForm() {
+  showForm = () => {
+    this.hideAll()
     document.getElementById('editAdmin').style.display = 'block';
   }
 
@@ -185,6 +208,8 @@ class Admin extends Component {
     this.userService.newAdmin(username, password, fullname, address).then(res => {
       console.log(res.data)
       this.props.dispatch({type: 'newAdmin'})
+      window.alert('New Admin Created')
+      this.hideAll()
     })
   };
 
@@ -213,6 +238,8 @@ class Admin extends Component {
     this.userService.newStudent(username, password, fullname, address, age, grade, current_schedule).then(res => {
       console.log(res.data)
       this.props.dispatch({type: 'newStudent'})
+      window.alert('New Student Created')
+      this.hideAll()
     })
   };
 
@@ -234,6 +261,8 @@ class Admin extends Component {
     this.userService.newTeacher(username, password, fullname, address).then(res => {
       console.log(res.data)
       this.props.dispatch({type: 'newTeacher'})
+      window.alert('New Teacher Created')
+      this.hideAll()
     })
 
   };
@@ -245,6 +274,8 @@ class Admin extends Component {
     this.userService.assignTeacher(this.person, teacherName).then(res => {
       console.log(res.data)
       this.props.dispatch({type: 'assignTeacher'})
+      window.alert('Assigned ' + this.person + ' to ' + teacherName)
+      this.hideAll()
     })
   };
 
@@ -254,6 +285,7 @@ class Admin extends Component {
     this.adminService.remove(name).then(res => {
       console.log(res.data)
       this.props.dispatch({type: 'remove'})
+      this.getUsers()
     })
   };
 
@@ -363,26 +395,27 @@ class Admin extends Component {
                 <p>Address</p>
                 <input id="adminAddress"></input>
                 <br></br><br></br>
-                <button onClick={this.editAdmin}>Edit Profile</button>
+                <button onClick={this.editAdmin}>Edit Profile</button><br/><br/>
+                <button onClick={this.hideAll}>Hide</button>
               </div>
 
               <div id="users" style={{display: 'none'}}>
                   <p style={this.props.bold}>Users</p>
                     { this.props.user_array.map(user =>
                     <>{user.fullname}<button onClick={this.remove}>Delete</button><br/></>)}
-                  <p id="user" style={this.props.bold}></p>
+                  <p><button onClick={this.hideAll}>Hide</button></p>
               </div>
               <div id="students" style={{display: 'none'}}>
                   <p  style={this.props.bold}>Students</p>
                     { this.props.student_array.map(user =>
-                    <>{user.username}<button onClick={this.getTeachers}>Get Teacher</button><br/></>)}
-                  <p id="student" style={this.props.bold}></p>
+                    <>{user.username}<button onClick={this.getTeachers}>Get Teacher</button><br/></>)}<br/>
+                  <button id="cancelAssignTeacher" onClick={this.hideAll}>Cancel</button>
               </div>
               <div id="teachers" style={{display: 'none'}}>
                   <p style={this.props.bold}>Teachers</p>
                     { this.props.teacher_array.map(user =>
-                    <>{user.username}<button onClick={this.assign}>Assign</button></>)}
-                  <p id="teacher" style={this.props.bold}></p>
+                    <>{user.username}<button onClick={this.assign}>Assign</button></>)}<br/><br/>
+                  <button id="goBack" onClick={this.getStudents}>Back</button>
               </div>
               <div id="updates" hidden='true'>
                   <p style={this.props.bold}>Updates</p>
@@ -418,7 +451,8 @@ class Admin extends Component {
                   What sort of user? <br/><br/>
                   <button id="adminButton" onClick={this.showAdmin}>Admin</button>
                   <button id="studentButton" onClick={this.showStudent}>Student</button>
-                  <button id="teacherButton" onClick={this.showTeacher}>Teacher</button>
+                  <button id="teacherButton" onClick={this.showTeacher}>Teacher</button><br/><br/>
+                  <button id="cancel" onClick={this.hideAll}>Cancel</button>
               </div>
               <div id="adminForm" style={this.adminForm}>
                 <button id="studentButton" onClick={this.showStudent} style={this.style}>Student</button>
@@ -454,7 +488,8 @@ class Admin extends Component {
               <center><br/>
                 <button id="newAdmin" onClick={this.newAdmin}  style={{display: 'none'}}>Create Admin</button>
                 <button id="newStudent" onClick={this.newStudent} style={{display: 'none'}}> Create Student</button>
-                <button id="newTeacher" onClick={this.newTeacher} style={{display:'none'}}>Create Teacher</button>
+                <button id="newTeacher" onClick={this.newTeacher} style={{display:'none'}}>Create Teacher</button><br/>
+                <button id="cancelNewUser" onClick={this.showButtons} style={{display:'none'}}>Back</button>
               </center>
               </div>
           </div>
