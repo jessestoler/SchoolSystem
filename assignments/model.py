@@ -1,8 +1,5 @@
 '''Defines the model for users'''
 import json
-import jwt
-import datetime
-
 from SchoolSystem.data.logger import get_logger
 
 _log = get_logger(__name__)
