@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import Student from '../Student/Student';
 import Teacher from '../Teacher/Teacher';
 import Admin from '../Admin/Admin'
+import Messager from '../Messager/messager.component'
 import UserService from '../../service/user.service';
 
 class Home extends Component {
@@ -69,6 +70,7 @@ class Home extends Component {
           <>
             <p><button id="logout" onClick={this.handleLogout}>Logout</button></p>
             <Student/>
+            <Messager/>
           </>
         )
       }
@@ -76,7 +78,8 @@ class Home extends Component {
         return (
           <>
             <p><button id="logout" onClick={this.handleLogout}>Logout</button></p>
-            <Teacher/>
+            <Teacher/>            
+            <Messager/>
           </>
         )
       }
@@ -85,6 +88,7 @@ class Home extends Component {
           <>
             <p><button id="logout" onClick={this.handleLogout}>Logout</button></p>
             <Admin/>
+            <Messager/>
           </>
         )
       }

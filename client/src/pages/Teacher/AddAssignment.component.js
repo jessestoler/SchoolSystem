@@ -37,7 +37,7 @@ class AddAssignment extends Component {
 
   render() {
     console.log(this.props.isAssigning)
-    if(this.props.isAssigning == true){
+    if(this.props.isAssigning === true){
     
     return (
         <center>
