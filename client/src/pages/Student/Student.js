@@ -255,15 +255,15 @@ class Student extends Component {
                 </div>
                 
                 <div>
-                      <p hidden='true' id='period1Label'>1</p>
+                      <p hidden='true' id='period1Label'>1st Period</p>
                       <input hidden='true' type='text' id='period1'></input>
-                      <p hidden='true' id='period2Label'>2</p>
+                      <p hidden='true' id='period2Label'>2nd Period</p>
                       <input hidden='true' type='text' id='period2'></input>
-                      <p hidden='true' id='period3Label'>3</p>
+                      <p hidden='true' id='period3Label'>3rd Period</p>
                       <input hidden='true' type='text' id='period3'></input>
-                      <p hidden='true' id='period4Label'>4</p>
+                      <p hidden='true' id='period4Label'>4th Period</p>
                       <input hidden='true' type='text' id='period4'></input>
-                      <p hidden='true' id='period5Label'>5</p>
+                      <p hidden='true' id='period5Label'>5th Period</p>
                       <input hidden='true' type='text' id='period5'></input>
                       <p><button hidden='true' id='submitSchedule' onClick={this.updateSchedule}>Submit</button></p>
                 </div>
