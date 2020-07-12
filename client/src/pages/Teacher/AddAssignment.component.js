@@ -6,19 +6,17 @@ import AssignmentService from '../../service/assignment.service';
 import { connect } from 'react-redux';
 
 class AddAssignment extends Component {
-    constructor(props){
-        super(props);
-      };
-      teacherService = new TeacherService();
-      assignmentService = new AssignmentService();
+  /*
+  constructor(props){
+    super(props);
+  };
+  */
+  teacherService = new TeacherService();
+  assignmentService = new AssignmentService();
   state = {
   };
 
   componentDidMount() {
-  }
-
-  to_teach_menu = () => {
-    this.props.dispatch({type: 'toggleAssignHW', isAssigning: false})
   }
 
   assign_work = () => {
@@ -63,7 +61,6 @@ class AddAssignment extends Component {
             </tr>
             </table>
             <button id="to_assign" onClick={this.assign_work}>Add Assignment </button>
-            <button onClick={this.to_teach_menu}>Back</button>
         </center>
         
       );}
