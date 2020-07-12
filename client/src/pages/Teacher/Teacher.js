@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { connect } from 'react-redux';
-import styles from '../../App.css';
+import '../../App.css';
 import TeacherService from '../../service/teacher.service';
 import UserService from '../../service/user.service';
 import SubmissionService from '../../service/submission.service';
@@ -29,6 +29,14 @@ class Teacher extends Component {
   to_assign = () => {
     this.hideAll();
     this.props.dispatch({type: 'toggleAssignHW', isAssigning: true})
+    document.getElementById('to_assign').hidden = true
+    document.getElementById('hideAssign').hidden = false
+  }
+
+  hideAssign = () => {
+    this.props.dispatch({type: 'toggleAssignHW', isAssigning: false})
+    document.getElementById('to_assign').hidden = false
+    document.getElementById('hideAssign').hidden = true
   }
 
   editProfile = () => {
@@ -86,18 +94,29 @@ class Teacher extends Component {
     });
   }
 
-  getSubmissions() {
+  getSubmissions = () => {
     this.hideAll();
     document.getElementById('myGrading').style.display='block';
     console.log(this.props.user.username)
     this.submissionService.getSubmissions(this.props.user.username).then(res => {
       console.log(res.data)
       this.props.dispatch({type: 'getSubmissions', submission_array: res.data})
+      document.getElementById('showHomework').hidden = true
+      document.getElementById('hideHomework').hidden = false
     });
   }
 
-  hideAll(){
+  hideSubmissions = () => {
+    document.getElementById('myGrading').style.display='none';
+    this.props.dispatch({type: 'getSubmissions', submission_array: []})
+    document.getElementById('showHomework').hidden = false
+    document.getElementById('hideHomework').hidden = true
+  }
+
+  hideAll() {
     this.hideProfileForm();
+    this.hideAssign();
+    this.hideSubmissions();
     document.getElementById('myGrading').style.display='none';
     this.props.dispatch({type: 'toggleAssignHW', isAssigning: false})
   }
@@ -117,10 +136,12 @@ class Teacher extends Component {
                 <button hidden='true' id="hide" onClick={this.hideProfileForm}>Hide Profile</button>
 
             {/* Add Assingment */}
-            <button id="to_assign" onClick={this.to_assign}>Add Assignment </button>
+            <button id="to_assign" onClick={this.to_assign}>Add Assignment</button>
+            <button id="hideAssign" onClick={this.hideAssign} hidden="true">Hide Assignment</button>
 
             {/* Grade Homework */}
-            <button onClick={this.getSubmissions}>Grade Homework</button>
+            <button id="showHomework" onClick={this.getSubmissions}>Grade Homework</button>
+            <button id="hideHomework" onClick={this.hideSubmissions} hidden="true">Hide Homework</button>
 
                 <p hidden='true' id='usernameTitle'>Username</p>
                 <input hidden='true' type='text' id='username'></input>
