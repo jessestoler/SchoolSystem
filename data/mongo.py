@@ -10,6 +10,7 @@ import pymongo
 from SchoolSystem.users.model import User, Admin, Teacher, Student
 from SchoolSystem.assignments.model import Assignment
 from SchoolSystem.submissions.model import Submission
+from SchoolSystem.data.msgrModel import Messager
 from SchoolSystem.updates.model import Update
 from SchoolSystem.schedules.model import Schedule
 from SchoolSystem.data.logger import get_logger
@@ -182,6 +183,24 @@ def add_user(user):
             return user
         except:
             pass
+
+def get_msgs(msgTo):
+    _log.debug(msgTo)
+    query_dict = {"msg_to": msgTo}
+    dict_list = _scl.messager.find(query_dict)
+    msg_list = []
+    for msg in dict_list:
+        msg_list.append(Messager().from_dict(msg))
+    _log.debug(str(msg_list))
+    return msg_list
+
+def newMsg(message):
+    message['_id'] = str(_get_id())
+    try:
+        _scl.messager.insert_one(message)
+        return message
+    except:
+        pass
 
 if __name__ == '__main__':
     _log.info('Running Mongo script: dropping collections from project2 database')

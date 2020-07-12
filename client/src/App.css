@@ -59,3 +59,56 @@ table{margin-top: 20px;}
   height: 400px;
 
 }
+
+#messager{
+  position: absolute;
+  right: 10px;
+  top: 161px;
+  height: 397px;
+  width: 220px;
+  text-align: center;
+  background-color: rgb(25, 102, 31);
+  box-shadow: 0px 0px 200px 10px #747776;
+  -moz-box-shadow: 5px 5px 10px #747776;
+  -webkit-box-shadow: 5px 5px 10px #747776;
+  box-shadow: 5px 5px 10px #747776;
+  border-radius: 15px;
+  border: thick ridge chocolate;
+  color: #ffffff;
+  -webkit-text-stroke-width: .5px;
+  -webkit-text-stroke-color: black;
+}
+
+.msg_body{
+  background-color: rgb(49, 124, 55);
+
+  border-radius: 15px;
+  border: thin ridge chocolate;
+  color: #ffffff;
+  -webkit-text-stroke-width: .5px;
+  -webkit-text-stroke-color: black;
+}
+
+.newMsg{
+  background-color: rgb(49, 124, 55);
+
+  border-radius: 15px;
+  border: thick ridge chocolate;
+  color: #ffffff;
+  -webkit-text-stroke-width: .5px;
+  -webkit-text-stroke-color: black;
+}
+
+.message{
+  border-radius: 15px;
+  border: thin ridge chocolate;
+  color: #ffffff;
+  background-color: rgb(35, 87, 22);
+  overflow-y: scroll;
+  height: 240px;
+}
+
+#msgBody{
+  height: 170px;
+  resize: none;
+}

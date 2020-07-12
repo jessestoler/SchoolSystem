@@ -16,7 +16,9 @@ const initialState = {
     new_admin: {},
     new_student: {},
     new_teacher: {},
-    student: []
+    student: [],
+    messages: [],
+    msgNum: 0
 };
 
 function schoolReducer(state = initialState, action) {
@@ -56,11 +58,14 @@ function schoolReducer(state = initialState, action) {
             return Object.assign({}, state, {schedule: action.schedule})
         case 'toggleAssignHW':
             return Object.assign({}, state, {isAssigning: action.isAssigning})
+        case 'setMsgNum':
+            return Object.assign({}, state, {msgNum: action.msgNum})
+        case 'getMsgs':
+            return Object.assign({}, state, {messages: action.messages})
         default:
             return state;
     }
 }
-
 const store = createStore(schoolReducer);
 
 export default store

@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import Student from '../Student/Student';
 import Teacher from '../Teacher/Teacher';
 import Admin from '../Admin/Admin'
+import Messager from '../Messager/messager.component'
 import UserService from '../../service/user.service';
 
 class Home extends Component {
@@ -44,10 +45,11 @@ class Home extends Component {
   login = () => {
     console.log(this.props)
     this.userService.login(this.props.username, this.props.password).then(res => {
-
         console.log(res.data.role);
         console.log(res.data.username)
         this.props.dispatch( { type: 'login', username: res.data.username, user: res.data, password: res.data.password})
+    }).catch(error => {
+        window.alert("Username/Password do not match.")
     });
   };
 
@@ -69,6 +71,7 @@ class Home extends Component {
           <>
             <p><button id="logout" onClick={this.handleLogout}>Logout</button></p>
             <Student/>
+            <Messager/>
           </>
         )
       }
@@ -76,7 +79,8 @@ class Home extends Component {
         return (
           <>
             <p><button id="logout" onClick={this.handleLogout}>Logout</button></p>
-            <Teacher/>
+            <Teacher/>            
+            <Messager/>
           </>
         )
       }
@@ -85,6 +89,7 @@ class Home extends Component {
           <>
             <p><button id="logout" onClick={this.handleLogout}>Logout</button></p>
             <Admin/>
+            <Messager/>
           </>
         )
       }
