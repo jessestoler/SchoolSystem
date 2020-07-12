@@ -10,6 +10,7 @@ import pymongo
 from SchoolSystem.users.model import User, Admin, Teacher, Student
 from SchoolSystem.assignments.model import Assignment
 from SchoolSystem.submissions.model import Submission
+from SchoolSystem.data.msgrModel import Messager
 from SchoolSystem.updates.model import Update
 from SchoolSystem.schedules.model import Schedule
 from SchoolSystem.data.logger import get_logger
@@ -183,19 +184,27 @@ def add_user(user):
         except:
             pass
 
+def get_msgs(msgTo):
+    _log.debug(msgTo)
+    query_dict = {"msg_to": msgTo}
+    dict_list = _scl.messager.find(query_dict)
+    msg_list = []
+    for msg in dict_list:
+        msg_list.append(Messager().from_dict(msg))
+    _log.debug(str(msg_list))
+    return msg_list
+
+def newMsg(message):
+    message['_id'] = str(_get_id())
+    try:
+        _scl.messager.insert_one(message)
+        return message
+    except:
+        pass
+
 if __name__ == '__main__':
     _log.info('Running Mongo script: dropping collections from project2 database')
     _log.info(_scl.list_collection_names())
-    _scl.users.drop()
     _scl.counter.drop()
 
     _scl.counter.insert_one({'_id': 'UNIQUE_COUNT', 'count': 0})
-
-    user_list = []
-    user_list.append(User(_get_id(), 'mik', 'mm', '11', '123 main st', 'teacher').to_dict())
-    user_list.append(User(_get_id(), 'john', 'dd', '22', '123 main st', 'admin').to_dict())
-    user_list.append(Student(_get_id(), 'mary', 'ff', '33', '123 main st', 'student', [{'class': 'Art', 'grade': 'A'}, {'class': 'Biology', 'grade': 'A+'}]).to_dict())
-    user_list.append(Student(_get_id(), 'james', 'gg', '44', '123 main st', 'student', [{'class': 'PE', 'grade': 'B-'}, {'class': 'Chemistry', 'grade': 'D+'}]).to_dict())
-
-
-    _scl.users.insert_many(user_list)

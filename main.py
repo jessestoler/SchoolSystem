@@ -7,6 +7,8 @@ from SchoolSystem.assignments.model import Assignment, AssignmentEncoder
 from SchoolSystem.submissions.model import Submission, SubmissionEncoder
 from SchoolSystem.updates.model import Update, UpdateEncoder
 from SchoolSystem.schedules.model import Schedule, ScheduleEncoder
+from SchoolSystem.schedules.model import Schedule, ScheduleEncoder
+from SchoolSystem.data.msgrModel import Messager, MessagerEncoder
 import SchoolSystem.data.mongo as db
 import json
 import werkzeug
@@ -204,3 +206,18 @@ def getSchedules():
     value = bytes(json.dumps(schedules, cls=ScheduleEncoder), 'utf-8')
     _log.info(value)
     return value
+
+@app.route('/messager/<user>', methods={'GET'})
+def getMessages(user):
+    msgs = db.get_msgs(user)
+    value = bytes(json.dumps(msgs, cls=MessagerEncoder), 'utf-8')
+    _log.info(value)
+    _log.debug(msgs)
+    return value, 200
+
+@app.route('/messager', methods={'POST'})
+def newMessage():
+    _log.debug(request.json)
+    new_message = db.newMsg(request.json)
+    value = bytes(json.dumps(new_message, cls=MessagerEncoder), 'utf-8')
+    return value, 200
