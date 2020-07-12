@@ -2,6 +2,7 @@ import React, { Component } from "react";
 
 import TeacherService from '../../service/teacher.service';
 import AssignmentService from '../../service/assignment.service';
+import Teacher from './Teacher'
 
 import { connect } from 'react-redux';
 
@@ -13,6 +14,7 @@ class AddAssignment extends Component {
   */
   teacherService = new TeacherService();
   assignmentService = new AssignmentService();
+  teacher = new Teacher();
   state = {
   };
 
@@ -38,7 +40,6 @@ class AddAssignment extends Component {
     document.getElementById('to_assign').hidden = false
     document.getElementById('hideAssign').hidden = true
   }
-
 
   render() {
     console.log(this.props.isAssigning)
