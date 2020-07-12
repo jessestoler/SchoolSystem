@@ -37,7 +37,7 @@ class Messager extends Component {
           return (
             <center>
               <div id="messager">
-                <h2>Messager</h2>
+                <h2>Messenger</h2>
                   <Messages/>
                   <div class='newMsg' onClick={this.newMsg}>New Message</div>
               </div>
@@ -49,7 +49,7 @@ class Messager extends Component {
           return (
             <center>
               <div id="messager">
-                <h2>Messager</h2>
+                <h2>Messenger</h2>
                   <MsgBody/>
                   <button id='closeMsg' onClick={this.closeMsg}>Close Message</button>
               </div>

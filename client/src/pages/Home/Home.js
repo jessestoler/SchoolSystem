@@ -45,10 +45,11 @@ class Home extends Component {
   login = () => {
     console.log(this.props)
     this.userService.login(this.props.username, this.props.password).then(res => {
-
         console.log(res.data.role);
         console.log(res.data.username)
         this.props.dispatch( { type: 'login', username: res.data.username, user: res.data, password: res.data.password})
+    }).catch(error => {
+        window.alert("Username/Password do not match.")
     });
   };
 
