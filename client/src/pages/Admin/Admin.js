@@ -96,13 +96,25 @@ class Admin extends Component {
     document.getElementById("newAdmin").style.display = "none";
     document.getElementById("newStudent").style.display = "none";
     document.getElementById("newTeacher").style.display = "none";
-    document.getElementById("cancelNewUser").style.display = "none";
     document.getElementById("editAdmin").style.display = "none";
-    document.getElementById("updates").hidden = true
+    document.getElementById('edit').hidden = false
+    document.getElementById('deleteuser').hidden = false
+    document.getElementById('showSchedules').hidden = false
+    document.getElementById('hideUpdates').hidden = true
+    document.getElementById('showUpdates').hidden = false
+    document.getElementById('showAssignTeacher').hidden = false
+    document.getElementById("cancelUser").hidden = true
+    document.getElementById("adduserbtn").hidden = false
+    document.getElementById('cancelAssignTeacher').hidden = true
+    document.getElementById('hideScheduleUpdates').hidden = true
+    document.getElementById('hideUsers').hidden = true
+    document.getElementById('updates').hidden = true
     document.getElementById("schedules").hidden = true
+    document.getElementById('hideEdit').hidden = true
   }
 
-  showButtons() {
+  showButtons = () => {
+    this.hideAll()
     document.getElementById('users').style.display = 'none';
     document.getElementById('students').style.display = 'none';
     document.getElementById('teachers').style.display = 'none';
@@ -113,8 +125,8 @@ class Admin extends Component {
     document.getElementById("newStudent").style.display = "none";
     document.getElementById("newTeacher").style.display = "none";
     document.getElementById("buttonRow").style.display = "block";
-    document.getElementById("cancelNewUser").style.display = "none";
-    document.getElementById("cancel").hidden = false
+    document.getElementById("cancelUser").hidden = false
+    document.getElementById("adduserbtn").hidden = true
   }
 
   showAdmin() {
@@ -124,8 +136,6 @@ class Admin extends Component {
     document.getElementById("studentForm").style.display = "none";
     document.getElementById("newStudent").style.display = "none";
     document.getElementById("newTeacher").style.display = "none";
-    document.getElementById("cancelNewUser").style.display = "block";
-    document.getElementById("cancel").hidden = true
   }
 
   showStudent() {
@@ -134,8 +144,6 @@ class Admin extends Component {
     document.getElementById("newStudent").style.display = "block";
     document.getElementById("newAdmin").style.display = "none";
     document.getElementById("newTeacher").style.display = "none";
-    document.getElementById("cancelNewUser").style.display = "block";
-    document.getElementById("cancel").hidden = true
   }
 
   showTeacher() {
@@ -144,8 +152,6 @@ class Admin extends Component {
     document.getElementById("studentForm").style.display = "none";
     document.getElementById("newAdmin").style.display = "none";
     document.getElementById("newStudent").style.display = "none";
-    document.getElementById("cancelNewUser").style.display = "block";
-    document.getElementById("cancel").hidden = true
   }
 
   user = (event) => {
@@ -161,12 +167,16 @@ class Admin extends Component {
     this.adminService.getUsers().then(res => {
       console.log(res.data)
       this.props.dispatch({type: 'getUsers', user_array: res.data})
+      document.getElementById('deleteuser').hidden = true
+      document.getElementById('hideUsers').hidden = false
     })
   }
 
   showForm = () => {
     this.hideAll()
     document.getElementById('editAdmin').style.display = 'block';
+    document.getElementById('edit').hidden = true
+    document.getElementById('hideEdit').hidden = false
   }
 
   getStudents() {
@@ -176,6 +186,8 @@ class Admin extends Component {
     this.studentService.getStudents().then(res => {
       console.log(res.data)
       this.props.dispatch({type: 'getStudents', student_array: res.data})
+      document.getElementById('showAssignTeacher').hidden = true
+      document.getElementById('cancelAssignTeacher').hidden = false
     })
   }
 
@@ -298,6 +310,7 @@ class Admin extends Component {
     })
     document.getElementById('updates').hidden = false
     document.getElementById('hideUpdates').hidden = false
+    document.getElementById('showUpdates').hidden = true
   }
 
   hideUpdates = () => {
@@ -305,6 +318,7 @@ class Admin extends Component {
     this.props.dispatch( { type: 'getUpdates', update_array: []})
     document.getElementById('updates').hidden = true
     document.getElementById('hideUpdates').hidden = true
+    document.getElementById('showUpdates').hidden = false
   }
 
   acceptUpdate = (event) => {
@@ -334,6 +348,7 @@ class Admin extends Component {
       this.props.dispatch( { type: 'getSchedules', schedule_array: res.data})
     })
     document.getElementById('schedules').hidden = false
+    document.getElementById('showSchedules').hidden = true
     document.getElementById('hideScheduleUpdates').hidden = false
   }
 
@@ -342,6 +357,7 @@ class Admin extends Component {
     this.props.dispatch( { type: 'getSchedules', schedule_array: []})
     document.getElementById('schedules').hidden = true
     document.getElementById('hideScheduleUpdates').hidden = true
+    document.getElementById('showSchedules').hidden = false
   }
 
   acceptScheduleUpdate = (event) => {
@@ -375,11 +391,17 @@ class Admin extends Component {
             <div id="container">
               Welcome back, {this.props.user.fullname} <br/>
               <button id="adduserbtn" onClick={this.showButtons}>Add User </button>
-              <button onClick={this.getStudents}>Assign Student To Teacher</button>
-              <button onClick={this.showUpdates}>Check Profile Updates</button>
-              <button onClick={this.showScheduleUpdates}>Check Schedule Updates</button>
+              <button id="cancelUser" onClick={this.hideAll} hidden='true'>Cancel User</button>
+              <button id="showAssignTeacher" onClick={this.getStudents}>Assign Student To Teacher</button>
+              <button id="cancelAssignTeacher" onClick={this.hideAll} hidden='true'>Cancel Student To Teacher</button>
+              <button id="showUpdates" onClick={this.showUpdates}>Check Profile Updates</button>
+              <button hidden='true' id="hideUpdates" onClick={this.hideUpdates}>Hide Profile Updates</button>
+              <button id="showSchedules" onClick={this.showScheduleUpdates}>Check Schedule Updates</button>
+              <button hidden='true' id="hideScheduleUpdates" onClick={this.hideScheduleUpdates}>Hide Schedule Updates</button>
               <button id="deleteuser" onClick={this.getUsers}>Delete User</button>
-              <button onClick={this.showForm}>Edit Profile</button>
+              <button id='hideUsers' onClick={this.hideAll} hidden='true'>Hide Users</button>
+              <button id="edit" onClick={this.showForm}>Edit Profile</button>
+                <button id="hideEdit" onClick={this.hideAll} hidden='true'>Hide Profile</button>
 
               <div id="editAdmin" style={this.editForm}>
                 <p id="currentFullname" style={{display: 'none'}}>{this.props.user.fullname}</p>
@@ -396,20 +418,17 @@ class Admin extends Component {
                 <input id="adminAddress"></input>
                 <br></br><br></br>
                 <button onClick={this.editAdmin}>Edit Profile</button><br/><br/>
-                <button onClick={this.hideAll}>Hide</button>
               </div>
 
               <div id="users" style={{display: 'none'}}>
                   <p style={this.props.bold}>Users</p>
                     { this.props.user_array.map(user =>
                     <>{user.fullname}<button onClick={this.remove}>Delete</button><br/></>)}
-                  <p><button onClick={this.hideAll}>Hide</button></p>
               </div>
               <div id="students" style={{display: 'none'}}>
                   <p  style={this.props.bold}>Students</p>
                     { this.props.student_array.map(user =>
-                    <>{user.username}<button onClick={this.getTeachers}>Get Teacher</button><br/></>)}<br/>
-                  <button id="cancelAssignTeacher" onClick={this.hideAll}>Cancel</button>
+                    <>{user.username}<button onClick={this.getTeachers}>Get Teacher</button><br/></>)}
               </div>
               <div id="teachers" style={{display: 'none'}}>
                   <p style={this.props.bold}>Teachers</p>
@@ -429,7 +448,6 @@ class Admin extends Component {
                     <button id={update.username} onClick={this.denyUpdate}>Deny</button></p>
                   </>
                   )}
-                  <p><button hidden='true' id="hideUpdates" onClick={this.hideUpdates}>Hide</button></p>
               </div>
               <div id="schedules" hidden='true'>
                   <p style={this.props.bold}>Schedules</p>
@@ -445,14 +463,12 @@ class Admin extends Component {
                     <button id={sched.username} onClick={this.denyScheduleUpdate}>Deny</button></p>
                   </>
                   )}
-                  <p><button hidden='true' id="hideScheduleUpdates" onClick={this.hideScheduleUpdates}>Hide</button></p>
               </div>
               <div id="buttonRow" style={this.style}><br/>
                   What sort of user? <br/><br/>
                   <button id="adminButton" onClick={this.showAdmin}>Admin</button>
                   <button id="studentButton" onClick={this.showStudent}>Student</button>
-                  <button id="teacherButton" onClick={this.showTeacher}>Teacher</button><br/><br/>
-                  <button id="cancel" onClick={this.hideAll}>Cancel</button>
+                  <button id="teacherButton" onClick={this.showTeacher}>Teacher</button>
               </div>
               <div id="adminForm" style={this.adminForm}>
                 <button id="studentButton" onClick={this.showStudent} style={this.style}>Student</button>
@@ -488,8 +504,7 @@ class Admin extends Component {
               <center><br/>
                 <button id="newAdmin" onClick={this.newAdmin}  style={{display: 'none'}}>Create Admin</button>
                 <button id="newStudent" onClick={this.newStudent} style={{display: 'none'}}> Create Student</button>
-                <button id="newTeacher" onClick={this.newTeacher} style={{display:'none'}}>Create Teacher</button><br/>
-                <button id="cancelNewUser" onClick={this.showButtons} style={{display:'none'}}>Back</button>
+                <button id="newTeacher" onClick={this.newTeacher} style={{display:'none'}}>Create Teacher</button>
               </center>
               </div>
           </div>
