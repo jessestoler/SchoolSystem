@@ -2,7 +2,6 @@ import React, { Component } from "react";
 
 import TeacherService from '../../service/teacher.service';
 import AssignmentService from '../../service/assignment.service';
-import Teacher from './Teacher'
 
 import { connect } from 'react-redux';
 
@@ -14,7 +13,6 @@ class AddAssignment extends Component {
   */
   teacherService = new TeacherService();
   assignmentService = new AssignmentService();
-  teacher = new Teacher();
   state = {
   };
 

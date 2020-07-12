@@ -35,7 +35,8 @@ class MsgBody extends Component {
       "msg_from": this.props.user.username
   }
     this.messagerService.sendMessage(newMsg).then(res => {
-    
+      this.props.dispatch({type: 'setMsgNum', msgNum: 0})
+
     })
   }
   

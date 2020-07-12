@@ -73,15 +73,24 @@ class Admin extends Component {
       console.log(res.data)
       this.props.dispatch({type: 'editAdmin'})
       if (username) {
-        this.userService.login(username).then(res => {
+        this.userService.login(username, this.props.user.password).then(res => {
 
           console.log(res.data.role);
           console.log(res.data.username)
-          this.props.dispatch( { type: 'login', username: res.data.username, user: res.data})
-          window.alert('Profile Updated')
-          this.hideAll()
+          this.props.dispatch( { type: 'login', username: res.data.username, user: res.data, password: this.props.password})
         });
       }
+      else {
+        this.userService.login(this.props.user.username, this.props.user.password).then(res => {
+
+          console.log(res.data.role);
+          console.log(res.data.username)
+          this.props.dispatch( { type: 'login', username: res.data.username, user: res.data, password: this.props.password})
+        });
+      }
+      
+      window.alert('Profile Updated')
+      this.hideAll()
     })
   }
 
@@ -521,8 +530,8 @@ class Admin extends Component {
 }
 
 function mapStateToProps(state) {
-  const {user, user_array, student_array, teacher_array, update_array, schedule_array} = state;
-  return {user: user, user_array: user_array, student_array: student_array, teacher_array: teacher_array, update_array: update_array, schedule_array: schedule_array}
+  const {user, user_array, student_array, teacher_array, update_array, schedule_array, password, username} = state;
+  return {user: user, user_array: user_array, student_array: student_array, teacher_array: teacher_array, update_array: update_array, schedule_array: schedule_array, password: password, username: username}
 }
 
 export default connect(mapStateToProps)(Admin);
