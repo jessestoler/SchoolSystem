@@ -26,7 +26,7 @@ class AddAssignment extends Component {
         "name": document.getElementById('name').value,
         "due": document.getElementById('due').value,
         "description": document.getElementById('description').value,
-        "teacher": this.props.user.fullname 
+        "teacher": this.props.user.fullname
     }
     this.assignmentService.teacher_assign_work(the_assignment).then(res => {
         this.to_teach_menu()
@@ -42,7 +42,7 @@ class AddAssignment extends Component {
   render() {
     console.log(this.props.isAssigning)
     if(this.props.isAssigning === true){
-    
+
     return (
         <center>
             <table align="center">
@@ -68,7 +68,7 @@ class AddAssignment extends Component {
             </table>
             <button id="to_assign" onClick={this.assign_work}>Add Assignment </button>
         </center>
-        
+
       );}
       else{
           return (<></>)
