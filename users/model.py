@@ -1,12 +1,12 @@
 '''Defines the model for users'''
+#pylint: disable=R0913
 import json
-import jwt
 import datetime
-
+import jwt
 from SchoolSystem.data.logger import get_logger
 
 _log = get_logger(__name__)
-_secret_key = '101010101unique'
+_SECRET_KEY = '101010101unique'
 
 class User:
     '''A class that defines how Users should behave'''
@@ -65,7 +65,7 @@ class User:
                 'sub': self._id
             }
             _log.debug("payload set")
-            return jwt.encode(payload, _secret_key, algorithm='HS256')
+            return jwt.encode(payload, _SECRET_KEY, algorithm='HS256')
         except Exception as e:
             _log.exception('Encode failed.')
             return e
@@ -74,7 +74,7 @@ class User:
     def decode_auth_token(auth_token):
         ''' Decode the auth token to receive the id of user '''
         try:
-            payload = jwt.decode(auth_token, _secret_key)
+            payload = jwt.decode(auth_token, _SECRET_KEY)
             return payload['sub']
         except jwt.ExpiredSignatureError:
             return 'Token expired. please login again.'
@@ -100,8 +100,8 @@ class Teacher(User):
 class Student(User):
     '''A class that defines how Students should behave'''
     def __init__(self, db_id=-1, fullname='', username='', password='',
-                 address='', current_schedule={}, teacher='', role='', grades=[], grade_level='', age=0,
-                 english=0, math=0, science=0, social_studies=0):
+                 address='', current_schedule={}, teacher='', role='', grades=[],
+                 grade_level='', age=0, english=0, math=0, science=0, social_studies=0):
         super(). __init__(db_id, fullname, username, password, address, role)
         self.grades = grades
         self.current_schedule = current_schedule
@@ -118,4 +118,3 @@ class UserEncoder(json.JSONEncoder):
     ''' Allows us to serialize our objects as JSON '''
     def default(self, o):
         return o.to_dict()
-

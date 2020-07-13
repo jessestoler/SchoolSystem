@@ -1,12 +1,9 @@
 '''Defines the model for users'''
 import json
-import jwt
-import datetime
-
 from SchoolSystem.data.logger import get_logger
 
 _log = get_logger(__name__)
-_secret_key = '101010101unique'
+_SECRET_KEY = '101010101unique'
 
 class Assignment:
     '''A class that defines how Assignments should behave'''

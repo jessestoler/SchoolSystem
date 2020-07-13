@@ -2,12 +2,10 @@
     Define all of our CRUD (Create, Read, Update, and Delete)
     in this file  to separate those concerns'''
 
+#pylint: disable=R0913
 import os
-import sys
-import getpass
 import pymongo
-
-from SchoolSystem.users.model import User, Admin, Teacher, Student
+from SchoolSystem.users.model import User, Student
 from SchoolSystem.assignments.model import Assignment
 from SchoolSystem.submissions.model import Submission
 from SchoolSystem.data.msgrModel import Messager
@@ -27,13 +25,15 @@ def get_user_by_id(db_id: int):
     '''Returns a user by their id'''
     return User.from_dict(_scl.users.find_one({'_id': db_id}))
 
-def get_submissions(x):
-    dict_list = _scl.submissions.find({'teacher': x})
+def get_submissions(teacher):
+    '''Gets all submissions'''
+    dict_list = _scl.submissions.find({'teacher': teacher})
     return [Submission.from_dict(submission) for submission in dict_list]
 
-def get_requirements(x):
+def get_requirements(requirements):
+    '''Gets all requirements'''
     _log.info('Attempting to retrieve all users from database')
-    dict_list = _scl.users.find({'username': x})
+    dict_list = _scl.users.find({'username': requirements})
     return [User.from_dict(user) for user in dict_list]
 
 
@@ -58,9 +58,7 @@ def remove_user(fullname: str):
     _log.info('Attempting to remove user from database')
     _log.debug(fullname)
     query = {"fullname": fullname}
-    success = _scl.users.delete_one(query)
-    # _log.info(success)
-    # return success if success else None
+    _scl.users.delete_one(query)
 
 def _get_id():
     '''Retrieves the next id in the database and increments it'''
@@ -69,51 +67,60 @@ def _get_id():
                                             return_document=pymongo.ReturnDocument.AFTER)['count']
 
 def get_assignments():
+    '''Gets all assignments'''
     dict_list = _scl.assignments.find()
     return [Assignment.from_dict(assignment) for assignment in dict_list]
 
 def insert_assignment(assignment):
+    '''Creates a new assignment'''
     assignment['_id']=_get_id()
     _scl.assignments.insert_one(assignment)
     return assignment
 
 def get_students():
+    '''Gets all students'''
     dict_list = _scl.users.find({'role': 'student'})
     return [User.from_dict(user) for user in dict_list]
 
 def get_teachers():
+    '''Gets all teachers'''
     dict_list = _scl.users.find({'role': 'teacher'})
     return [User.from_dict(user) for user in dict_list]
 
 def get_updates():
+    '''Gets all updates'''
     dict_list = _scl.updates.find()
     return [Update.from_dict(update) for update in dict_list]
 
 
 def update_student(username):
+    '''Updates a specific student'''
     my_query = {'username': str(username)}
-    newData = _scl.updates.find_one(my_query)
-    _log.info(newData)
-    _log.info(newData['update_info']['username'])
+    new_data = _scl.updates.find_one(my_query)
+    _log.info(new_data)
+    _log.info(new_data['update_info']['username'])
     result = _scl.users.update_one(my_query,
-                                   {'$set': {'username': newData['update_info']['username'],
-                                   'password': newData['update_info']['password'],
-                                   'address': newData['update_info']['address']}})
-    new_query = {'username': str(newData['update_info']['username'])}
+                                   {'$set': {'username': new_data['update_info']['username'],
+                                   'password': new_data['update_info']['password'],
+                                   'address': new_data['update_info']['address']}})
+    new_query = {'username': str(new_data['update_info']['username'])}
     newUser = _scl.users.find_one(new_query)
     _scl.updates.delete_one(my_query)
     return Student.from_dict(newUser)
 
 def delete_update(username):
+    '''Deletes a user'''
     _log.debug(username)
     my_query = {'username': str(username)}
     _scl.updates.delete_one(my_query)
 
 def get_schedules():
+    '''Gets all schedules'''
     dict_list = _scl.schedules.find()
     return [Schedule.from_dict(schedule) for schedule in dict_list]
 
 def update_schedule(username):
+    '''Updates a schedule'''
     my_query = {'username': str(username)}
     schedule_request = _scl.schedules.find_one(my_query)
     _log.info(schedule_request)
@@ -127,48 +134,57 @@ def update_schedule(username):
     return Student.from_dict(student)
 
 def delete_schedule_update(username):
+    '''Deletes a schedule update'''
     _log.info(username)
     my_query = {'username': username}
     _scl.schedules.delete_one(my_query)
 
-def sumbit_schedule_update(username, newSchedule):
+def sumbit_schedule_update(username, new_schedule):
+    '''Creates a schedule update'''
     my_query = {'username': username}
-    input_dict = Schedule(_get_id(), username, newSchedule).to_dict()
+    input_dict = Schedule(_get_id(), username, new_schedule).to_dict()
     _scl.schedules.insert_one(input_dict)
     result = _scl.schedules.find_one(my_query)
     _log.debug(result)
 
-def submit_student_update(username, newData):
+def submit_student_update(username, new_data):
+    '''Creates a new update'''
     my_query = {'username': username}
-    input_dict = Update(_get_id(), username, newData).to_dict()
+    input_dict = Update(_get_id(), username, new_data).to_dict()
     _scl.updates.insert_one(input_dict)
     result = _scl.updates.find_one(my_query)
     _log.debug(result)
 
-def update_user(username, newProfile):
+def update_user(username, new_profile):
+    '''Updates a user'''
     myquery = {"username": username}
-    _log.info(newProfile)
-    result = _scl.users.update_one(myquery, {'$set': newProfile})
+    _log.info(new_profile)
+    _scl.users.update_one(myquery, {'$set': new_profile})
 
-def assign_teacher(username, newData):
+def assign_teacher(username, new_data):
+    '''Assigns a teacher to a student'''
     myquery = {"username": username}
-    _log.info(newData)
-    result = _scl.users.update_one(myquery, {'$set': newData})
+    _log.info(new_data)
+    _scl.users.update_one(myquery, {'$set': new_data})
 
-def edit_admin(x, newData):
-    myquery = {"username": x}
-    result = _scl.users.update_one(myquery, {'$set': newData})
+def edit_admin(name, new_data):
+    '''Edits an admin's information'''
+    myquery = {"username": name}
+    _scl.users.update_one(myquery, {'$set': new_data})
 
-def grade_homework(x, newData):
-    my_query = {"_id": x}
-    result = _scl.submissions.update_one(my_query, {'$set': newData})
+def grade_homework(homework, new_data):
+    '''Allows teacher to grade homework'''
+    my_query = {"_id": homework}
+    _scl.submissions.update_one(my_query, {'$set': new_data})
 
 def add_submission(submission):
+    '''Creates a new submission'''
     submission['_id']=_get_id()
     _scl.submissions.insert_one(submission)
     return submission
 
 def add_user(user):
+    '''Adds a new user'''
     _log.debug('querying db')
     _log.debug(user)
     query_dict = {'username': user['username']}
@@ -184,9 +200,10 @@ def add_user(user):
         except:
             pass
 
-def get_msgs(msgTo):
-    _log.debug(msgTo)
-    query_dict = {"msg_to": msgTo}
+def get_msgs(msg_to):
+    '''Gets all messages'''
+    _log.debug(msg_to)
+    query_dict = {"msg_to": msg_to}
     dict_list = _scl.messager.find(query_dict)
     msg_list = []
     for msg in dict_list:
@@ -194,7 +211,8 @@ def get_msgs(msgTo):
     _log.debug(str(msg_list))
     return msg_list
 
-def newMsg(message):
+def new_msg(message):
+    '''Creates a new message'''
     message['_id'] = str(_get_id())
     try:
         _scl.messager.insert_one(message)

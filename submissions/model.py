@@ -1,12 +1,10 @@
 '''Defines the model for submissions'''
+#pylint: disable=R0913
 import json
-import jwt
-import datetime
-
 from SchoolSystem.data.logger import get_logger
 
 _log = get_logger(__name__)
-_secret_key = '101010101unique'
+_SECRET_KEY = '101010101unique'
 
 class Submission:
     '''A class that defines how Submissions should behave'''
